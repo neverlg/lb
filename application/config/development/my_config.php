@@ -228,4 +228,8 @@ $config['qiniu'] = array(
 	'source_url' => 'http://on7uwttp2.bkt.clouddn.com/'
 	);
 
+// ajax响应字段，用在ajax_response函数
+$config['ajax_response_field']['status'] = 'status';  // 状态字段
+$config['ajax_response_field']['error']  = 'error';   // 错误消息字段
+$config['ajax_response_field']['data']   = 'data';    // 返回数据体字段
 
