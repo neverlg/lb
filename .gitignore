@@ -26,8 +26,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-workspace
 *.sublime-project
 
-#忽略session,captcha,logs
-/session_file/
-/captcha/
-/application/logs/
 
