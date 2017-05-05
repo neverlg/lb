@@ -15,80 +15,221 @@ $config['private_asset_url'] = 'assets/';
 // 公有静态资源（多项目共用，放在独立的地方，绑定特定域名）
 $config['public_asset_url'] = '';
 
-// --------------------------------------------------------------------
+//发送短信验证码的时间间隔及次数限制，默认10分钟只能发送3次
+$config['sms_expire'] = 600;
+$config['sms_count'] = 3;
 
-// upload目录存放上传文件（可考虑绑定单独域名）
-$config['upload_url'] = 'upload/';
+//生成的短信验证码长度，默认为6
+$config['sms_length'] = 6;
 
-// 上传目录物理路径(可用相对)
-$config['upload_path'] = '/data/wwwroot/www.lebangdaojia.com/upload/';
+//短信验证码在验证表单时的过期时间，默认5分钟
+$config['sms_submit_expire'] = 300;
 
-// --------------------------------------------------------------------
+//商家类型
+$config['merchant_category'] = array(
+    1 => '家具电商',
+    2 => '物流公司',
+    3 => '个人用户'
+);
+
+//货品仓库品类
+$config['goods'] = array(
+    1 => '柜类',
+    2 => '床类',
+    3 => '床垫类',
+    4 => '桌类',
+    5 => '茶几类',
+    6 => '架类',
+    7 => '沙发类',
+    8 => '椅类',
+    9 => '屏风隔断',
+    10 => '办公类',     #此项目前无用
+    11 => '其他',
+    12 => '坐具类'
+);
+
+//每页显示的数量，用于分页
+$config['num_per_page'] = array(
+    'goods_index' => 25,      #货品仓库首页时
+    'goods_order' => 25,      #货品仓库下单时
+    'coupon_index' => 6,      #优惠券列表
+    'ewallet_index' => 6,     #交易列表（电子钱包）
+    'evaluate_index' => 6,    #评论列表
+    'complain_index' => 6,    #投诉列表
+    'message_index' => 10,    #个人消息列表
+    'refund_index' => 10,     #退款管理首页
+    'order_index' => 12,      #报价/定价订单首页
+);
+
+//充值送余额
+$config['recharge_award'] = array(
+    '0.01' => 2,   #测试用，上线删掉
+    '500' => 5,
+    '2000' => 25,
+    '5000' => 75,
+    '10000' => 180
+);
+
+//帮助中心
+$config['article'] = array(
+    0 => '账户相关',
+    1 => '订单相关',
+    2 => '付款相关',
+    3 => '退款相关',
+    4 => '投诉相关',
+);
+
+//新闻中心
+$config['news'] = array(
+    0 => '公司新闻',
+    1 => '行业新闻',
+);
+
+//电子钱包
+$config['trade_type'] = array(
+    1 => '充值',
+    2 => '下单',
+    3 => '退单',
+    4 => '补款',
+    5 => '退款',
+    6 => '批量付款'
+);
+
+//优惠券c_type
+$config['coupon'] = array(
+    1 => '电子券',
+);
+
+//服务类型
+$config['service_type'] = array(
+    1 => '提货配送上门+安装',
+    2 => '上门安装',
+    3 => '上门维修',
+    4 => '提货配送上门',
+    5 => '打包返货',
+);
+
+//退款状态
+$config['refund_status'] = array(
+    1 => '待师傅确认中',
+    2 => '师傅拒绝退款',
+    3 => '退款成功',
+    4 => '退款成功',
+    5 => '介入仲裁中',
+    6 => '退款关闭',
+);
+
+//退款类型
+$config['refund_type'] = array(
+    1 => '全额退款',
+    2 => '部分退款'
+);
+
+//退换方式
+$config['refund_method'] = array(
+    1 => '我的钱包',
+    2 => '原路退回'
+);
+
+//投诉结果
+$config['complain_result'] = array(
+    1 => '等待核实处理',
+    2 => '已撤回投诉',
+    3 => '投诉成功',
+    4 => '投诉失败',
+);
+
+//投诉类别
+$config['complain_category'] = array(
+    //师傅服务不诚信
+    1 => array(
+        1 => '师傅引导用户线下交易',
+        2 => '师傅被雇佣后（托管费用后）拒绝服务',
+        3 => '师傅没有按预约时间上门服务',
+        4 => '师傅服务中途恶意加价',
+        5 => '师傅向客户收取额外费用',
+        6 => '师傅未在48小时内完成服务',
+        7 => '师傅向客户泄露服务费用',
+        8 => '师傅服务未完成，向客户索取服务确认码',
+        9 => '师傅不遵守自己填写的附加服务',
+        10 => '师傅上传虚假完工照',
+    ),
+
+    //师傅服务不规范
+    2 => array(
+        11 => '师傅没有在雇佣付款后两小时内及时预约客户',
+        12 => '师傅超过48小时联系不上',
+        13 => '师傅服务态度恶劣（如威胁）',
+        14 => '师傅物流提货时未仔细检查',
+        15 => '师傅在安装或拆包装发现破损未及时反映',
+        16 => '师傅在服务中让客户帮忙',
+        17 => '师傅安装过程中造成货物损失',
+        18 => '师傅服务问题导致客户差评',
+        19 => '师傅向客户诋毁家具质量',
+        20 => '师傅服务完成后，没有让客户填写服务签收单',
+        21 => '师傅未及时更新订单服务进度',
+        22 => '需要喵师傅核销订单，师傅未进行核销',
+    )
+);
+
+//报价订单首页，商家端订单状态
+$config['baojia_merchant_order_status'] = array(
+    1 => '待师傅报价',
+    2 => '待雇佣师傅',
+    3 => '待托管费用',
+    //4 => '已支付预付款',
+    4 => '师傅服务中',
+    5 => '师傅服务中',
+    6 => '师傅完成服务',
+    7 => '验收交易成功',
+);
+
+//下单后截止报价时间，默认48小时
+$config['baojia_deadline'] = 48*3600;
+
+//师傅无操作多长时间后，系统自动退款，默认7天
+$config['auto_refund_time'] = 7*24*3600;
+
+//商家无评论多长时间之后，系统自动评价，默认15天
+$config['auto_evaluate_time'] = 15*24*3600;
+
+//师傅服务完成之后，商家无操作多久之后，自动放款
+$config['auto_confirm_time'] = 5*24*3600;
+
+//订单发起支付，多久未支付，就关闭订单
+$config['auto_close_order'] = 3*24*3600;
+
+//支付方式
+$config['pay_type'] = array(
+    1 => '钱包付款',
+    2 => '在线付款',  #never use
+    3 => '微信付款',
+    4 => '支付宝付款',
+    5 => '银联付款',
+);
+
+//redis配置
+$config['lb_redis'] = array(
+    'ip' => '127.0.0.1',
+    'port' => '6379',
+    'password' => ''
+);
+
+//weixin
+$config['corpid'] = 'wx4151e8d2b426ba03';
+$config['corpsecret'] = 'andeuuNoFXXcnCZiICoPnb3zvyhXUHn67nd_hl7mBxoLIN0lBE8ADM3RCnxsiOYd';
+$config['agentid'] = 12;
+
+//七牛
+$config['qiniu'] = array(
+    'access_key' => 'DgPyfeeI97Y48b2BRYK1NyQ74e2PgBizlEQbTNR4',
+    'secret_key' => 'aks6WQKgYH2ivpvqlG_su1DDMrj6KYZEqKdZnUej',
+    'upload_url' => 'http://upload-z2.qiniu.com',  #华南
+    'source_url' => 'http://on7uwttp2.bkt.clouddn.com/'
+);
+
 // ajax响应字段，用在ajax_response函数
 $config['ajax_response_field']['status'] = 'status';  // 状态字段
 $config['ajax_response_field']['error']  = 'error';   // 错误消息字段
 $config['ajax_response_field']['data']   = 'data';    // 返回数据体字段
 
-//manager_grade
-$config['manager_grade'] = array('0'=>'客服', '1'=>'管理员');
-
-//pro_state
-$config['pro_state'] = array('1'=>'待接受', '2'=>'执行中', '3'=>'已拒绝', '4'=>'已完成', '5'=>'已撤回');
-
-//pay_state
-$config['pay_state'] = array('1'=>'未结算', '2'=>'已结算');
-
-//master_state
-$config['ma_state'] = array('1'=>'正常', '2'=>'停单');
-
-//master servicetype
-$config['ma_servicetype'] = array('1'=>'配送安装','2'=>'上门安装','3'=>'上门维修','4'=>'配送上门');
-
-//order servicetype
-$config['o_servicetype'] = array('1'=>'配送安装','2'=>'上门安装','3'=>'上门维修','4'=>'配送上门');
-
-//elevator
-$config['elevator'] = array('1'=>'电梯','2'=>'步梯');
-
-//list num
-$config['num_per_page'] = 100;
-
-//weixin 
-$config['corpid'] = 'wx4151e8d2b426ba03';
-$config['corpsecret'] = 'andeuuNoFXXcnCZiICoPnb3zvyhXUHn67nd_hl7mBxoLIN0lBE8ADM3RCnxsiOYd';
-$config['agentid'] = 12;
-
-//------------------admin和master的华丽分割线-----------------------
-//cookie salt
-$config['salt'] = 'lehelp_2016';
-
-//price per floor
-$config['floor_price'] = 10;
-
-//paging
-$config['mobile_paging'] = 5;
-
-//trace
-$config['trace'] = array('1'=>'货物已到，标记物流通知时间为：',
-						 '2'=>'。物流电话：',
-						 '3'=>'预约客户：今天安排。',
-						 '4'=>'预约客户：已预约其他明确时间为：',
-						 '5'=>'预约客户：客户无法给出明确时间，等客户通知。',
-						 '6'=>'改期原因：客户原因。',
-						 '7'=>'改期原因：师傅本人原因。',
-						 '8'=>'改期原因：',
-						 '9'=>'到达提货点。',
-						 '10'=>'货物外包装有明显破损，能维修，维修费用为：',
-						 '11'=>'货物外包装有明显破损，不能维修',
-						 '12'=>'货物丢失/少件。',
-						 '13'=>'货物有明显浸泡痕迹',
-						 '14'=>'产生额外垫付费用，具体为：',
-						 '15'=>array('运费','中转费','落地费/卸装费','仓储费','超出配送距离运费'),
-						 '16'=>'搬楼费：',
-						 '17'=>'费用：',
-						 '18'=>'货物破损，能维修，维修费用为：',
-						 '19'=>'货物破损，不能维修。',
-						 '20'=>'增加破损处数量：',
-						 '21'=>'处。维修费用：',
-						 '22'=>'完成服务。'
-						);
