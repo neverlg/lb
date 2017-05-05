@@ -32,8 +32,8 @@ class Task extends CI_Controller {
 				return false;
 			}
 			//accesstoken 7200s
-			$accesstoken = $token_arr['access_token'];
-			Lb_redis::setex('qiye_token', $accesstoken, 5000);
+			$access_token = $token_arr['access_token'];
+			Lb_redis::set('qiye_token', $access_token, 5000);
 		}
 
 		$result = $this->master_model->get_suitable_userid($area_id, $service_type);
@@ -45,14 +45,18 @@ class Task extends CI_Controller {
 			          "msgtype"=>"text",
 			          // 12 还是 60 ？
 			          "agentid"=>12,
-			          "text"=>array("content"=>'【乐帮到家】您有新的订单，请尽快登录后台报价吧！'),
+			          "text"=>array("content"=>'【乐帮到家】您所在区域有新订单，请尽快去报价！'),
 			          "safe"=>0
 			          );      
 			$data = json_encode($data, JSON_UNESCAPED_UNICODE);      
-			$post_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=".$accesstoken;
+			$post_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=".$access_token;
 			$result = http_post_request($post_url, $data);
 			$ret = json_decode($result,true);
 			//日志 ？
+			if(empty($ret) || $ret['errcode']!=0){
+				$str = var_export($ret, true);
+				log_message('error', '【推送师傅消息】order_id='.$order_id.", username=".$user['weixin_userid']."\r\n返回值为：".$str);
+			}
 		}
 		exit;
 	}
