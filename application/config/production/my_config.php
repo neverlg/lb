@@ -212,7 +212,7 @@ $config['pay_type'] = array(
 $config['lb_redis'] = array(
     'ip' => '127.0.0.1',
     'port' => '6379',
-    'password' => ''
+    'password' => 'lrTWm82u'
 );
 
 //weixin
