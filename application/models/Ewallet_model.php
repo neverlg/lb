@@ -16,7 +16,7 @@ class Ewallet_model extends MY_Model {
 		return $result['me_money'];
 	}
 
-	public function get_trade_total($me_id){
+	public function get_trade_total($me_id, $start_time, $end_time){
 		$where = array(
 			'merchant_id' => $me_id,
 			'status' => 1
@@ -238,13 +238,13 @@ class Ewallet_model extends MY_Model {
 
 		$this->db->trans_begin();
 		$this->db->query($sql1);
-		//此处需要用调用后台api，同步系统账单
-		//*************************************
+
 		if(!empty($me_balance)){
 			$this->db->query($sql2);
 		}
 		$this->db->query($sql3);
 		$this->db->query($sql4);
+		$this->db->query("UPDATE orders SET pay_type=1 WHERE id=$order_id");
 		if(!empty($coupon_id)){
 			$this->db->query("UPDATE coupon_grantlist SET cg_status=1, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
 		}
@@ -307,6 +307,7 @@ class Ewallet_model extends MY_Model {
 		//是否有余额支付参与
 		$ret = $this->db->query("SELECT id, amount FROM merchant_trade_log WHERE merchant_id=$me_id AND order_number_list='{$order_list}' AND source=1")->row_array();
 		$merchant_set = '';
+		$balance_pay_id = 0;
 		if(!empty($ret)){
 			$balance_pay = $ret['amount'];
 			$balance_pay_id = $ret['id'];
@@ -320,7 +321,6 @@ class Ewallet_model extends MY_Model {
 				$final_balance = $cur_balance - $balance_pay;
 				$this->db->query("UPDATE merchant_trade_log SET status=1, update_time=$time, balance=$final_balance WHERE id=$balance_pay_id");
 				$merchant_set =" me_money=$final_balance, ";
-				//请求后台接口？？？？？？？？？？？？
 			}
 		}
 		$change_pay = $balance_pay+$trade_arr['amount'];
@@ -329,6 +329,9 @@ class Ewallet_model extends MY_Model {
 		$this->db->query("UPDATE orders SET pay_type=4 WHERE id IN ($order_list)");
 		$this->db->query("UPDATE orders_status SET merchant_status=4, add_time=$time WHERE order_id in ($order_list)");
 		$this->db->query("UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id");
+		if(!empty($coupon_id)){
+			$this->db->query("UPDATE coupon_grantlist SET cg_status=1 WHERE cg_id=$coupon_id");
+		}
 
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
@@ -336,7 +339,8 @@ class Ewallet_model extends MY_Model {
     		$this->db->trans_commit();
     		$final_result = true;
 		}
-		return $final_result;
+		//如果事务执行成功，有余额，就返回余额id，否则，trade_id
+		return $final_result ? (!empty($balance_pay_id) ? $balance_pay_id : $trade_id) : false;
 	}
 
 

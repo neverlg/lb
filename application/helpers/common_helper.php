@@ -276,7 +276,7 @@ if ( ! function_exists('my_intval'))
 if ( ! function_exists('http_post_request'))
 {
 	//post请求
-	function http_post_request($uri, $data){
+	function http_post_request($uri, $data=array()){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $uri);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -460,6 +460,53 @@ if(!function_exists('get_province')){
 		$result = $CI->province_model->get_all_items();
 		$result = json_encode($result);
 		Lb_redis::set('lg_province', $result, 7200);
+		return $result;
+	}
+}
+
+
+if(!function_exists('create_master_level_icon')){
+	//师傅积分对应的图标
+	//生成师傅积分对应的等级图标
+	function create_master_level_icon($points){
+		$icons = array(
+			0 => '<img width="25px" src="'.asset('images/bj2.png').'" />',
+			1 => '<img width="25px" src="'.asset('images/bj4.png').'" />',
+			2 => '<img width="25px" src="'.asset('images/bj5.png').'" />'
+			);
+		$result = '- -';
+		if($points>0 && $points<6){
+			$result = $icons[0];
+		}else if($points< 21){
+			$result = str_repeat($icons[0], 2);
+		}else if($points< 46){
+			$result = str_repeat($icons[0], 3);
+		}else if($points< 76){
+			$result = str_repeat($icons[0], 4);
+		}else if($points < 126){
+			$result = str_repeat($icons[0], 5);
+		}else if($points < 251){
+			$result = $icons[1];
+		}else if($points < 501){
+			$result = str_repeat($icons[1], 2);
+		}else if($points < 1001){
+			$result = str_repeat($icons[1], 3);
+		}else if($points < 2501){
+			$result = str_repeat($icons[1], 4);
+		}else if($points < 5001){
+			$result = str_repeat($icons[1], 5);
+		}else if($points < 10001){
+			$result = $icons[2];
+		}else if($points < 25001){
+			$result = str_repeat($icons[2], 2);
+		}else if($points < 50001){
+			$result = str_repeat($icons[2], 3);
+		}else if($points < 100001){
+			$result = str_repeat($icons[2], 4);
+		}else{
+			$result = str_repeat($icons[2], 5);
+		}
+		
 		return $result;
 	}
 }

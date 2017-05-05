@@ -58,25 +58,16 @@ class Evaluate_model extends MY_Model {
 
 		$this->db->trans_begin();
 		$this->db->query($insert_sql);
+		$evaluate_id = $this->db->insert_id();
 		$this->db->query($update_status_sql);
 		$this->db->query($update_num_sql);
-		//好评积分+1，差评-1
-		if($score != 2){
-			$ret = $this->db->query("SELECT master_id FROM orders WHERE id=$order_id");
-			$master_id = $ret['master_id'];
-		}
-		if($score == 1){
-			$this->db->query("UPDATE master_statistic SET points=points+1 WHERE master_id=$master_id");
-		}else if($score==3){
-			$this->db->query("UPDATE master_statistic SET points=points-1 WHERE master_id=$master_id");
-		}
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
 		}else{
     		$this->db->trans_commit();
     		$final_result = true;
 		}
-		return $final_result;
+		return $final_result ? $evaluate_id : false;
 	}
 
 	public function is_record_exist($order_id){

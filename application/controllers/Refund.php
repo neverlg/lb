@@ -110,6 +110,14 @@ class Refund extends MY_Controller {
 			$number = Util::getRefundNumber();
 			$result = $this->refund_model->add_record($this->me_id, $order_id, $number, $post);
 			if($result){
+				$this->load->library('admin_server');
+				$ret_arr = $this->admin_server->merchant_refund_call($result);
+				//如果失败，记录日志
+				if(empty($ret_arr) || $ret_arr['code']!=200){
+					$str = var_export($ret_arr, true);
+					log_message('error', '【商家退款通知api失败】refund_id='.$result."\r\n返回值为：".$str);
+				}
+
 				ajax_response(0, 'success');
 			}	
 		}
@@ -176,6 +184,16 @@ class Refund extends MY_Controller {
 
 			$result = $this->refund_model->add_arbitrate($this->me_id, $order_id, $post);
 			if($result){
+				//查询refund_id，即仲裁id
+				$refund_id = $this->refund_model->get_refund_id($order_id);
+				$this->load->library('admin_server');
+				$ret_arr = $this->admin_server->merchant_arbitrate_call($refund_id);
+				//如果失败，记录日志
+				if(empty($ret_arr) || $ret_arr['code']!=200){
+					$str = var_export($ret_arr, true);
+					log_message('error', '【发起仲裁通知api失败】arbitrate_id='.$refund_id."\r\n返回值为：".$str);
+				}
+
 				ajax_response(0, 'success');
 			}
 		}

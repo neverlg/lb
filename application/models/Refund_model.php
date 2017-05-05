@@ -79,6 +79,7 @@ class Refund_model extends MY_Model {
 		$this->db->trans_begin();
 		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method,refund_result_type=1";
 		$this->db->query($insert_sql);
+		$refund_id = $this->db->insert_id();
 		$this->db->query($update_status_sql);
 		$this->db->query($update_num_sql);
 		if ($this->db->trans_status() === FALSE){
@@ -87,7 +88,7 @@ class Refund_model extends MY_Model {
     		$this->db->trans_commit();
     		$final_result = true;
 		}
-		return $final_result;
+		return $final_result ? $refund_id : false;
 	}
 
 	public function get_detail($order_id){
@@ -178,5 +179,13 @@ class Refund_model extends MY_Model {
     		$final_result = true;
 		}
 		return $final_result;
+	}
+
+	public function get_refund_id($order_id){
+		$where = array(
+			'order_id' => $order_id
+			);
+		$result = $this->db->select('id')->from('orders_refund')->where($where)->get()->row_array();
+		return $result['id'];
 	}
 }

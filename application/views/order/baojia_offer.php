@@ -77,7 +77,7 @@
 
         <?php $hired_flag=0;foreach($master['base'] as $i => $val){ ?>
         <div class="ybj">
-            <div class="ybj-1 col-md-4">
+            <div class="ybj-1 col-md-4" rel="<?=$val['id']?>" style="cursor:pointer;">
                 <div class="col-md-4 ybj-2">
                     <img src="<?=$val['head_img']?>" />
                 </div>
@@ -188,6 +188,11 @@
 
     $(".close-pop-re, .cancel-pop-re").click(function(){
         $rehiredBox.hide();
+    });
+
+    $(".ybj-1").click(function(){
+        var master_id = $(this).attr('rel');
+        window.location.href = "<?=site_url('order/master/introduce')?>" + "/" + master_id;
     });
 
     function timer(intDiff, type=0){

@@ -93,6 +93,7 @@ class Complain_model extends MY_Model {
 		
 		$this->db->trans_begin();
 		$this->db->query($sql1);
+		$complain_id = $this->db->insert_id();
 		$this->db->query($sql2);
 		$result = $this->db->query($sql3)->row_array();
 		$master_id = $result['master_id'];
@@ -103,7 +104,7 @@ class Complain_model extends MY_Model {
     		$this->db->trans_commit();
     		$final_result = true;
 		}
-		return $final_result;
+		return $final_result ? $complain_id : false;
 	}
 
 	public function cancel_item($order_id, $me_id){

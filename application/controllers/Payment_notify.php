@@ -37,6 +37,14 @@ class Payment_notify extends CI_Controller {
 					$ret = $this->ewallet_model->update_recharge_log($amount, $balance, $recharge_award, $_POST, $trade_log);
 
 					if($ret){
+						//通知后台
+						$this->load->library('admin_server');
+						$ret_arr = $this->admin_server->merchant_charge_call($trade_log['id']);
+						//如果失败，记录日志
+						if(empty($ret_arr) || $ret_arr['code']!=200){
+							$str = var_export($ret_arr, true);
+							log_message('error', '【商家充值通知api失败】trade_id='.$trade_log['id']."\r\n返回值为：".$str);
+						}
 						exit('success');
 					}else{
 						$error = "事务执行失败";
@@ -73,6 +81,15 @@ class Payment_notify extends CI_Controller {
 						$ret = $this->ewallet_model->update_pay_log($_POST, $trade_log);
 
 						if($ret){
+							//通知后台
+							$this->load->library('admin_server');
+							$ret_arr = $this->admin_server->order_employed_call($ret);
+							//如果失败，记录日志
+							if(empty($ret_arr) || $ret_arr['code']!=200){
+								$str = var_export($ret_arr, true);
+								log_message('error', '【预付款通知api失败】trade_id='.$ret."\r\n返回值为：".$str);
+							}
+
 							exit('success');
 						}else{
 							$error = "事务执行失败";

@@ -145,6 +145,14 @@ class Order extends MY_Controller {
 		if($this->order_model->check_power($this->me_id, $order_id)){
 			$ret = $this->order_model->check_confirmed($this->me_id, $order_id);
 			if($ret){
+				//通知后台
+				$this->load->library('admin_server');
+				$ret_arr = $this->admin_server->order_success_call($order_id);
+				//如果失败，记录日志
+				if(empty($ret_arr) || $ret_arr['code']!=200){
+					$str = var_export($ret_arr, true);
+					log_message('error', '【验收放款通知api失败】order_id='.$order_id."\r\n返回值为：".$str);
+				}
 				ajax_response(0, 'success');
 			}
 		}
@@ -427,5 +435,38 @@ class Order extends MY_Controller {
 
 	}
 
+	//师傅信息展示
+	public function master($type='introduce', $master_id){
+		$data['master_id'] = $master_id = intval($master_id);
+		//获取头部统计信息
+		$this->load->model('master_model');
+		//统计信息
+		$data['statistic'] = $this->master_model->get_master_statistic($master_id);
+		//避免非法查看
+		if(empty($data['statistic'])){
+			exit;
+		}
+		if($type == 'introduce'){
+			$data['base'] = $this->master_model->get_master_info($master_id);
+			$this->load->view('order/master_introduce', $data);
+		}else{
+			$data['base'] = $this->master_model->get_master_service_info($master_id);
+			$this->load->view('order/master_service', $data);
+		}
+	}
 
+	//test_log
+	public function test_log(){
+		$order_id = 123456;
+		$arr = array('code'=>200, 'msg'=>'yayayya');
+		$str = var_export($arr, true);
+		log_message('error', '【验收放款通知api失败】order_id='.$order_id."\r\n返回值为：".$str);
+	}
+
+	//test post
+	public function test_post(){
+		$this->load->library('admin_server');
+		$ret = $this->admin_server->order_employed_call(9999);
+		var_dump($ret);
+	}
 }

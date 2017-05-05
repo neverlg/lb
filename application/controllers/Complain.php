@@ -78,6 +78,13 @@ class Complain extends MY_Controller {
 			$number = Util::getComplainNumber();
 			$result = $this->complain_model->add_record($this->me_id, $post, $order_id, $number);
 			if($result){
+				$this->load->library('admin_server');
+				$ret_arr = $this->admin_server->merchant_complain_call($result);
+				//如果失败，记录日志
+				if(empty($ret_arr) || $ret_arr['code']!=200){
+					$str = var_export($ret_arr, true);
+					log_message('error', '【投诉师傅通知api失败】complain_id='.$result."\r\n返回值为：".$str);
+				}
 				ajax_response(0, 'success');
 			}
 		}

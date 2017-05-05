@@ -106,7 +106,7 @@ class Order_model extends MY_Model {
 			$where .= " AND a.order_number='{$order_sn}' ";
 		}
 		if(!empty($kehu)){
-			$where .= " AND (c.customer_name='{$kehu}' OR c.customer_phone='{$kehu}' ";
+			$where .= " AND (c.customer_name='{$kehu}' OR c.customer_phone='{$kehu}') ";
 		}
 		if(!empty($logistics_no)){
 			$where .= " AND c.logistics_ticketnumber='{$logistics_no}'";
@@ -147,7 +147,7 @@ class Order_model extends MY_Model {
 			$where .= " AND a.order_number='{$order_sn}' ";
 		}
 		if(!empty($kehu)){
-			$where .= " AND (c.customer_name='{$kehu}' OR c.customer_phone='{$kehu}' ";
+			$where .= " AND (c.customer_name='{$kehu}' OR c.customer_phone='{$kehu}') ";
 		}
 		if(!empty($logistics_no)){
 			$where .= " AND c.logistics_ticketnumber='{$logistics_no}'";
@@ -319,7 +319,7 @@ class Order_model extends MY_Model {
 		$statistic = array_column($statistic, null, 'master_id');
 		foreach ($statistic as $key => $val) {
 			$statistic[$key]['good_rat'] = round($val['evaluate_praise_count']/$val['evaluate_count'] ,2).'%';
-			$statistic[$key]['__score_icon'] = $this->create_master_level_icon($val['points']);
+			$statistic[$key]['__score_icon'] = create_master_level_icon($val['points']);
 		}
 
 		//保证金
@@ -333,49 +333,6 @@ class Order_model extends MY_Model {
 			'fund' => $fund
 			);
 
-		return $result;
-	}
-
-	//生成师傅积分对应的等级图标
-	private function create_master_level_icon($points){
-		$icons = array(
-			0 => '<img width="25px" src="'.asset('images/bj2.png').'" />',
-			1 => '<img width="25px" src="'.asset('images/bj4.png').'" />',
-			2 => '<img width="25px" src="'.asset('images/bj5.png').'" />'
-			);
-		$result = '- -';
-		if($points>0 && $points<6){
-			$result = $icons[0];
-		}else if($points< 21){
-			$result = str_repeat($icons[0], 2);
-		}else if($points< 46){
-			$result = str_repeat($icons[0], 3);
-		}else if($points< 76){
-			$result = str_repeat($icons[0], 4);
-		}else if($points < 126){
-			$result = str_repeat($icons[0], 5);
-		}else if($points < 251){
-			$result = $icons[1];
-		}else if($points < 501){
-			$result = str_repeat($icons[1], 2);
-		}else if($points < 1001){
-			$result = str_repeat($icons[1], 3);
-		}else if($points < 2501){
-			$result = str_repeat($icons[1], 4);
-		}else if($points < 5001){
-			$result = str_repeat($icons[1], 5);
-		}else if($points < 10001){
-			$result = $icons[2];
-		}else if($points < 25001){
-			$result = str_repeat($icons[2], 2);
-		}else if($points < 50001){
-			$result = str_repeat($icons[2], 3);
-		}else if($points < 100001){
-			$result = str_repeat($icons[2], 4);
-		}else{
-			$result = str_repeat($icons[2], 5);
-		}
-		
 		return $result;
 	}
 
@@ -516,10 +473,6 @@ class Order_model extends MY_Model {
 		$this->db->trans_begin();
 		$this->db->query("UPDATE orders_status SET merchant_status=7, upd_time=$time WHERE order_id=$order_id");
 		$this->db->query("UPDATE merchant_order_num SET wait_accept=wait_accept-1, wait_evaluate=wait_evaluate+1 WHERE me_id=$me_id");
-		//此处更新师傅接单总数
-		$ret = $this->db->query("SELECT master_id FROM orders WHERE id=$order_id")->row_array();
-		$master_id = $ret['master_id'];
-		$this->db->query("UPDATE master_statistic SET order_count=order_count+1 WHERE master_id=$master_id");
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
 		}else{

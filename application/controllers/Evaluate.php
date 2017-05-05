@@ -61,6 +61,14 @@ class Evaluate extends MY_Controller {
 			if(!$this->evaluate_model->is_record_exist($order_id)){
 				$result = $this->evaluate_model->add_record($this->me_id, $post, $order_id);
 				if($result){
+					$this->load->library('admin_server');
+					$ret_arr = $this->admin_server->order_evaluate_call($result);
+					//如果失败，记录日志
+					if(empty($ret_arr) || $ret_arr['code']!=200){
+						$str = var_export($ret_arr, true);
+						log_message('error', '【评价师傅通知api失败】evaluate_id='.$result."\r\n返回值为：".$str);
+					}
+
 					ajax_response(0, 'success');
 				}
 			}else{
