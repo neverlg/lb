@@ -455,18 +455,18 @@ class Order extends MY_Controller {
 		}
 	}
 
-	//test_log
-	public function test_log(){
-		$order_id = 123456;
-		$arr = array('code'=>200, 'msg'=>'yayayya');
-		$str = var_export($arr, true);
-		log_message('error', '【验收放款通知api失败】order_id='.$order_id."\r\n返回值为：".$str);
-	}
+	//test send
+	/*
+	public function test_push(){
+		$arr = array(
+					'order_id' => 1,
+					'area_id' => 1,
+					'service_type' => 1
+					);
+		//$cmd = 'php index.php task push_master "'. urlencode(serialize($arr)) .'" > /dev/null &';
+		$cmd = '/data/service/php53/bin/php index.php task push_master "'. urlencode(serialize($arr)) .'" > /dev/null &';
+		echo exec($cmd);
+	}*/
 
-	//test post
-	public function test_post(){
-		$this->load->library('admin_server');
-		$ret = $this->admin_server->order_employed_call(9999);
-		var_dump($ret);
-	}
+
 }
