@@ -15,11 +15,14 @@ class Article_model extends MY_Model {
 		if(!empty($caterogy)){
 			$where['cat_id'] = $caterogy;
 		}
-		$this->db->select('id, title')->where($where)->order_by('id','DESC');
+		$this->db->select('id, title, add_time')->where($where)->order_by('id','DESC');
 		if(!empty($limit)){
 			$this->db->limit($limit);
 		}
 		$result = $this->db->get('article')->result_array();
+        foreach ($result as $key => $val) {
+            $result[$key]['create_time'] = date('Y-m-d H:i', $val['add_time']);
+        }
 		return $result;
 	}
 
@@ -29,7 +32,7 @@ class Article_model extends MY_Model {
 			'status' => 0
 			);
 		$result = $this->db->select('title, content, add_time')->where($where)->get('article')->row_array();
-		$result['add_time'] = date('Y-m-d H:i', $result['add_time']);
+		$result['create_time'] = date('Y-m-d H:i', $result['add_time']);
 		$result['__content'] = $result['content'];
 		unset($result['content']);
 		return $result;

@@ -34,7 +34,7 @@
     <div class="bzzx-r-1">
       <a href="<?php echo site_url('news/detail/'.$category.'-'.$val['id']); ?>">
         <img src="<?=asset("images/64240.png")?>" /><?=$val['title']?>
-        <span class="zx-sj"><?=date('Y-m-d H:i', $val['add_time'])?></span>
+        <span class="zx-sj"><?=$val['create_time']?></span>
       </a>
     </div>
     <?php } ?>

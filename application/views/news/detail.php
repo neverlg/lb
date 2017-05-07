@@ -35,7 +35,7 @@
             
       <div class="wdxx-2" style="text-align:center;">
         <?=$detail['title']?><br/>
-        <font class="wdxx-222" >来源：乐帮到家&nbsp;&nbsp;&nbsp;<?=date('Y-m-d H:i', $val['add_time'])?></font>
+        <font class="wdxx-222" >来源：乐帮到家&nbsp;&nbsp;&nbsp;<?=$val['create_time']?></font>
       </div>
       <div class="wdxx-2">
         <?=$detail['__content']?>
