@@ -430,7 +430,7 @@ class Order_model extends MY_Model {
 			}
 		}
 		//生成orders记录
-		$this->db->query("INSERT INTO orders SET order_number='{$order_no}',merchant_id={$me_id},service_category=1,service_type={$type},add_time={$time},order_type=1");
+		$this->db->query("INSERT INTO orders SET order_number='{$order_no}',merchant_id={$me_id},service_category=1,service_type={$type},add_time={$time},order_type=1,push_time={$time}");
 		$order_id = $this->db->insert_id();
 
 		//货品加入orders_goods表
