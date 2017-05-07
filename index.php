@@ -81,7 +81,7 @@ switch (ENVIRONMENT)
 		{
 			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
 		}
-        error_reporting(-1);
+        error_reporting(E_ALL & ~E_NOTICE);
         ini_set('display_errors', 1);
 	break;
 
