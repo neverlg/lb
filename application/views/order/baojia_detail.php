@@ -42,7 +42,7 @@
             <?php }else if($detail['order']['except_status']>1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#" style="background-color:gray;">退款成功 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>" style="background-color:gray;">退款成功 ></a>
                 </span>
             </span>
             <?php }else{ ?>

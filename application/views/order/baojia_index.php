@@ -6,7 +6,7 @@
 <div class="nr-1">
 	<div class="container">
 		<a href="<?=site_url('main/index')?>">首页</a>》
-		<a href="javascript:void(0);">后台管理中心</a>》
+		<a href="<?=site_url('order/index')?>">后台管理中心</a>》
 		<a href="javascript:void(0);">报价订单管理</a>》
 	</div>
 </div>
@@ -27,7 +27,7 @@
         			<a <?=($type==3)?"class='on'":""?> href="<?=site_url('order/baojia_index/3')?>"> 待托管费用<span class=" htnr-b-2-1 <?php if($type==3){echo 'on';} ?>" >(<?=$top_num['wait_pay']?>)</span></a>
         			<a <?=($type==5)?"class='on'":""?> href="<?=site_url('order/baojia_index/5')?>"> 师傅服务中<span class=" htnr-b-2-1 <?php if($type==5){echo 'on';} ?>" >(<?=$top_num['under_service']?>)</span></a>
         			<a <?=($type==6)?"class='on'":""?> href="<?=site_url('order/baojia_index/6')?>"> 待确定验收<span class=" htnr-b-2-1 <?php if($type==6){echo 'on';} ?>" >(<?=$top_num['wait_accept']?>)</span></a>
-        			<a <?=($type==7)?"class='on'":""?> href="<?=site_url('order/baojia_index/7')?>"> 待评价<span class=" htnr-b-2-1 <?php if($type==7){echo 'on';} ?>" >(<?=$top_num['wait_evaluate']?>)</span></a>
+        			<a <?=($type==7)?"class='on'":""?> href="<?=site_url('order/baojia_index/11')?>"> 待评价<span class=" htnr-b-2-1 <?php if($type==7){echo 'on';} ?>" >(<?=$top_num['wait_evaluate']?>)</span></a>
         		</div>
         		<div class="htnr-b-3">
         			<form class="form-search" action="<?=site_url('order/baojia_index/'.$type)?>" method="post">
@@ -47,8 +47,10 @@
         				<option value="5" <?=($type==5)?"selected='selected'":""?>>师傅服务中</option>
         				<option value="6" <?=($type==6)?"selected='selected'":""?>>师傅完成服务</option>
         				<option value="7" <?=($type==7)?"selected='selected'":""?>>验收交易成功</option>
+                        <option value="11" <?=($type==11)?"selected='selected'":""?>>待评价</option>
         				<option value="8" <?=($type==8)?"selected='selected'":""?>>退款中</option>
         				<option value="9" <?=($type==9)?"selected='selected'":""?>>仲裁中</option>
+                        <option value="12" <?=($type==12)?"selected='selected'":""?>>投诉处理中</option>
         				<option value="10" <?=($type==10)?"selected='selected'":""?>>订单关闭</option>
         			</select>
         			<button type="submit">搜索</button>
@@ -61,7 +63,13 @@
         			<div class="htnr-5-1">
         				订单编号:<font color=" #00a2ea"><?=$val['order_number']?></font>&nbsp;&nbsp;&nbsp;&nbsp;下单时间:<?=$val['add_time']?>&nbsp;&nbsp;&nbsp;&nbsp;
         				报价人数：<font color=" #00a2ea"><?=$val['master_num']?>人</font>
-        				<a href="#"><img src="<?=asset("images/xg3.png")?>" /></a>
+        				<a href="#" rel="<?=$val['id']?>" mark-data="<?=$val['merchant_remark']?>" class="remark">
+                            <?php if(empty($val['merchant_remark'])){ ?>
+                            <img src="<?=asset("images/xg3.png")?>" />
+                            <?php }else{ ?>
+                            <img src="<?=asset("images/xg5.png")?>" />
+                            <?php } ?>
+                        </a>
         			</div>
             		<div class="htnr-b-6">
             			<table width="845" border="1">
@@ -84,18 +92,18 @@
 
     							<?php if($val['refund_status']==1){ ?>
     							<td width="150" class="tab-b-5555">
-    								<a href="#">申请退款中 ></a>
+    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">申请退款中 ></a>
     							</td>
     							<?php }else if($val['arbitrate_status']==1){ ?>
     							<td width="150" class="tab-b-5555">
-    								<a href="#">申请仲裁中 ></a>
+    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">申请仲裁中 ></a>
     							</td>
     							<?php }else if($val['merchant_status']==1){ ?>
     							<td width="150">待报价</td>
     							<?php }else if($val['merchant_status']==2){ ?>
     							<td width="150" class="tab-b-4">
     								待雇佣<br/><br/>
-    								<a href="#">雇佣师傅 ></a>
+    								<a href="<?=site_url('order/baojia_offer/'.$val['id'])?>">雇佣师傅 ></a>
     							</td>
     							<?php }else if($val['merchant_status']==3){ ?>
     							<td width="150" class="tab-b-5">
@@ -107,16 +115,16 @@
     							<?php }else if($val['merchant_status']==6){ ?>
     							<td width="150" class="tab-b-55">
     								师傅完成服务<br/><br/>
-    								<a href="#">确定验收 ></a>
+    								<a href="<?=site_url('order/baojia_detail/'.$val['id'])?>">确定验收 ></a>
     							</td>
     							<?php }else if($val['merchant_status']==7){ ?>
     							<td width="150" class="tab-b-555">
     								验收交易成功<br/><br/>
     								<?php if($val['evaluate_status']==0){ ?>
-    								<a href="#">评价师傅 ></a>
+    								<a href="<?=site_url('evaluate/add/'.$val['id'])?>">评价师傅 ></a>
     								<?php }else{ ?>
     									<?php if($val['except_status']==1){ ?>
-    									<a href="#">退款成功 ></a><br/><br/>
+    									<a href="<?=site_url('refund/detail/'.$val['id'])?>">退款成功 ></a><br/><br/>
     									<?php } ?>
     									<font color="#999999">已评价</font>
     								<?php } ?>
@@ -126,7 +134,7 @@
     							<?php }else if(in_array($val['except_status'], array(2,3))){ ?>
     							<td width="150" class="tab-b-55555">
     								交易关闭<br/><br/>
-    								<a href="#">退款成功 ></a>
+    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">退款成功 ></a>
     							</td>
     							<?php } ?>
 
@@ -150,7 +158,7 @@
     								<?php }else if(in_array($val['merchant_status'], array(4,5,6))){ ?>
     								<br/>
     								<span class="tab-b-33">
-    									<a href="#">申请退款</a>
+    									<a href="<?=site_url('refund/add/'.$val['id'])?>">申请退款</a>
     								</span>
     								<?php } ?>
     							</td>
@@ -183,9 +191,27 @@
     </div>
 </div>
 
+<!--merchant remark-->
+<div class="remark-pop" style="display:none;">
+    <div class="lb_mask"></div>
+    <div class="tt-2-mark">
+        <form id="mark-fm" action="<?=site_url('order/add_baojia_mark')?>" method="post">
+        <input type="hidden" name="order_id" />
+        <div class="tt-2-1">订单标记 <img class="close-remark" src="<?=asset("images/02418.png")?>" /></div>
+        <div class="tt-2-22"><textarea id="mark-content" name="mark" cols="30" rows="4"></textarea></div>
+        <div class="tt-2-4">标记的内容自己可见</div>
+        <div class="tt-2-3">
+            <a class="submit-mark" href="#">确定</a>
+            <a class="on close-remark" href="#">取消</a>
+        </div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript">
     var $cancelUrl;
     var $cancelOrderBox = $(".cancel-order-pop");
+    var $merchant_mark = $(".remark-pop");
     //cancel order
     $(".cancel-order").click(function(){
         $cancelUrl = $(this).attr('rel');
@@ -208,6 +234,34 @@
 
     $(".cancel-order-cancel, .close-pop").click(function(){
         $cancelOrderBox.hide();
+    });
+
+    //merchant mark
+    $(".remark").click(function(){
+        var oid = $(this).attr('rel');
+        var remark = $(this).attr('mark-data');
+        $("input[name='order_id']").val(oid);
+        $("#mark-content").val(remark);
+        $merchant_mark.show();
+    });
+
+    $(".submit-mark").click(function(){
+        $.ajax({
+            type:'post',
+            url:$("#mark-fm").attr('action'),
+            data:$("#mark-fm").serialize(),
+            success:function(msg){
+                if(msg.status == 0){
+                    window.location.reload();
+                }else{
+                    alert(msg.error);
+                }
+            }
+        });
+    });
+
+    $(".close-remark").click(function(){
+        $merchant_mark.hide();
     });
 
 	//pagination post

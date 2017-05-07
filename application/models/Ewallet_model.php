@@ -233,7 +233,7 @@ class Ewallet_model extends MY_Model {
 		$sql1 = "INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$use_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=1, add_time=$time, source=1, balance=$cur_balance, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'";
 		//更新商家总下单数目，总积分，总金额
 		$sql2 = "UPDATE merchant SET me_money=$cur_balance, me_update_time=$time, me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$use_balance WHERE me_id=$me_id";
-		$sql3 = "UPDATE orders_status SET merchant_status=4, add_time=$time WHERE order_id=$order_id";
+		$sql3 = "UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id=$order_id";
 		$sql4 = "UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id";
 
 		$this->db->trans_begin();
@@ -245,6 +245,9 @@ class Ewallet_model extends MY_Model {
 		$this->db->query($sql3);
 		$this->db->query($sql4);
 		$this->db->query("UPDATE orders SET pay_type=1 WHERE id=$order_id");
+		//将雇佣师傅状态改为雇佣成功, 其他改为未被雇佣
+		$this->db->query("UPDATE orders_offer SET status=2, upd_time=$time WHERE order_id=$order_id AND status=1");
+		$this->db->query("UPDATE orders_offer SET status=3, upd_time=$time WHERE order_id=$order_id AND status=0");
 		if(!empty($coupon_id)){
 			$this->db->query("UPDATE coupon_grantlist SET cg_status=1, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
 		}
@@ -327,8 +330,11 @@ class Ewallet_model extends MY_Model {
 		$this->db->query("UPDATE merchant SET {$merchant_set} me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$change_pay WHERE me_id=$me_id");
 		$this->db->query($sql1);
 		$this->db->query("UPDATE orders SET pay_type=4 WHERE id IN ($order_list)");
-		$this->db->query("UPDATE orders_status SET merchant_status=4, add_time=$time WHERE order_id in ($order_list)");
+		$this->db->query("UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id in ($order_list)");
 		$this->db->query("UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id");
+		//将雇佣师傅状态改为雇佣成功, 其他改为未被雇佣
+		$this->db->query("UPDATE orders_offer SET status=2, upd_time=$time WHERE order_id in ($order_list) AND status=1");
+		$this->db->query("UPDATE orders_offer SET status=3, upd_time=$time WHERE order_id in ($order_list) AND status=0");
 		if(!empty($coupon_id)){
 			$this->db->query("UPDATE coupon_grantlist SET cg_status=1 WHERE cg_id=$coupon_id");
 		}

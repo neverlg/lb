@@ -9,8 +9,8 @@
 <div class="nr-1">
 	<div class="container">
 		<a href="<?=site_url('main/index')?>">首页</a>》
-		<a href="javascript:void(0);">后台管理中心</a>》
-		<a href="javascript:void(0);">报价订单管理</a>》
+		<a href="<?=site_url('order/index')?>">后台管理中心</a>》
+		<a href="<?=site_url('order/baojia_index')?>">报价订单管理</a>》
         <a href="javascript:void(0);">货品仓库</a>
 	</div>
 </div>

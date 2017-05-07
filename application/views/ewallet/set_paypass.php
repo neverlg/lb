@@ -6,7 +6,7 @@
 <div class="nr-1">
 	<div class="container">
 		<a href="<?=site_url('main/index')?>">首页</a>》
-		<a href="javascript:void(0);">后台管理中心</a>》
+		<a href="<?=site_url('order/index')?>">后台管理中心</a>》
         <a href="javascript:void(0);">钱包密码</a>
 	</div>
 </div>
