@@ -7,7 +7,8 @@
 class News extends MY_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('news_model');
+//		$this->load->model('news_model');
+        $this->load->model('article_model');
 	}
 
 	//首页
