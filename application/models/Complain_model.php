@@ -40,7 +40,7 @@ class Complain_model extends MY_Model {
 		if(!empty($handle_status)){
 			$where .= " AND a.oc_handle_status=$handle_status";
 		}
-		$where = empty($where) ? '' : ' WHERE '. ltrim($where, ' AND');
+		$where = empty($where) ? '' : ltrim($where, ' AND');
 
 		$start = ($page-1)*$num_per_page;
 		$sql = "SELECT a.oc_id, a.oc_orderid, a.oc_add_time, a.oc_number, a.oc_handle_status, b.order_number, b.service_type, b.merchant_price, b.master_name FROM order_complain a LEFT JOIN orders b ON a.oc_orderid=b.id {$where} ORDER BY a.oc_id DESC LIMIT $start, $num_per_page";

@@ -20,7 +20,7 @@ class Account extends MY_Controller {
 		$data['info']['me_category'] = $category_conf[$data['info']['me_category']];
 		$qiniu_conf = config_item('qiniu');
 		$data['info']['me_headimg'] = empty($data['info']['me_headimg']) ? "" : $qiniu_conf['source_url'] . $data['info']['me_headimg'];
-		$data['info']['me_headimg'] = '';
+		//$data['info']['me_headimg'] = '';
 		$this->load->view('account/index', $data);
 	}
 

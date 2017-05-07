@@ -54,7 +54,7 @@
         				<option>订单查询</option>
                         -->
         			</select>
-        			<input class="in-1" type="text" value="请输入客户姓名/手机号码"></input>
+        			<input class="in-1" type="text" placeholder="请输入客户姓名/手机号码"></input>
         			<input class="in-2 search-jump" type="submit" value="搜索"></input>
         		</div>
         		<div class="htnr-h3">

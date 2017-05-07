@@ -64,7 +64,8 @@ class Auth_model extends MY_Model {
 			'me_add_time' => time(),
 			'me_update_time' => time(),
 			'me_add_ip' => $this->input->ip_address(),
-			'me_status' => 1
+			'me_status' => 1,
+            'me_truename' => '',
 			);
 		$this->db->insert('merchant', $merchant_info);
 		$merchant_id = $this->db->insert_id();

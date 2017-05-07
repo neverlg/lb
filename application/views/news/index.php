@@ -15,12 +15,12 @@
       管理中心首页
     </div>
     <div class="htnr-tt">
-      <div class="htnr-1-2 <?php if($category==0){echo 'on';}?>">
+      <div class="htnr-1-2 <?php if($category==5){echo 'on';}?>">
         <a href="<?=site_url('news/index')?>">公司新闻</a> 
       </div> 
     </div>
     <div class="htnr-tt">
-      <div class="htnr-1-2 <?php if($category==1){echo 'on';}?>">
+      <div class="htnr-1-2 <?php if($category==6){echo 'on';}?>">
         <a href="<?=site_url('news/index/1')?>">行业新闻</a>
       </div> 
     </div>
@@ -34,7 +34,7 @@
     <div class="bzzx-r-1">
       <a href="<?php echo site_url('news/detail/'.$category.'-'.$val['id']); ?>">
         <img src="<?=asset("images/64240.png")?>" /><?=$val['title']?>
-        <span class="zx-sj"><?=$val['create_time']?></span>
+        <span class="zx-sj"><?=date('Y-m-d H:i', $val['add_time'])?></span>
       </a>
     </div>
     <?php } ?>
