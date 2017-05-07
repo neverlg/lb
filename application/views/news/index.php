@@ -16,12 +16,12 @@
     </div>
     <div class="htnr-tt">
       <div class="htnr-1-2 <?php if($category==5){echo 'on';}?>">
-        <a href="<?=site_url('news/index')?>">公司新闻</a> 
+        <a href="<?=site_url('news/index/5')?>">公司新闻</a>
       </div> 
     </div>
     <div class="htnr-tt">
       <div class="htnr-1-2 <?php if($category==6){echo 'on';}?>">
-        <a href="<?=site_url('news/index/1')?>">行业新闻</a>
+        <a href="<?=site_url('news/index/6')?>">行业新闻</a>
       </div> 
     </div>
   </div>
