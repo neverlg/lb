@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://shangjia.lebangdaojia.com/';
-$config['base_url'] = 'http://merchant.javed.cn/';
+$config['base_url'] = 'http://shangjia.lebangdaojia.com/';
+//$config['base_url'] = 'http://merchant.javed.cn/';
 
 /*
 |--------------------------------------------------------------------------
