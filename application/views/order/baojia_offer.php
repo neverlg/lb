@@ -16,7 +16,9 @@
         <div class="ckjd-1">
             <a href="<?=site_url('order/baojia_detail/'.$order_id)?>">报价订单详情</a>
             <a class="on" href="<?=site_url('order/baojia_offer/'.$order_id)?>">师傅报价<font color="#f00">(<?=$master_num?>)</font></a>
+            <?php if($trace['merchant_status']>4){ ?>
             <a href="<?=site_url('order/baojia_trace/'.$order_id)?>">查看服务节点</a>
+            <?php } ?>
 
             <?php if($trace['refund_status']==1){ ?>
             <span class="ckjd-1-1">
@@ -85,7 +87,7 @@
                     <?=$val['real_name']?> <?=$val['phone']?><img width="25px" src="<?=asset("images/bj3.png")?>" /><br/>
                     保证金:<?=(empty($master['fund'][$i]['assure_fund'])) ? '<font color="#999">暂未缴纳</font>' : $master['fund'][$i]['assure_fund'] ?><br/>
                     信誉:<?=$master['statistic'][$i]['__score_icon']?><br/>
-                    <a href="#">承诺6项服务</a>
+                    <a>承诺6项服务</a>
                 </div>
             </div>
 
@@ -94,13 +96,13 @@
                 总评分：<span class="ybj-4-1"><?=$master['statistic'][$i]['score_sum']?>分</span><br/>
                 好评率：<span class="ybj-4-1"><?=$master['statistic'][$i]['good_rat']?></span><br/>
                 投诉记录：<span class="ybj-4-2"><?=$master['statistic'][$i]['complain_count']?>次</span><br/>
-                <a href="#">累计评价(<?=$master['statistic'][$i]['evaluate_count']?>)</a>
+                <a>累计评价(<?=$master['statistic'][$i]['evaluate_count']?>)</a>
             </div>
 
             <?php if($val['status']==0){ ?>
             <div class="ybj-5 col-md-4">
                 报价：<font color="#f00"><?=$val['price']?>元</font><br/><br/>
-                <a href="#" class="hired-master" rel="<?=$val['real_name']?>（<?=$val['phone']?>）" data="<?=$val['id']?>">雇佣他</a>
+                <a style="cursor:pointer;" class="hired-master" rel="<?=$val['real_name']?>（<?=$val['phone']?>）" data="<?=$val['id']?>">雇佣他</a>
             </div>
             <?php }else if($val['status']==1){ $hired_flag=$val['id']; ?>
             <div class="ybj-55 col-md-4">
@@ -134,7 +136,7 @@
         <div class="tt-2-1">雇佣师傅 <img class="close-pop" src="<?=asset("images/02418.png")?>" style="cursor:pointer;" /></div>
         <div class="tt-2-22">你确定雇佣<font color="#FFCC66">  </font>为你提供服务吗？</div>
         <div class="tt-2-4">提示：雇佣师傅后3天未付款将自动关闭！</div>
-        <div class="tt-2-3"><a href="#" class="hire-confirm">雇佣付款</a><a class="on cancel-pop" href="#">取消</a></div>
+        <div class="tt-2-3"><a style="cursor:pointer;"  class="hire-confirm">雇佣付款</a><a class="on cancel-pop" style="cursor:pointer;" >取消</a></div>
     </div>
 </div>
 
@@ -145,7 +147,7 @@
         <div class="tt-2-1">重新雇佣师傅 <img class="close-pop-re" src="<?=asset("images/02418.png")?>" style="cursor:pointer;" /></div>
         <div class="tt-2-22">你确定雇佣<font color="#FFCC66">  </font>为你提供服务吗？</div>
         <div class="tt-2-4">提示：雇佣师傅后3天未付款将自动关闭！</div>
-        <div class="tt-2-3"><a href="#" class="hire-confirm">雇佣付款</a><a class="on cancel-pop-re" href="#">取消</a></div>
+        <div class="tt-2-3"><a style="cursor:pointer;"  class="hire-confirm">雇佣付款</a><a class="on cancel-pop-re" style="cursor:pointer;" >取消</a></div>
     </div>
 </div>
 

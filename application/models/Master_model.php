@@ -48,7 +48,7 @@ class Master_model extends MY_Model {
 		}
 		//貌似只有家具类
 		$result['service_category'] = '家具类';
-		$result['service_area_txt'] =  empty($result['service_area_ids']) ? '' : get_name_by_areaid($result['service_area_ids']);
+		$result['service_area_txt'] =  empty($result['service_area_ids']) ? '' : $this->get_name_by_areaid($result['service_area_ids']);
 		$result['job_type'] = ($result['job_type']==1) ? '全职' : '兼职';
 		$result['member_num'] = empty($result['member_num']) ? '- -' : $result['member_num'];
 		$result['car_num'] = empty($result['car_num']) ? '- -' : $result['car_num'];
