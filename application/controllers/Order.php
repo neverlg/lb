@@ -470,17 +470,16 @@ class Order extends MY_Controller {
 	}
 
 	//test send
-	/*
 	public function test_push(){
 		$arr = array(
 					'order_id' => 1,
 					'area_id' => 1,
 					'service_type' => 1
 					);
-		//$cmd = 'php index.php task push_master "'. urlencode(serialize($arr)) .'" > /dev/null &';
-		$cmd = '/data/service/php53/bin/php index.php task push_master "'. urlencode(serialize($arr)) .'" > /dev/null &';
+		//$cmd = '/data/service/php53/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'" > /dev/null &';
+		$cmd = '/usr/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'" > /dev/null &';
 		echo exec($cmd);
-	}*/
+	}
 
 
 }
