@@ -175,7 +175,7 @@
             url:"<?=site_url('order/hire_master/'.$order_id)?>" + "/" + $masterId + "/" + $hiredFlag,
             success:function(msg){
                 if(msg.status == 0){
-                    window.location.reload();
+                    window.location.href = "<?=site_url('order/order_pay/'.$order_id)?>";
                 }else{
                     alert(msg.error);
                 }
