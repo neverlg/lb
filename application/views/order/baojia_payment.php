@@ -73,13 +73,18 @@
             }else{
                 $balance_fee = $balance;
             }
-            $("#auto-balance").html($balance_fee);
-            $("#real-fee").html($total_fee-$coupon_fee-$balance_fee);
+            $balance_fee = parseFloat($balance_fee);
+            $("#auto-balance").html($balance_fee.toFixed(2));
+            var fee = $total_fee-$coupon_fee-$balance_fee;
+            fee = parseFloat(fee);
+            $("#real-fee").html(fee.toFixed(2));
         }else{
             $(this).val(0);
             $balance_fee = 0.00;
             $("#auto-balance").html($balance_fee);
-            $("#real-fee").html($total_fee-$coupon_fee-$balance_fee);
+            var fee = $total_fee-$coupon_fee-$balance_fee;
+            fee = parseFloat(fee);
+            $("#real-fee").html(fee.toFixed(2));
         }
     });
 
@@ -91,8 +96,10 @@
         }else{
             real_fee = $total_fee-$coupon_fee-$balance_fee;
         }
-        $("#auto-coupon").html($coupon_fee);
-        $("#real-fee").html(real_fee);
+        $coupon_fee = parseFloat($coupon_fee);
+        real_fee = parseFloat(real_fee);
+        $("#auto-coupon").html($coupon_fee.toFixed(2));
+        $("#real-fee").html(real_fee.toFixed(2));
     });
 
 </script>

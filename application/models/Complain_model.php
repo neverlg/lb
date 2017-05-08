@@ -88,7 +88,7 @@ class Complain_model extends MY_Model {
 		$time = time();
 		$final_result = false;
 		$sql1 = "INSERT INTO order_complain SET oc_orderid=$order_id, oc_meid=$me_id, oc_category=$category, oc_subcategory=$subcategory, oc_content='{$content}', oc_img='{$img}', oc_add_time=$time, oc_number='{$number}', oc_handle_status=1";
-		$sql2 = "UPDATE merchant_order_num SET under_complain=under_complain+1 WHERE me_id=$me_id";
+		$sql2 = "UPDATE merchant_order_num SET under_complain=under_complain+1 WHERE me_id=$me_id AND order_type=1";
 		$sql3 = "SELECT master_id FROM orders WHERE id=$order_id";
 		
 		$this->db->trans_begin();
@@ -110,7 +110,7 @@ class Complain_model extends MY_Model {
 
 	public function cancel_item($order_id, $me_id){
 		$sql1 = "UPDATE order_complain SET oc_handle_status=2 WHERE oc_orderid=$order_id AND oc_meid=$me_id";
-		$sql2 = "UPDATE merchant_order_num SET under_complain=under_complain-1 WHERE me_id=$me_id";
+		$sql2 = "UPDATE merchant_order_num SET under_complain=under_complain-1 WHERE me_id=$me_id AND order_type=1";
 		$sql3 = "SELECT master_id FROM orders WHERE id=$order_id";
 		$final_result = false;
 		

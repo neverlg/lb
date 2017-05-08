@@ -487,7 +487,7 @@ class Order_model extends MY_Model {
 		$final_result = false;
 		$this->db->trans_begin();
 		$this->db->query("UPDATE orders_status SET merchant_status=7, upd_time=$time WHERE order_id=$order_id");
-		$this->db->query("UPDATE merchant_order_num SET wait_accept=wait_accept-1, wait_evaluate=wait_evaluate+1 WHERE me_id=$me_id");
+		$this->db->query("UPDATE merchant_order_num SET wait_accept=wait_accept-1, wait_evaluate=wait_evaluate+1 WHERE me_id=$me_id AND order_type=1");
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
 		}else{

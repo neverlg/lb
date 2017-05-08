@@ -234,7 +234,7 @@ class Ewallet_model extends MY_Model {
 		//更新商家总下单数目，总积分，总金额
 		$sql2 = "UPDATE merchant SET me_money=$cur_balance, me_update_time=$time, me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$use_balance WHERE me_id=$me_id";
 		$sql3 = "UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id=$order_id";
-		$sql4 = "UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id";
+		$sql4 = "UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
 		$this->db->query($sql1);
@@ -331,7 +331,7 @@ class Ewallet_model extends MY_Model {
 		$this->db->query($sql1);
 		$this->db->query("UPDATE orders SET pay_type=4 WHERE id IN ($order_list)");
 		$this->db->query("UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id in ($order_list)");
-		$this->db->query("UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id");
+		$this->db->query("UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id AND order_type=1");
 		//将雇佣师傅状态改为雇佣成功, 其他改为未被雇佣
 		$this->db->query("UPDATE orders_offer SET status=2, upd_time=$time WHERE order_id in ($order_list) AND status=1");
 		$this->db->query("UPDATE orders_offer SET status=3, upd_time=$time WHERE order_id in ($order_list) AND status=0");

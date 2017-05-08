@@ -74,7 +74,7 @@ class Refund_model extends MY_Model {
 		$time = time();
 		//此处需要插入refund表，更新status, num表
 		$update_status_sql = "UPDATE orders_status SET refund_status=1, upd_time=$time WHERE order_id=$order_id";
-		$update_num_sql = "UPDATE merchant_order_num SET under_refund=under_refund+1 WHERE me_id=$me_id";
+		$update_num_sql = "UPDATE merchant_order_num SET under_refund=under_refund+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
 		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method,refund_result_type=1";
@@ -119,7 +119,7 @@ class Refund_model extends MY_Model {
 		$time = time();
 		$sql1 = "UPDATE orders_refund SET refund_result_type=6 AND upd_time=$time WHERE order_id=$order_id";
 		$sql2 = "UPDATE orders_status SET refund_status=6 AND upd_time=$time WHERE order_id=$order_id";
-		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1 WHERE me_id=$me_id";
+		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
 		$this->db->query($sql1);
@@ -166,7 +166,7 @@ class Refund_model extends MY_Model {
 		$time = time();
 		$sql1 = "UPDATE orders_refund SET refund_result_type=5, arbitrate_time=$time, arbitrate_result_type=1, arbitrate_name='{$name}', arbitrate_phone='{$phone}', arbitrate_explain='{$explain}', arbitrate_img='{$img}', upd_time=$time WHERE order_id=$order_id";
 		$sql2 = "UPDATE orders_status SET refund_status=5, arbitrate_status=1,upd_time=$time WHERE order_id=$order_id";
-		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1, under_arbitrate=under_arbitrate+1 WHERE me_id=$me_id";
+		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1, under_arbitrate=under_arbitrate+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
 		$this->db->query($sql1);

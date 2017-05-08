@@ -54,7 +54,7 @@ class Evaluate_model extends MY_Model {
 		$time = time();
 		$insert_sql = "INSERT INTO order_evaluate SET oe_orderid=$order_id, oe_score=$score, oe_quality=$quality, oe_attitude=$attitude, oe_ontime=$ontime, oe_meid=$me_id, oe_content='{$content}', oe_add_time=$time, oe_type=$type";
 		$update_status_sql = "UPDATE orders_status SET evaluate_status=1, upd_time=$time WHERE order_id=$order_id";
-		$update_num_sql = "UPDATE merchant_order_num SET wait_evaluate=wait_evaluate-1 WHERE me_id=$me_id";
+		$update_num_sql = "UPDATE merchant_order_num SET wait_evaluate=wait_evaluate-1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
 		$this->db->query($insert_sql);
