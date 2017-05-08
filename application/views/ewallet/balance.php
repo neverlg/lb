@@ -49,15 +49,16 @@
 					    <?php foreach ($list as $val) { ?>
 					    <tr class="tsgl-2-2">
 						    <td><?=$val['add_time']?></td>
-						    <td><?=$val['trade_number']?></td>
-						    <td><?=$val['type']?></td>
-
+						    
 						    <td>
 						    <?php foreach ($val['order_sn'] as $value) { ?>
 						    <?=$value?><br>
 						    <?php } ?>
 						    </td>
 
+						    <td><?=$val['type']?></td>
+
+						    <td><?=$val['trade_number']?></td>
 						    <td ><?=$val['remark']?></td>
 
 						    <?php if($val['direction'] == 'in'){ ?>
