@@ -286,7 +286,7 @@ class Order extends MY_Controller {
 					'fee' => $use_balance,
 					'master_name' => $master_name
 					);
-				$this->load->view('order/pay_success', $data);
+				return $this->load->view('order/pay_success', $data);
 			}
 		}else{
 			//需要在线支付
@@ -300,7 +300,7 @@ class Order extends MY_Controller {
 					'order_number' => $order_number,
 					'deadline' => ($create_order_time + $auto_close_time - time())
 					);
-				$this->load->view('order/online_pay', $data);
+                return $this->load->view('order/online_pay', $data);
 			}
 		}
 		exit('系统异常');
