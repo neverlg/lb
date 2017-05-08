@@ -314,7 +314,10 @@ class Order_model extends MY_Model {
 		$base = array_column($base, null, 'id');
 		$qiniu = config_item('qiniu');
 		foreach ($base as $key => $val) {
-			$base[$key]['head_img'] = $qiniu['source_url'].$val['head_img'];
+			//判断，如果是全路径，不加前缀
+			if(stripos($val['head_img'], 'http') === FALSE){
+				$base[$key]['head_img'] = $qiniu['source_url'].$val['head_img'];
+			}
 			//商家展示价格是师傅的1.1倍
 			$base[$key]['price'] = $val['price']*1.1;
 		}
@@ -326,7 +329,11 @@ class Order_model extends MY_Model {
 		$statistic = $this->db->query($sql)->result_array();
 		$statistic = array_column($statistic, null, 'master_id');
 		foreach ($statistic as $key => $val) {
-			$statistic[$key]['good_rat'] = round($val['evaluate_praise_count']/$val['evaluate_count'] ,2).'%';
+			if(!empty($val['evaluate_count'])){
+				$statistic[$key]['good_rat'] = round($val['evaluate_praise_count']/$val['evaluate_count'] ,2).'%';
+			}else{
+				$statistic[$key]['good_rat'] = '- -';
+			}
 			$statistic[$key]['__score_icon'] = create_master_level_icon($val['points']);
 		}
 

@@ -20,8 +20,10 @@ class Master_model extends MY_Model {
 	public function get_master_service_info($master_id){
 		$sql = "SELECT a.real_name, a.head_img, b.extra_tmall_examine, b.extra_storage, b.extra_move_free, b.extra_finish_in, b.extra_nothing_fee, b.extra_repair_free, b.extra_floor_free, b.extra_carry_fee, b.extra_far_fee FROM master a LEFT JOIN master_detail b ON a.id=b.master_id WHERE a.id=$master_id";
 		$result = $this->db->query($sql)->row_array();
-		$qiniu = config_item('qiniu');
-		$result['head_img'] = $qiniu['source_url'].$result['head_img'];
+		if(stripos($result['head_img'], 'http') === FALSE){
+			$qiniu = config_item('qiniu');
+			$result['head_img'] = $qiniu['source_url'].$result['head_img'];
+		}
 		return $result;
 	}
 
@@ -30,8 +32,10 @@ class Master_model extends MY_Model {
 		$sql = "SELECT a.*, b.deliver_address, b.member_num, b.car_num, b.job_type, b.service_period, b.deliver_address FROM master a LEFT JOIN master_detail b ON a.id=b.master_id WHERE a.id=$master_id AND a.status=1";
 		$result = $this->db->query($sql)->row_array();
 		//format data
-		$qiniu = config_item('qiniu');
-		$result['head_img'] = $qiniu['source_url'].$result['head_img'];
+		if(stripos($result['head_img'], 'http') === FALSE){
+			$qiniu = config_item('qiniu');
+			$result['head_img'] = $qiniu['source_url'].$result['head_img'];
+		}
 		$services = array(
 			1 => '配送',
 			2 => '安装',
@@ -63,7 +67,11 @@ class Master_model extends MY_Model {
 			return false;
 		}
 		$result['__score_icon'] = create_master_level_icon($result['points']);
-		$result['good_rat'] = round($result['evaluate_praise_count']/$result['evaluate_count'] ,2).'%';
+		if(!empty($result['evaluate_count'])){
+			$result['good_rat'] = round($result['evaluate_praise_count']/$result['evaluate_count'] ,2).'%';
+		}else{
+			$result['good_rat'] = '- -';
+		}
 		return $result;
 	}
 
