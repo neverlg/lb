@@ -387,9 +387,6 @@ class Order_model extends MY_Model {
 			//更改订单状态
 			$this->db->query($sql3);
 		}
-		//不是第一次雇佣，将原师傅取消，不放在else里，确保只有一个师傅成功雇佣
-		$this->db->query("UPDATE orders_offer SET status=0, upd_time=$time WHERE order_id=$order_id AND status=1");
-
 		$this->db->query($sql1);
 		//更新orders表的价格
 		$this->db->query("UPDATE orders SET master_id=$master_id, merchant_price=$merchant_price, offer_price=$master_price, master_name='{$master_name}', upd_time=$time WHERE id=$order_id");
