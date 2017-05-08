@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://shangjia.lebangdaojia.com/';
+//$config['base_url'] = 'http://merchant.javed.cn/';
 
 /*
 |--------------------------------------------------------------------------

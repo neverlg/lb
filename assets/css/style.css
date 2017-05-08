@@ -105,12 +105,14 @@ img{ max-height:100%; max-width:100%; }
 .htnr-h2 .sel{ height:40px; line-height:40px; color:#006db8; font-weight:bold; font-size:15px; padding-left:8px; padding-right:8px;float:left;border:1px solid #ccc}
 .htnr-h2  .in-1{height:40px; line-height:40px; width:300px; padding-left:10px; font-size:13px; color:#999;float:left;border:1px solid #ccc;border-left:0;}
 .htnr-h2 .in-2{ color:#fff; padding:7px 25px; font-size:18px;  background:#006db8; margin-left:10px;border:0;float:left;}
-.htnr-h3-2-1 a{ color:#f00; font-size:16px;font-weight:bold;}
+.htnr-h3-2-1 a{ color:#000;}
+.htnr-h3-2-1 span{ color:#f00; font-size:16px;font-weight:bold;}
 .htnr-h3-2-1{ color:#000; text-align:center; border-right:1px solid #ccc;  height:100px; padding-top:2%; border-bottom:1px solid #ccc;}
 .htnr-h3-1 a{ float:right; color:#1ca0ed; font-weight:bold;}
 .htnr-h3-1{font-size:15px; background:#eee; padding:5px;color:#000;font-weight:bold; clear:both; overflow:hidden; }
 .htnr-h3{ margin-bottom:40px;clear:both; overflow:hidden;}
-.htnr-h3-2-2 a{ color:#f00; font-size:17px; font-weight:bold;}
+.htnr-h3-2-2 a{ color:#000}
+.htnr-h3-2-2 span{ color:#f00; font-size:17px; font-weight:bold;}
 .htnr-h3-2-2{ color:#000; text-align:center; border-right:1px solid #ccc; border-bottom:1px solid #ccc; height:100px; padding-top:2%;}
 .htnr-h4-1-1{ background:#eee; color:#000; padding:5px; font-weight:bold; font-size:15px;}
 .htnr-h4-1-2 a{ color:#000; text-decoration:none; padding-left:5px;}
@@ -146,7 +148,7 @@ img{ max-height:100%; max-width:100%; }
 .tab-b-1{ color:#f00;}
 .htnr-b-5{ margin-bottom:20px; clear:both; overflow:hidden;}
 .tab-b-2 a{color:#00a2ea;}
-.tab-b-3 a{color:#000;}
+.tab-b-3 a{color:#000; margin-top:10px; display:inline-block;}
 .tab-b-33 a{color:#ccc;}
 .tab-b-4 a{ background:#008ed6; color:#fff; padding:5px 10px; margin-top:10px;}
 
@@ -187,7 +189,7 @@ img{ max-height:100%; max-width:100%; }
 .ybj-5 a{ background:#008ed6; color:#fff; padding:4px 30px;}
 .ybj-5 { text-align:center; padding-top:4%; font-size:16px;}
 .ybj{ border:1px solid #ccc; clear:both; overflow:hidden; margin-top:2%;}
-.ybj-55 a{ background:#f00; color:#fff; padding:4px 30px;}
+.ybj-55 a{ background:#f00; color:#fff; padding:4px 30px; display:inline-block; margin-top:10px;}
 .ybj-55 { text-align:center; padding-top:4%; font-size:16px;}
 
 .bjxq-1{ font-size:15px; font-weight:700; background:#eee; border-bottom:1px solid #ccc; padding:5px; }
@@ -663,3 +665,5 @@ th{ text-align:center;}
 
 #login-code {position:absolute; right:100px; width:100px; height:40px; padding:2px;}
 #login-code img {witdth:100px; height:40px;}
+
+.tt-2-mark { background:#f7f7f7; width:320px; border:1px solid #999; position:fixed; left:0; top:0; z-index:2000; margin:auto; right:0; bottom:0; height:250px;}

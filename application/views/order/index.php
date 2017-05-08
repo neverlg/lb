@@ -64,31 +64,31 @@
         			</div>
             		<div class="htnr-h3-2">
             			<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['wait_priced']:0 ?></a><br/>待报价
+                			<a href="<?=site_url('order/baojia_index/1')?>"><span><?php echo isset($order_num[1])?$order_num[1]['wait_priced']:0 ?></span><br/>待报价</a>
                 		</div>
                 		<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['wait_hired']:0 ?></a><br/>待雇佣
+                			<a href="<?=site_url('order/baojia_index/2')?>"><span><?php echo isset($order_num[1])?$order_num[1]['wait_hired']:0 ?></span><br/>待雇佣</a>
                 		</div>
                 		<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['wait_pay']:0 ?></a><br/>待托管费用
+                			<a href="<?=site_url('order/baojia_index/3')?>"><span><?php echo isset($order_num[1])?$order_num[1]['wait_pay']:0 ?></span><br/>待托管费用</a>
                 		</div>
                 		<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['under_service']:0 ?></a><br/>师傅服务中
+                			<a href="<?=site_url('order/baojia_index/5')?>"><span><?php echo isset($order_num[1])?$order_num[1]['under_service']:0 ?></span><br/>师傅服务中</a>
                 		</div>
                 		<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['wait_accept']:0 ?></a><br/>待确认验收
+                			<a href="<?=site_url('order/baojia_index/6')?>"><span><?php echo isset($order_num[1])?$order_num[1]['wait_accept']:0 ?></span><br/>待确认验收</a>
                 		</div>
                 		<div class="htnr-h3-2-1 col-md-2">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['wait_evaluate']:0 ?></a><br/>待评价
+                			<a href="<?=site_url('order/baojia_index/11')?>"><span><?php echo isset($order_num[1])?$order_num[1]['wait_evaluate']:0 ?></span><br/>待评价</a>
                 		</div>
                 		<div class="htnr-h3-2-2 col-md-4">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['under_refund']:0 ?></a><br/>申请退款中
+                			<a href="<?=site_url('order/baojia_index/8')?>"><span><?php echo isset($order_num[1])?$order_num[1]['under_refund']:0 ?></span><br/>申请退款中</a>
                 		</div>
                 		<div class="htnr-h3-2-2 col-md-4">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['under_arbitrate']:0 ?></a><br/>介入仲裁中
+                			<a href="<?=site_url('order/baojia_index/9')?>"><span><?php echo isset($order_num[1])?$order_num[1]['under_arbitrate']:0 ?></span><br/>介入仲裁中</a>
                 		</div>
                 		<div class="htnr-h3-2-2 col-md-4">
-                			<a href="#"><?php echo isset($order_num[1])?$order_num[1]['under_complain']:0 ?></a><br/>投诉处理中
+                			<a href="<?=site_url('order/baojia_index/12')?>"><span><?php echo isset($order_num[1])?$order_num[1]['under_complain']:0 ?></span><br/>投诉处理中</a>
                 		</div>
             		</div>
         		</div>

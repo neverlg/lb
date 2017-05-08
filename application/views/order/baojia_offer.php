@@ -21,19 +21,19 @@
             <?php if($trace['refund_status']==1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#">申请退款中 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>">申请退款中 ></a>
                 </span>
             </span>
             <?php }else if($trace['arbitrate_status']==1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#">申请仲裁中 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>">申请仲裁中 ></a>
                 </span>
             </span>
             <?php }else if($trace['except_status']>1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#" style="background-color:gray;">退款成功 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>" style="background-color:gray;">退款成功 ></a>
                 </span>
             </span>
             <?php }else{ ?>
@@ -54,17 +54,17 @@
                 </script>
 
                 <span class="ckjd-1-2"> 
-                    <a href="#">确认验收 ></a>
+                    <a href="<?=site_url('order/baojia_detail/'.$order_id)?>">确认验收 ></a>
                 </span>
                 <?php } ?>
 
                 <?php if($trace['merchant_status']<7){ ?>
                 <span class="ckjd-1-3">
-                    <a href="">申请退款</a>
+                    <a href="<?=site_url('refund/add/'.$order_id)?>">申请退款</a>
                 </span>
                 <?php }else if($trace['evaluate_status']==0){ ?>
                 <span class="ckjd-1-2"> 
-                    <a href="#">评价师傅 ></a>
+                    <a href="<?=site_url('evaluate/add/'.$order_id)?>">评价师傅 ></a>
                 </span>
                 <?php }else if($trace['evaluate_status']==1){ ?>
                 <span class="ckjd-1-3">
@@ -104,17 +104,18 @@
             </div>
             <?php }else if($val['status']==1){ $hired_flag=$val['id']; ?>
             <div class="ybj-55 col-md-4">
-                报价：<font color="#f00"><?=$val['price']?>元</font><br/><br/>
-                <a href="#">已雇佣</a>
+                报价：<font color="#f00"><?=$val['price']?>元</font><br/>
+                <a >已雇佣</a>
             </div>
             <?php }else if($val['status']==2){ ?>
             <div class="ybj-55 col-md-4">
-                报价：<font color="#f00"><?=$val['price']?>元</font><br/><br/>
-                <a>成功雇佣</a>
+                报价：<font color="#f00"><?=$val['price']?>元</font><br/>
+                <a>成功雇佣</a><br/>
+                <a href="<?=site_url('complain/add/'.$order_id)?>">投诉师傅</a>
             </div>
             <?php }else if($val['status']==3){ ?>
             <div class="ybj-55 col-md-4">
-                报价：<font color="#f00"><?=$val['price']?>元</font><br/><br/>
+                报价：<font color="#f00"><?=$val['price']?>元</font><br/>
                 <a>未被雇佣</a>
             </div>
             <?php } ?>
@@ -174,7 +175,7 @@
             url:"<?=site_url('order/hire_master/'.$order_id)?>" + "/" + $masterId + "/" + $hiredFlag,
             success:function(msg){
                 if(msg.status == 0){
-                    window.location.reload();
+                    window.location.href = "<?=site_url('order/order_pay/'.$order_id)?>";
                 }else{
                     alert(msg.error);
                 }

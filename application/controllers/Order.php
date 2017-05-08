@@ -45,7 +45,7 @@ class Order extends MY_Controller {
 
 	//报价订单首页
 	//merchant_type 1待报价 2报价中 3已挑选师傅 4已支付预付款 5师傅服务中 6师傅完成服务 7验收交易成功
-	//other_type 8退款中  9仲裁中  10交易关闭
+	//other_type 8退款中  9仲裁中  10交易关闭 11待评价 12投诉处理中
 	public function baojia_index($type=0, $page=1){
 		$count = $this->order_model->get_distinct_order_num($this->me_id, 1);
 		$count['all'] = $this->order_model->get_order_num($this->me_id, 1);
@@ -82,6 +82,20 @@ class Order extends MY_Controller {
 			$data['detail'] = $this->order_model->get_baojia_detail($this->me_id, $order_id);
 			$this->load->view('order/baojia_detail', $data);
 		}
+	}
+
+	//商家标记订单
+	public function add_baojia_mark(){
+		$post = $this->input->post(array('order_id','mark'), true);
+		@extract($post);
+		$order_id = intval($order_id);
+		if($this->order_model->check_power($this->me_id, $order_id)){
+			$ret = $this->order_model->add_baojia_mark($order_id, $mark);
+			if($ret > 0){
+				ajax_response(0, 'success');
+			}
+		}
+		ajax_response(1, '系统繁忙，请稍后重试');
 	}
 
 	//报价订单取消

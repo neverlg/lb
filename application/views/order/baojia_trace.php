@@ -15,25 +15,25 @@
     <div class="container ckfwjd-1">
         <div class="ckjd-1">
             <a href="<?=site_url('order/baojia_detail/'.$order_id)?>">报价订单详情</a>
-            <a href="">师傅报价<font color="#f00">(<?=$master_num?>)</font></a>
+            <a href="<?=site_url('order/baojia_offer/'.$order_id)?>">师傅报价<font color="#f00">(<?=$master_num?>)</font></a>
             <a class="on" href="<?=site_url('order/baojia_trace/'.$order_id)?>">查看服务节点</a>
 
             <?php if($trace['refund_status']==1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#">申请退款中 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>">申请退款中 ></a>
                 </span>
             </span>
             <?php }else if($trace['arbitrate_status']==1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#">申请仲裁中 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>">申请仲裁中 ></a>
                 </span>
             </span>
             <?php }else if($trace['except_status']>1){ ?>
             <span class="ckjd-1-1">
                 <span class="ckjd-1-6">
-                    <a href="#" style="background-color:gray;">退款成功 ></a>
+                    <a href="<?=site_url('refund/detail/'.$order_id)?>" style="background-color:gray;">退款成功 ></a>
                 </span>
             </span>
             <?php }else{ ?>
@@ -54,17 +54,17 @@
                 </script>
 
                 <span class="ckjd-1-2"> 
-                    <a href="#">确认验收 ></a>
+                    <a href="<?=site_url('order/baojia_detail/'.$order_id)?>">确认验收 ></a>
                 </span>
                 <?php } ?>
 
                 <?php if($trace['merchant_status']<7){ ?>
                 <span class="ckjd-1-3">
-                    <a href="">申请退款</a>
+                    <a href="<?=site_url('refund/add/'.$order_id)?>">申请退款</a>
                 </span>
                 <?php }else if($trace['evaluate_status']==0){ ?>
                 <span class="ckjd-1-2"> 
-                    <a href="#">评价师傅 ></a>
+                    <a href="<?=site_url('evaluate/add/'.$order_id)?>">评价师傅 ></a>
                 </span>
                 <?php }else if($trace['evaluate_status']==1){ ?>
                 <span class="ckjd-1-3">
@@ -89,7 +89,7 @@
             <?php if(!empty($trace['deliver_time'])){ ?>
             <div class="ckjd-2-1">
                 <font size="4">物流提货:</font><br/>
-                <?=$trace['deliver_time']?>&nbsp;&nbsp;师傅已到达物流点提货&nbsp;&nbsp;物流签收状态：<?php if($trace['master_status']==3){echo '正常签收';}else if($trace['master_status']==4){echo '提货异常'; ?><br/>
+                <?=$trace['deliver_time']?>&nbsp;&nbsp;师傅已到达物流点提货&nbsp;&nbsp;物流签收状态：<?php if($trace['master_status']==3){echo '正常签收';}else if($trace['master_status']==4){echo '提货异常';} ?><br/>
                 <?php foreach($trace['deliver_imgs'] as $key){ ?>
                 <img src="<?=$key?>" />  
                 <?php } ?>

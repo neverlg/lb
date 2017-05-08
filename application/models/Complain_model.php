@@ -51,7 +51,7 @@ class Complain_model extends MY_Model {
 		foreach ($result as $key => $val) {
 			$result[$key]['oc_add_time'] = date('Y-m-d H:i', $val['oc_add_time']);
 			$result[$key]['oc_handle_status_txt'] = isset($handle_result[$val['oc_handle_status']]) ? $handle_result[$val['oc_handle_status']] : '';
-			$result[$key]['service_type'] = isset($handle_result[$val['service_type']]) ? $handle_result[$val['service_type']] : '';
+			$result[$key]['service_type'] = isset($service_type[$val['service_type']]) ? $service_type[$val['service_type']] : '';
 		}
 		return $result;
 	}
@@ -98,6 +98,7 @@ class Complain_model extends MY_Model {
 		$result = $this->db->query($sql3)->row_array();
 		$master_id = $result['master_id'];
 		$this->db->query("UPDATE master_statistic SET complain_count=complain_count+1 WHERE master_id=$master_id");
+		$this->db->query("UPDATE orders_status SET complain_status=1, upd_time={$time} WHERE order_id=$order_id");
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
 		}else{

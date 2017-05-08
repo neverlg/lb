@@ -101,6 +101,10 @@ class Order_model extends MY_Model {
 			$where .= " AND b.arbitrate_status=1 "; 
 		}else if($ptype==10){
 			$where .= " AND b.except_status=1 "; 
+		}else if($ptype==11){
+			$where .= " AND b.merchant_status=7 AND b.evaluate_status=0 ";
+		}else if($ptype==12){
+			$where .= " AND b.complain_status=1 ";
 		}
 		if(!empty($order_sn)){
 			$where .= " AND a.order_number='{$order_sn}' ";
@@ -142,6 +146,10 @@ class Order_model extends MY_Model {
 			$where .= " AND b.arbitrate_status=1 "; 
 		}else if($ptype==10){
 			$where .= " AND b.except_status=1 "; 
+		}else if($ptype==11){
+			$where .= " AND b.merchant_status=7 AND b.evaluate_status=0 ";
+		}else if($ptype==12){
+			$where .= " AND b.complain_status=1 ";
 		}
 		if(!empty($order_sn)){
 			$where .= " AND a.order_number='{$order_sn}' ";
@@ -153,7 +161,7 @@ class Order_model extends MY_Model {
 			$where .= " AND c.logistics_ticketnumber='{$logistics_no}'";
 		}
 
-		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where}";
+		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where}";
 		$result = $this->db->query($sql)->result_array();
 
 		$service_type = config_item('service_type');
@@ -262,7 +270,7 @@ class Order_model extends MY_Model {
 
 	//获取服务节点
 	public function get_baojia_trace($order_id){
-		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, door_time, deliver_imgs, deliver_except, finish_imgs, finish_ticket_img, finish_message, finish_time, appoint_time, deliver_time FROM orders_status WHERE order_id=$order_id";
+		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, evaluate_status, door_time, deliver_imgs, deliver_except, finish_imgs, finish_ticket_img, finish_message, finish_time, appoint_time, deliver_time FROM orders_status WHERE order_id=$order_id";
 		$result = $this->db->query($sql)->row_array();
 
 		$week_arr = array('周日', '周一', '周二', '周三', '周四', '周五', '周六');
@@ -287,13 +295,13 @@ class Order_model extends MY_Model {
 		foreach ($result['finish_ticket_img'] as $key => &$val) {
 			$result['finish_ticket_img'][$key] = $qiniu['source_url'].$val;
 		}
-
+		
 		return $result;
 	}
 
 	//获取订单状态
 	public function get_order_status($order_id){
-		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, finish_time FROM orders_status WHERE order_id=$order_id";
+		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, evaluate_status, finish_time FROM orders_status WHERE order_id=$order_id";
 		$result = $this->db->query($sql)->row_array();
 		return $result;
 	}
@@ -357,7 +365,7 @@ class Order_model extends MY_Model {
 		}
 		$master_price = $ret['price'];
 		$master_name = $ret['real_name'];
-		$merchant_price = $mater_price*1.1;
+		$merchant_price = $master_price*1.1;
 		$time = time();
 		$final_result  = false;
 
@@ -366,15 +374,18 @@ class Order_model extends MY_Model {
 		$sql2 = "UPDATE merchant_order_num SET wait_hired=wait_hired-1, wait_pay=wait_pay+1 WHERE me_id=$me_id AND order_type=1";
 		$sql3 = "UPDATE orders_status SET merchant_status=3, upd_time=$time WHERE order_id=$order_id";
 
-		$this->db->query($sql1);
 		//如果是首次雇佣，而不是替换师傅，需要更改统计
 		if(empty($hired_id)){
 			$this->db->query($sql2);
 			//更改订单状态
 			$this->db->query($sql3);
 		}
+		//不是第一次雇佣，将原师傅取消，不放在else里，确保只有一个师傅成功雇佣
+		$this->db->query("UPDATE orders_offer SET status=0, upd_time=$time WHERE order_id=$order_id AND status=1");
+
+		$this->db->query($sql1);
 		//更新orders表的价格
-		$this->db->query("UPDATE orders SET master_id=$master_id, merchant_price=$merchant_price, offer_price=$master_price, master_name=$master_name, upd_time=$time WHERE id=$order_id");
+		$this->db->query("UPDATE orders SET master_id=$master_id, merchant_price=$merchant_price, offer_price=$master_price, master_name='{$master_name}', upd_time=$time WHERE id=$order_id");
 		if ($this->db->trans_status() === FALSE){
     		$this->db->trans_rollback();
 		}else{
@@ -504,6 +515,18 @@ class Order_model extends MY_Model {
     		$final_result = true;
 		}
 		return $final_result;
+	}
+
+	public function add_baojia_mark($order_id, $mark){
+		$where = array(
+			'order_id' => $order_id
+			);
+		$data = array(
+			'merchant_remark' => $mark,
+			'upd_time' => time()
+			);
+		$this->db->update('orders_detail', $data, $where);
+		return $this->db->affected_rows();
 	}
 
 }
