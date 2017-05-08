@@ -79,7 +79,7 @@ class Task extends CI_Controller {
 		}
 
 		//组装消息，是否图文，然后发送   $user['weixin_userid']
-		$data = array("touser"=>'luogan',
+		$data = array("touser"=>'WuXiao',
 		          "toparty"=>"",
 		          "totag"=>"",
 		          "msgtype"=>"text",
@@ -95,7 +95,7 @@ class Task extends CI_Controller {
 		//日志 ？
 		if(empty($ret) || $ret['errcode']!=0){
 			$str = var_export($ret, true);
-			log_message('error', '【推送师傅消息】order_id='.$order_id.", username=".$user['weixin_userid']."\r\n返回值为：".$str);
+			log_message('error', '【推送师傅消息】order_id='.'123456'.", username=".'WuXiao'."\r\n返回值为：".$str);
 		}
 		exit;
 	}
