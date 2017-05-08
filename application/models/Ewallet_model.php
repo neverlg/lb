@@ -266,7 +266,7 @@ class Ewallet_model extends MY_Model {
 		$trade_number = Util::genTradeNumber();
 
 		$this->db->trans_begin();
-		$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name=$me_name");
+		$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
 		if(!empty($me_balance)){
 			$trade_number = Util::genTradeNumber();
 			//现有余额为0.00，异步通知成功，再设置
