@@ -79,7 +79,7 @@ class Task extends CI_Controller {
 		}
 
 		//组装消息，是否图文，然后发送   $user['weixin_userid']
-		$data = array("touser"=>'WuXiao',
+		$data = array("touser"=>'luogan',
 		          "toparty"=>"",
 		          "totag"=>"",
 		          "msgtype"=>"text",

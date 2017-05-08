@@ -477,7 +477,7 @@ class Order extends MY_Controller {
 					'service_type' => 1
 					);
 		//$cmd = '/data/service/php53/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'" > /dev/null &';
-		$cmd = '/usr/bin/php index.php task push_master_test "'. urlencode(serialize($arr));
+		$cmd = '/usr/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'"';
 		$a = exec($cmd,$output,$return_var);
 		echo '<pre>';
 		var_dump($cmd,$a,$output,$return_var);
