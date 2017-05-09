@@ -216,4 +216,32 @@ class Auth extends MY_Controller {
 		$this->auth_model->log_out();
 		redirect('main/index');
 	}
+
+	//定价批量下单申请页
+	public function priced_apply(){
+		$this->load->view('auth/priced_apply');
+	}
+
+	//定价批量下单申请提交
+	public function priced_submit(){
+		$data = $this->input->post(array('name', 'phone', 'email', 'shop_url'), true);
+		$this->form_validation->set_rules('name','name','required');
+		$this->form_validation->set_rules('phone','phone','required');
+		if($this->form_validation->run() == false){
+			ajax_response(1,validation_errors());
+		}
+
+		if(!check_mobile($data['phone'])){
+			ajax_response(1, '手机号不合法');
+		}
+
+		//根据入口，此处应该需要登录（功能上不一定）
+		$me_id = $this->session->userdata('me_id');
+		$me_id = empty($me_id) ? 0 : $me_id;
+		$result = $this->auth_model->insert_apply($me_id, $data);
+		if($result > 0){
+			ajax_response(0, 'success');
+		}
+		ajax_response(1, '系统繁忙，请稍后再试');
+	}
 }

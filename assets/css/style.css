@@ -667,3 +667,12 @@ th{ text-align:center;}
 #login-code img {witdth:100px; height:40px;}
 
 .tt-2-mark { background:#f7f7f7; width:320px; border:1px solid #999; position:fixed; left:0; top:0; z-index:2000; margin:auto; right:0; bottom:0; height:250px;}
+
+.container_xdfw{background:#F7F7F7;width:100%;}
+.xdfw{margin:0 auto;text-align:center;font-size:20px;padding:85px  0;}
+.xdfw h3{font-size:20px;font-weight:normal;}
+.xdfw p{line-height:35px;margin-top:20px;}
+.xdfw p input{width:320px;height:35px;border:1px solid #919191;}
+.xdfw p span{display:inline-block;}
+.xdfw p em{font-style:normal;width:15px;display:inline-block;color:red;}
+.xdfw button{color:#fff; background-color:blue; width:180px; border:none; margin-top:20px; padding:4px;}

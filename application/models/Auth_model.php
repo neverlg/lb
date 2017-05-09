@@ -112,4 +112,21 @@ class Auth_model extends MY_Model {
 		$this->db->update('merchant', $data, $where);
 		return $this->db->affected_rows();
 	}
+
+	//定价订单申请提交
+	public function insert_apply($me_id, $post){
+		@extract($post);
+		$email = empty($email) ? '' : $email;
+		$shop_url = empty($shop_url) ? '' : $shop_url;
+		$data = array(
+			'me_id' => $me_id,
+			'name' => $name,
+			'phone' => $phone,
+			'email' => $email,
+			'shop_url' => $shop_url,
+			'add_time' => time()
+			);
+		$this->db->insert('priced_apply', $data);
+		return $this->db->insert_id();
+	}
 }

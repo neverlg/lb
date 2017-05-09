@@ -37,6 +37,8 @@ class MY_Controller extends CI_Controller {
                 'register_submit',     #提交注册ajax
                 'forget_password',     #忘记密码
                 'forget_submit',       #忘记密码提交
+                'priced_apply',        #定价批量下单申请页
+                'priced_submit',       #定价批量下单申请提交
                 ),
             'article' => array(
                 'index',               #帮助中心

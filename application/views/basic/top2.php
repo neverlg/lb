@@ -13,7 +13,7 @@
                     <a href="<?=site_url('order/baojia')?>" class="top-g-1-1">发布订单获取多个师傅报价 ></a> 
                 </span> 
                 <span class="top-g-12">
-                    <a href="#" class="top-g-1-2">专属客服定价 快速批量下单 ></a>
+                    <a href="<?=site_url('auth/priced_apply')?>" class="top-g-1-2">专属客服定价 快速批量下单 ></a>
                 </span>
             </div>
         </div>
