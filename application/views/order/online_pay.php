@@ -19,7 +19,7 @@
         <br/>
 
         <div class="bjxq1-zf">
-            <a href="<?=site_url('order/do_pay/'.$order_id)?>">立即支付</a>
+            <a href="<?=site_url('order/do_pay/'.$trade_id)?>">立即支付</a>
         </div>
 
     </div>

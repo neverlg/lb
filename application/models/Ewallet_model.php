@@ -270,10 +270,14 @@ class Ewallet_model extends MY_Model {
 
 		$this->db->trans_begin();
 		$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+		$online_payid = $this->db->insert_id();
 		if(!empty($me_balance)){
 			$trade_number = Util::genTradeNumber();
 			//现有余额为0.00，异步通知成功，再设置
 			$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$me_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=1, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+			$balance_payid = $this->db->insert_id();
+			//此时将两种混合id存起来，方便异步通知时修改
+			$this->session->set_userdata('mixed_pay_'.$online_payid, $balance_payid);
 		}
 		if(!empty($coupon_id)){
 			$this->db->query("UPDATE coupon_grantlist SET cg_status=0, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
@@ -284,12 +288,12 @@ class Ewallet_model extends MY_Model {
     		$this->db->trans_commit();
     		$final_result = true;
 		}
-		return $final_result;
+		return $final_result ? $online_payid : false;
 	}
 
 	//在线支付获取参数
-	public function get_online_real_price($me_id, $order_id){
-		$sql = "SELECT amount, trade_number FROM merchant_trade_log WHERE merchant_id=$me_id AND FIND_IN_SET($order_id, order_number_list) AND source>1";
+	public function get_online_real_price($me_id, $trade_id){
+		$sql = "SELECT amount, trade_number FROM merchant_trade_log WHERE id=$trade_id AND merchant_id=$me_id";
 		return $this->db->query($sql)->row_array();
 	}
 
@@ -308,12 +312,11 @@ class Ewallet_model extends MY_Model {
 
 		$this->db->trans_begin();
 		//是否有余额支付参与
-		$ret = $this->db->query("SELECT id, amount FROM merchant_trade_log WHERE merchant_id=$me_id AND order_number_list='{$order_list}' AND source=1")->row_array();
-		$merchant_set = '';
-		$balance_pay_id = 0;
-		if(!empty($ret)){
+		$balance_pay_id = $this->session->userdata('mixed_pay_'.$trade_id);
+		if(!empty($balance_pay_id)){
+			$ret = $this->db->query("SELECT amount FROM merchant_trade_log WHERE id=$balance_pay_id AND merchant_id=$me_id")->row_array();
+			$merchant_set = '';
 			$balance_pay = $ret['amount'];
-			$balance_pay_id = $ret['id'];
 			//获取用户当前余额
 			$ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id");
 			$cur_balance = $ret1['me_money'];

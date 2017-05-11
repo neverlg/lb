@@ -295,6 +295,7 @@ class Order extends MY_Controller {
 			if($result){
 				$auto_close_time = config_item('auto_close_order');
 				$data = array(
+					'trade_id' => $result,
 					'order_id' => $order_id,
 					'real_price' => $real_price,
 					'order_number' => $order_number,
@@ -307,9 +308,9 @@ class Order extends MY_Controller {
 	}
 
 	//发起支付
-	public function do_pay($order_id){
-		$order_id = intval($order_id);
-		$ret = $this->ewallet_model->get_online_real_price($this->me_id, $order_id);
+	public function do_pay($trade_id){
+		$trade_id = intval($trade_id);
+		$ret = $this->ewallet_model->get_online_real_price($this->me_id, $trade_id);
 		if(empty($ret)){
 			exit('系统异常');
 		}
