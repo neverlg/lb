@@ -21,8 +21,8 @@
         <br/>
 
         <div class="bjxq1-zf" style="text-align:center;">
-            <a href="<?=site_url('order/detail/'.$order_id)?>">查看订单</a>
-            <a style="background:#f08519;" href="#">继续下单</a>
+            <a href="<?=site_url('order/baojia_detail/'.$order_id)?>">查看订单</a>
+            <a style="background:#f08519;" href="<?=site_url('order/baojia')?>">继续下单</a>
         </div>
     </div>
 </div>
