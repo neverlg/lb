@@ -318,6 +318,7 @@ class Ewallet_model extends MY_Model {
 			$ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id");
 			$cur_balance = $ret1['me_money'];
 			if($cur_balance < $balance_pay){
+				log_message('error', '【混合支付失败】trade_id='.$trade_id."\r\n用户当前余额".$cur_balance."不足以支付订单余额部分".$balance_pay."\r\n但是异步支付成功");
 				$this->db->trans_rollback();
 				return false;
 			}else{
