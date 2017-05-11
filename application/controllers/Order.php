@@ -308,8 +308,9 @@ class Order extends MY_Controller {
 	}
 
 	//发起支付
-	public function do_pay($trade_id){
+	public function do_pay($trade_id, $order_id){
 		$trade_id = intval($trade_id);
+		$order_id = intval($order_id);
 		$ret = $this->ewallet_model->get_online_real_price($this->me_id, $trade_id);
 		if(empty($ret)){
 			exit('系统异常');

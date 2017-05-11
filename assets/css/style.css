@@ -149,7 +149,7 @@ img{ max-height:100%; max-width:100%; }
 .htnr-b-5{ margin-bottom:20px; clear:both; overflow:hidden;}
 .tab-b-2 a{color:#00a2ea;}
 .tab-b-3 a{color:#000; margin-top:10px; display:inline-block;}
-.tab-b-33 a{color:#ccc;}
+.tab-b-33 a{color:#ccc; margin-top:10px; display:inline-block;}
 .tab-b-4 a{ background:#008ed6; color:#fff; padding:5px 10px; margin-top:10px;}
 
 .tab-b-5 a{ background:#f08519; color:#fff; padding:5px 10px; margin-top:10px;}
