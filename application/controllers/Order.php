@@ -322,7 +322,7 @@ class Order extends MY_Controller {
 			'baojia_real_pay' => $fee
 			);
 		$this->session->set_userdata($arr);
-
+		$this->load->helper('payment');
 		header("Content-type:text/html;charset=utf-8");
 		header("Cache-control: private");
 		//设置异步配置的key
