@@ -81,7 +81,7 @@
         }else{
             $(this).val(0);
             $balance_fee = 0.00;
-            $("#auto-balance").html($balance_fee);
+            $("#auto-balance").html('0.00');
             var fee = $total_fee-$coupon_fee-$balance_fee;
             fee = parseFloat(fee);
             $("#real-fee").html(fee.toFixed(2));

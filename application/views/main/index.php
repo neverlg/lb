@@ -172,6 +172,7 @@
           window.location.href = "<?=site_url('order/index')?>";
         }else{
           $("#login-tips").text(msg.error);
+          $("#login-code").trigger("click"); 
         }
       }
     });

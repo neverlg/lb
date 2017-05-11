@@ -65,7 +65,7 @@ class Order extends MY_Controller {
 		$data['local_list'] = $this->order_model->get_baojia_search_item($this->me_id, $post, $page, $num_per_page['order_index']);
 		//分页
 		$this->load->library('pagination');
-		$config['base_url'] = site_url("orders/baojia_index/$type/");
+		$config['base_url'] = site_url("order/baojia_index/$type/");
 		$config['total_rows'] = $data['local_num'];
 		$config['per_page'] = $num_per_page['order_index'];
 		$config['use_page_numbers'] = TRUE;

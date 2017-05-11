@@ -109,7 +109,6 @@
             $("#yzm-talk").text('请输入验证码！');
         }else{
             if(smsFlag){
-                smsFlag = false;
                 curSmsCount = smsCount;
                 $.ajax({
                     type:'post',
@@ -117,6 +116,7 @@
                     data:{captcha:code},
                     success:function(msg){
                       if(msg.status == 0){
+                        smsFlag = false;
                         $smsBox.hide();
                         //设置倒计时
                         setSmsCodeBtn();

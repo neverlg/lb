@@ -94,6 +94,9 @@
 	}
 
 	$("#reg-send-sms").click(function(){
+		if(!smsFlag){
+			return;
+		}
 		if(check_phone()){
 			$smsBox.show();
 		}else{
@@ -130,7 +133,6 @@
             $("#yzm-talk").text('请输入验证码！');
         }else{
         	if(smsFlag){
-        		smsFlag = false;
 		        curSmsCount = smsCount;
 		        $.ajax({
 		            type:'post',
@@ -138,6 +140,7 @@
 		            data:{phone:phone, captcha:code},
 		            success:function(msg){
 		              if(msg.status == 0){
+		              	smsFlag = false;
 		                $smsBox.hide();
 		                //设置倒计时
 		                setSmsCodeBtn();
