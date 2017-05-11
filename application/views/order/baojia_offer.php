@@ -60,6 +60,7 @@
                 </span>
                 <?php } ?>
 
+                <?php if($trace['merchant_status']>3){ ?>
                 <?php if($trace['merchant_status']<7){ ?>
                 <span class="ckjd-1-3">
                     <a href="<?=site_url('refund/add/'.$order_id)?>">申请退款</a>
@@ -72,6 +73,7 @@
                 <span class="ckjd-1-3">
                     <a>你已评价师傅</a>
                 </span>
+                <?php } ?>
                 <?php } ?>
             </span>
             <?php } ?>
