@@ -277,7 +277,8 @@ class Ewallet_model extends MY_Model {
 			$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$me_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=1, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
 			$balance_payid = $this->db->insert_id();
 			//此时将两种混合id存起来，方便异步通知时修改
-			$this->session->set_userdata('mixed_pay_'.$online_payid, $balance_payid);
+			$this->load->library('lb_redis');
+			Lb_redis::set('mixed_pay_'.$online_payid, $balance_payid, 3600);
 		}
 		if(!empty($coupon_id)){
 			$this->db->query("UPDATE coupon_grantlist SET cg_status=0, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
@@ -312,7 +313,8 @@ class Ewallet_model extends MY_Model {
 
 		$this->db->trans_begin();
 		//是否有余额支付参与
-		$balance_pay_id = $this->session->userdata('mixed_pay_'.$trade_id);
+		$this->load->library('lb_redis');
+		$balance_pay_id = Lb_redis::get('mixed_pay_'.$trade_id);
 		if(!empty($balance_pay_id)){
 			$ret = $this->db->query("SELECT amount FROM merchant_trade_log WHERE id=$balance_pay_id AND merchant_id=$me_id")->row_array();
 			$merchant_set = '';
@@ -322,7 +324,7 @@ class Ewallet_model extends MY_Model {
 			$cur_balance = $ret1['me_money'];
 			if($cur_balance < $balance_pay){
 				log_message('error', '【混合支付失败】trade_id='.$trade_id."\r\n用户当前余额".$cur_balance."不足以支付订单余额部分".$balance_pay."\r\n但是异步支付成功");
-				$this->db->trans_rollback();
+				//$this->db->trans_rollback();
 				return false;
 			}else{
 				$final_balance = $cur_balance - $balance_pay;
