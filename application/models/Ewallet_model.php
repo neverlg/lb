@@ -314,10 +314,11 @@ class Ewallet_model extends MY_Model {
 		$this->db->trans_begin();
 		//是否有余额支付参与
 		$this->load->library('lb_redis');
+		$merchant_set = '';
+		$balance_pay = 0.00;
 		$balance_pay_id = Lb_redis::get('mixed_pay_'.$trade_id);
 		if(!empty($balance_pay_id)){
 			$ret = $this->db->query("SELECT amount FROM merchant_trade_log WHERE id=$balance_pay_id AND merchant_id=$me_id")->row_array();
-			$merchant_set = '';
 			$balance_pay = $ret['amount'];
 			//获取用户当前余额
 			$ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id")->row_array();
