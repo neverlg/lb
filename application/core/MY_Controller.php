@@ -60,7 +60,7 @@ class MY_Controller extends CI_Controller {
             return;
         }
         //login
-        redirect('main/index');
+        redirect('main/index/login');
     }
     
 }
