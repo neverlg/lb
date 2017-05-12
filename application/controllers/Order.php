@@ -471,6 +471,7 @@ class Order extends MY_Controller {
 		}
 	}
 
+	/*
 	//test send
 	public function test_push(){
 		$arr = array(
@@ -485,5 +486,16 @@ class Order extends MY_Controller {
 		var_dump($cmd,$a,$output,$return_var);
 	}
 
-
+	public function test_notify(){
+		$this->load->library('lb_redis');
+		Lb_redis::set('mixed_pay_6126', 6127, 3600);
+		$this->load->model('ewallet_model');
+		$trade_log = $this->ewallet_model->get_record_by_tid('170512093527268288');
+		$post = array(
+			'trade_no' => 'alipay_number'
+			);
+		$ret = $this->ewallet_model->update_pay_log($post, $trade_log);
+		var_dump($ret);
+	}
+	*/
 }

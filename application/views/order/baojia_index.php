@@ -38,7 +38,7 @@
         			物流单号:
         			<input type="text" name="logistics_no" value="<?=$logistics_no?>" />&nbsp;&nbsp;
         			订单状态:
-        			<select name="ptype" value="<?=$ptype?>">
+        			<select name="ptype" value="<?=$type?>">
         				<option value="0" <?=($type==0)?"selected='selected'":""?>>全部订单状态</option>
         				<option value="1" <?=($type==1)?"selected='selected'":""?>>待报价</option>
         				<option value="2" <?=($type==2)?"selected='selected'":""?>>待雇佣</option>
