@@ -13,7 +13,7 @@
             <div class="fwfs-2-1">选择A方式</div>
             <center>  
                 <div class="fwfs-2-2">
-                    <img src="<?=asset("images/1235.png")?>" /><br/><br/><a href="#" >发布订单获取多个师傅报价 ></a> 
+                    <img src="<?=asset("images/1235.png")?>" /><br/><br/><a href="<?=site_url('order/baojia')?>" >发布订单获取多个师傅报价 ></a> 
                 </div>
             </center>
             <div class="fwfs-2-3">
@@ -57,7 +57,7 @@
             <div class="fwfs-2-1">选择B方式</div>
             <center>  
                 <div class="fwfs-2-2a">
-                    <img src="<?=asset("images/7141250.png")?>" /><br/><br/><a href="#" >专属客服定价 快速批量下单 > ></a> 
+                    <img src="<?=asset("images/7141250.png")?>" /><br/><br/><a href="<?=site_url('auth/priced_apply')?>" >专属客服定价 快速批量下单 > ></a> 
                 </div>
             </center>
             <div class="fwfs-2-3">
