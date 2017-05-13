@@ -443,7 +443,7 @@ class Order extends MY_Controller {
 					'service_type' => $type
 					);
 				$cmd = '/usr/bin/php index.php task push_master "'. urlencode(serialize($arr)) .'" > /dev/null &';
-				exec($cmd);
+				//exec($cmd);
 				ajax_response(0, 'success');
 			}
 		}
