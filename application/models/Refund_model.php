@@ -61,8 +61,8 @@ class Refund_model extends MY_Model {
 		//$refund_status_conf = config_item('refund_status');
 		foreach ($result as $key => $val) {
 			$result[$key]['refund_time'] = date('Y-m-d H:i', $val['refund_time']);
-			if(!in_array($val['refund_result_type'], array(3, 4))){
-				$result[$key]['refund_amount'] = '————';
+			if(empty($val['refund_success_time'])){
+				$result[$key]['refund_amount'] = '- -';
 			}
 			$tmp_status = '';
 			if($val['refund_result_type'] == 0){
