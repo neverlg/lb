@@ -77,7 +77,7 @@ class Refund_model extends MY_Model {
 		$update_num_sql = "UPDATE merchant_order_num SET under_refund=under_refund+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
-		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method,refund_result_type=1";
+		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method";
 		$this->db->query($insert_sql);
 		$refund_id = $this->db->insert_id();
 		$this->db->query($update_status_sql);
