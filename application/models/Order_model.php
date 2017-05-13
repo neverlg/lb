@@ -96,7 +96,7 @@ class Order_model extends MY_Model {
 		if(in_array($ptype, array(1,2,3,4,5,6,7))){
 			$where .= " AND b.merchant_status=$ptype ";
 		}else if($ptype==8){
-			$where .= " AND b.refund_status=1 "; 
+			$where .= " AND b.refund_status=1 AND b.arbitrate_status=0 "; 
 		}else if($ptype==9){
 			$where .= " AND b.arbitrate_status=1 "; 
 		}else if($ptype==10){
@@ -114,6 +114,9 @@ class Order_model extends MY_Model {
 		}
 		if(!empty($logistics_no)){
 			$where .= " AND c.logistics_ticketnumber='{$logistics_no}'";
+		}
+		if($ptype != 10){
+			$where .= " AND b.except_status!=1 "; 
 		}
 
 		if(empty($kehu) && empty($logistics_no)){
@@ -141,7 +144,7 @@ class Order_model extends MY_Model {
 		if(in_array($ptype, array(1,2,3,4,5,6,7))){
 			$where .= " AND b.merchant_status=$ptype ";
 		}else if($ptype==8){
-			$where .= " AND b.refund_status=1 "; 
+			$where .= " AND b.refund_status=1 AND b.arbitrate_status=0 "; 
 		}else if($ptype==9){
 			$where .= " AND b.arbitrate_status=1 "; 
 		}else if($ptype==10){
@@ -159,6 +162,9 @@ class Order_model extends MY_Model {
 		}
 		if(!empty($logistics_no)){
 			$where .= " AND c.logistics_ticketnumber='{$logistics_no}'";
+		}
+		if($ptype != 10){
+			$where .= " AND b.except_status!=1 "; 
 		}
 
 		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} LIMIT $start, $num_per_page";

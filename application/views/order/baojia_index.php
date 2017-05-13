@@ -90,13 +90,20 @@
     							</td>
     							<?php } ?>
 
-    							<?php if($val['refund_status']==1){ ?>
-    							<td width="150" class="tab-b-5555">
-    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">申请退款中 ></a>
-    							</td>
+                                <?php if($val['except_status']==1){ ?>
+                                <td width="150" class="tab-b-4">交易关闭</td>
+                                <?php }else if(in_array($val['except_status'], array(2,3))){ ?>
+                                <td width="150" class="tab-b-55555">
+                                    交易关闭<br/><br/>
+                                    <a href="<?=site_url('refund/detail/'.$val['id'])?>">退款成功 ></a>
+                                </td>
     							<?php }else if($val['arbitrate_status']==1){ ?>
     							<td width="150" class="tab-b-5555">
     								<a href="<?=site_url('refund/detail/'.$val['id'])?>">申请仲裁中 ></a>
+    							</td>
+    							<?php }else if($val['refund_status']==1){ ?>
+    							<td width="150" class="tab-b-5555">
+    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">申请退款中 ></a>
     							</td>
     							<?php }else if($val['merchant_status']==1){ ?>
     							<td width="150">待报价</td>
@@ -110,7 +117,7 @@
     								待托管费用<br/><br/>
     								<a href="<?=site_url('order/order_pay/'.$val['id'])?>">托管费用 ></a>
     							</td>
-    							<?php }else if($val['merchant_status']==5){ ?>
+    							<?php }else if($val['merchant_status']==5 || $val['merchant_status']==4){ ?>
     							<td width="150" class="tab-b-5">师傅服务中</td>
     							<?php }else if($val['merchant_status']==6){ ?>
     							<td width="150" class="tab-b-55">
@@ -128,13 +135,6 @@
     									<?php } ?>
     									<font color="#999999">已评价</font>
     								<?php } ?>
-    							</td>
-    							<?php }else if($val['except_status']==1){ ?>
-    							<td width="150" class="tab-b-4">交易关闭</td>
-    							<?php }else if(in_array($val['except_status'], array(2,3))){ ?>
-    							<td width="150" class="tab-b-55555">
-    								交易关闭<br/><br/>
-    								<a href="<?=site_url('refund/detail/'.$val['id'])?>">退款成功 ></a>
     							</td>
     							<?php } ?>
 
@@ -155,7 +155,7 @@
     								<span class="tab-b-3">
     									<a class="cancel-order" href="#" rel="<?=site_url('order/baojia_del/'.$val['id'].'/'.$from)?>">取消订单</a>
     								</span>
-    								<?php }else if(in_array($val['merchant_status'], array(4,5,6))){ ?>
+    								<?php }else if(in_array($val['merchant_status'], array(4,5,6)) && $val['refund_status']==0){ ?>
     								<br/>
     								<span class="tab-b-33">
     									<a href="<?=site_url('refund/add/'.$val['id'])?>">申请退款</a>

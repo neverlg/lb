@@ -16,15 +16,18 @@ class Refund_model extends MY_Model {
 			$where .= " AND b.order_number='{$order_sn}'";
 		}
 		if(!empty($refund_status)){
-			if($refund_status == 3){
-				$where .= " AND a.refund_result_type in (3,4)";
-			}else{
-				$where .= " AND a.refund_result_type=$refund_status";
+			if($refund_status == 1){
+				$where .= " AND a.refund_result_type=0 ";
+			}else if($refund_status == 2){
+				$where .= " AND a.refund_result_type=2 ";
+			}else if($refund_status == 3){
+				$where .= " AND a.refund_success_time>0 ";
+			}else if($refund_status == 5){
+				$where .= " AND a.arbitrate_time>0 ";
+			}else if($refund_status == 6){
+				$where .= " AND a.arbitrate_result_type=3 ";
 			}
-		}else{
-			$where .= " AND a.refund_result_type>0";
 		}
-		$where = ltrim($where, ' AND');
 		//此处只需要orders和orders_status联表即可
 		$sql = "SELECT count(*) as num FROM orders_refund a LEFT JOIN orders b ON a.order_id=b.id {$where}";
 		$result = $this->db->query($sql)->row_array();
@@ -37,28 +40,46 @@ class Refund_model extends MY_Model {
 			$where .= " AND b.order_number='{$order_sn}'";
 		}
 		if(!empty($refund_status)){
-			if($refund_status == 3){
-				$where .= " AND a.refund_result_type in (3,4)";
-			}else{
-				$where .= " AND a.refund_result_type=$refund_status";
+			if($refund_status == 1){
+				$where .= " AND a.refund_result_type=0 ";
+			}else if($refund_status == 2){
+				$where .= " AND a.refund_result_type=2 ";
+			}else if($refund_status == 3){
+				$where .= " AND a.refund_success_time>0 ";
+			}else if($refund_status == 5){
+				$where .= " AND a.arbitrate_time>0 ";
+			}else if($refund_status == 6){
+				$where .= " AND a.arbitrate_result_type=3 ";
 			}
-		}else{
-			$where .= " AND a.refund_result_type>0";
 		}
-		$where = ltrim($where, ' AND');
 		$start = ($page-1)*$num_per_page;
 
-		$sql = "SELECT a.order_id, a.refund_amount, a.refund_time, a.refund_result_type, b.order_number, b.service_type, b.merchant_price, b.master_name FROM orders_refund a LEFT JOIN orders b ON a.order_id=b.id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
+		$sql = "SELECT a.order_id, a.refund_amount, a.refund_time, a.refund_result_type, a.arbitrate_time, a.arbitrate_result_type, a.refund_success_time, b.order_number, b.service_type, b.merchant_price, b.master_name FROM orders_refund a LEFT JOIN orders b ON a.order_id=b.id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		$service_type_conf = config_item('service_type');
-		$refund_status_conf = config_item('refund_status');
+		//$refund_status_conf = config_item('refund_status');
 		foreach ($result as $key => $val) {
 			$result[$key]['refund_time'] = date('Y-m-d H:i', $val['refund_time']);
 			if(!in_array($val['refund_result_type'], array(3, 4))){
 				$result[$key]['refund_amount'] = '————';
 			}
-			$result[$key]['refund_result_type'] = $refund_status_conf[$val['refund_result_type']];
+			$tmp_status = '';
+			if($val['refund_result_type'] == 0){
+				$tmp_status = '待师傅确认中';
+			}else if($val['refund_result_type'] == 2){
+				$tmp_status = '师傅拒绝退款';
+			}
+			if($val['arbitrate_time'] > 0){
+				$tmp_status = '介入仲裁中';
+			}
+			if($val['arbitrate_result_type'] == 3){
+				$tmp_status = '仲裁拒绝退款';
+			}
+			if($val['refund_success_time']>0){
+				$tmp_status = '退款成功';
+			}
+			$result[$key]['refund_result_type'] = $tmp_status;
 			$result[$key]['service_type'] = $service_type_conf[$val['service_type']];
 		}
 		return $result;
@@ -77,7 +98,7 @@ class Refund_model extends MY_Model {
 		$update_num_sql = "UPDATE merchant_order_num SET under_refund=under_refund+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
-		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method";
+		$insert_sql = "INSERT INTO orders_refund SET order_id=$order_id, refund_reason='{$reason}', refund_time=$time, refund_type=$type, refund_amount=$fee, add_time=$time, order_number='{$number}',refund_method=$method,refund_result_type=0";
 		$this->db->query($insert_sql);
 		$refund_id = $this->db->insert_id();
 		$this->db->query($update_status_sql);
@@ -117,8 +138,8 @@ class Refund_model extends MY_Model {
 		//此处需要更新orders_refund表和orders_status表
 		$result = false;
 		$time = time();
-		$sql1 = "UPDATE orders_refund SET refund_result_type=6 AND upd_time=$time WHERE order_id=$order_id";
-		$sql2 = "UPDATE orders_status SET refund_status=6 AND upd_time=$time WHERE order_id=$order_id";
+		$sql1 = "DELETE FROM orders_refund WHERE order_id=$order_id";
+		$sql2 = "UPDATE orders_status SET refund_status=0, arbitrate_status=0, upd_time=$time WHERE order_id=$order_id";
 		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();
@@ -164,8 +185,8 @@ class Refund_model extends MY_Model {
 
 		$final_result = false;
 		$time = time();
-		$sql1 = "UPDATE orders_refund SET refund_result_type=5, arbitrate_time=$time, arbitrate_result_type=1, arbitrate_name='{$name}', arbitrate_phone='{$phone}', arbitrate_explain='{$explain}', arbitrate_img='{$img}', upd_time=$time WHERE order_id=$order_id";
-		$sql2 = "UPDATE orders_status SET refund_status=5, arbitrate_status=1,upd_time=$time WHERE order_id=$order_id";
+		$sql1 = "UPDATE orders_refund SET arbitrate_time=$time, arbitrate_name='{$name}', arbitrate_phone='{$phone}', arbitrate_explain='{$explain}', arbitrate_img='{$img}', upd_time=$time WHERE order_id=$order_id";
+		$sql2 = "UPDATE orders_status SET arbitrate_status=1,upd_time=$time WHERE order_id=$order_id";
 		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1, under_arbitrate=under_arbitrate+1 WHERE me_id=$me_id AND order_type=1";
 
 		$this->db->trans_begin();

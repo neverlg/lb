@@ -49,34 +49,32 @@ class Refund extends MY_Controller {
 		$data['refund'] = $this->refund_model->get_detail($order_id);
 
 		$tag = 1;
-		switch ($data['refund']['refund_result_type']) {
-			case '1':
-				$tag = 1;
-				$data['auto_refund_time'] = config_item('auto_refund_time');
-				break;
-			case '2':
-				$tag = 2;
-				$this->load->library('util');
-				$qiniu_conf = config_item('qiniu');
-				$data['upload_url'] = $qiniu_conf['upload_url'];
-				$data['source_url'] = $qiniu_conf['source_url'];
-				$bucket = 'lebang';
-				$data['up_token'] = Util::get_qiniu_token($qiniu_conf['access_key'], $qiniu_conf['secret_key'], $bucket);
-				break;
-			case '3':
-			case '4':
-				if($data['refund']['arbitrate_status'] == 0){
-					$tag = '3_0';
-				}else{
-					$tag = '3_1';
-				}
-				break;
-			case '5':
-				$tag = 5;
-				break;
-			case '6':
-				$tag = 6;
-				break;
+		if($data['refund']['refund_result_type']==0){
+			$data['auto_refund_time'] = config_item('auto_refund_time');
+		}else if($data['refund']['refund_result_type']==2){
+			$tag = 2;
+			$this->load->library('util');
+			$qiniu_conf = config_item('qiniu');
+			$data['upload_url'] = $qiniu_conf['upload_url'];
+			$data['source_url'] = $qiniu_conf['source_url'];
+			$bucket = 'lebang';
+			$data['up_token'] = Util::get_qiniu_token($qiniu_conf['access_key'], $qiniu_conf['secret_key'], $bucket);
+		}
+		//介入仲裁
+		if($data['refund']['arbitrate_time']>0){
+			$tag = 5;
+		}
+
+		//退款成功
+		if($data['refund']['refund_success_time'] > 0){
+			if(in_array($data['refund']['arbitrate_result_type'], array(1, 2))){
+				$tag = '3_1';
+			}else if($data['refund']['arbitrate_result_type']==3){
+				//退款关闭
+				$tag = '6';
+			}else{
+				$tag = '3_0';
+			}
 		}
 		$this->load->view('refund/detail_'.$tag, $data);
 	}

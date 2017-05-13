@@ -35,7 +35,7 @@
             			<option value="2" <?=($refund_status==2) ? "selected='selected'" : "" ?> >师傅拒绝退款</option>
             			<option value="3" <?=($refund_status==3) ? "selected='selected'" : "" ?> >退款成功</option>
             			<option value="5" <?=($refund_status==5) ? "selected='selected'" : "" ?> >介入仲裁中</option>
-            			<option value="6" <?=($refund_status==6) ? "selected='selected'" : "" ?> >退款关闭</option>
+            			<option value="6" <?=($refund_status==6) ? "selected='selected'" : "" ?> >仲裁拒绝退款</option>
             		</select>
             		&nbsp;&nbsp;<a id="reserch_refund" style="cursor:pointer;">搜索</a>
             	</div>

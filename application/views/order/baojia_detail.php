@@ -76,6 +76,7 @@
                 <?php } ?>
 
                 <?php if($detail['order']['merchant_status']<4){ ?>
+                <?php if($detail['order']['except_status']!=1){ ?>
                     <?php 
                         $from='wait_priced'; 
                         if($detail['order']['merchant_status']==2){
@@ -87,6 +88,11 @@
                 <span class="ckjd-1-3">
                     <a class="cancel-order" rel="<?=site_url('order/baojia_del/'.$order_id.'/'.$from)?>">取消订单</a>
                 </span>
+                <?php }else{ ?>
+                <span class="ckjd-1-3">
+                    <a>订单已取消</a>
+                </span>
+                <?php } ?>
                 <?php }else if($detail['order']['merchant_status']<7){ ?>
                 <span class="ckjd-1-3">
                     <a href="<?=site_url('refund/add/'.$order_id)?>">申请退款</a>
@@ -181,7 +187,9 @@
             <div class="bjxq-1">
                 订单编号:<?=$detail['order']['order_number']?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 服务类型:<?=$detail['order']['service_type_txt']?>
+                <?php if($detail['order']['except_status']==0 && $detail['order']['merchant_status']<5){ ?>
                 <span style="float:right;padding-right:3%;cursor:pointer;" class="edit-order" >编辑此订单</span>
+                <?php } ?>
             </div>
     
             <div class="bjxq1-1">
