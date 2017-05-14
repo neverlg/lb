@@ -429,7 +429,7 @@ class Order_model extends MY_Model {
 	}
 
 	//产生订单
-	public function create_order($me_id, $type, $order_no, $post){
+	public function create_order($me_id, $type, $order_no, $confirm_code, $post){
 		@extract($post);
 		$time = time();
 		$ip = $this->input->ip_address();
@@ -451,7 +451,7 @@ class Order_model extends MY_Model {
 			}
 		}
 		//生成orders记录
-		$this->db->query("INSERT INTO orders SET order_number='{$order_no}',merchant_id={$me_id},service_category=1,service_type={$type},add_time={$time},order_type=1,push_time={$time}");
+		$this->db->query("INSERT INTO orders SET order_number='{$order_no}',merchant_id={$me_id},service_category=1,service_type={$type},add_time={$time},order_type=1,push_time={$time},confirm_code={$confirm_code}");
 		$order_id = $this->db->insert_id();
 
 		//货品加入orders_goods表

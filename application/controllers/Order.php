@@ -434,7 +434,9 @@ class Order extends MY_Controller {
 		if(in_array($type, array(1, 2, 3, 4))){
 			$this->load->library('util');
 			$order_no = Util::genOrderNumber();
-			$ret = $this->order_model->create_order($this->me_id, $type, $order_no, $post);
+			//确认码，不要0
+			$confirm_code = rand(1,9).rand(1,9).rand(1,9).rand(1,9).rand(1,9).rand(1,9);
+			$ret = $this->order_model->create_order($this->me_id, $type, $order_no, $confirm_code, $post);
 			if($ret){
 				//此处exec，推送订单消息
 				$arr = array(
