@@ -22,9 +22,14 @@ class Main extends MY_Controller {
     				'img_path'  => './captcha/',
     				'img_url'   => http_type().$_SERVER['HTTP_HOST'].'/captcha/',
     				'font_path' => './assets/fonts/TextileRegular.ttf',
-    				'font_size' => 20,
     				'expiration' => 300,
-    				'word_length' => 4
+    				'word_length' => 4,
+    				'colors'    => array(
+				        'background' => array(0, 0, 0),
+				        'border' => array(0, 0, 0),
+				        'text' => array(255, 255, 255),
+				        'grid' => array(255, 10, 10)
+    				)
  				);
 			$cap = create_captcha($vals);
 			$this->session->set_flashdata('auth_capture', $cap['word']);
