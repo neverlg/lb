@@ -276,7 +276,7 @@ class Order_model extends MY_Model {
 
 	//获取服务节点
 	public function get_baojia_trace($order_id){
-		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, evaluate_status, door_time, deliver_imgs, deliver_except, finish_imgs, finish_ticket_img, finish_message, finish_time, appoint_time, deliver_time FROM orders_status WHERE order_id=$order_id";
+		$sql ="SELECT merchant_status, master_status, except_status, refund_status, arbitrate_status, evaluate_status, door_time, deliver_imgs, deliver_except, finish_imgs, finish_ticket_img, tmall_check_img, finish_message, finish_time, appoint_time, deliver_time FROM orders_status WHERE order_id=$order_id";
 		$result = $this->db->query($sql)->row_array();
 
 		$week_arr = array('周日', '周一', '周二', '周三', '周四', '周五', '周六');
@@ -290,16 +290,14 @@ class Order_model extends MY_Model {
 		$result['deliver_time'] = empty($result['deliver_time']) ? 0 : date('Y-m-d H:i', $result['deliver_time']);
 		$result['deliver_imgs'] = json_decode($result['deliver_imgs'], true);
 		$result['finish_imgs'] = json_decode($result['finish_imgs'], true);
-		$result['finish_ticket_img'] = json_decode($result['finish_ticket_img'], true);
 		$qiniu = config_item('qiniu');
+		$result['finish_ticket_img'] = $qiniu['source_url'].$result['finish_ticket_img'];
+		$result['tmall_check_img'] = empty($result['tmall_check_img']) ? '' : $qiniu['source_url'].$result['tmall_check_img'];
 		foreach ($result['deliver_imgs'] as $key => $val) {
 			$result['deliver_imgs'][$key] = $qiniu['source_url'].$val;
 		}
-		foreach ($result['finish_imgs'] as $key => &$val) {
+		foreach ($result['finish_imgs'] as $key => $val) {
 			$result['finish_imgs'][$key] = $qiniu['source_url'].$val;
-		}
-		foreach ($result['finish_ticket_img'] as $key => &$val) {
-			$result['finish_ticket_img'][$key] = $qiniu['source_url'].$val;
 		}
 		
 		return $result;

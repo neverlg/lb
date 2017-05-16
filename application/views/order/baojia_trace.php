@@ -109,15 +109,13 @@
                 <img src="<?=$val?>" />  
                 <?php } ?>
 
-                <!--
+                <?php if(!empty($trace['tmall_check_img'])){ ?>
                 <br/>喵师傅成功核销截图:<br/>
-                <img src="images/ck1.png" />
-                -->
+                <img src="<?=$trace['tmall_check_img']?>" />
+                <?php } ?>
 
                 <br/>客户签收单照片:<br/>
-                <?php foreach($trace['finish_ticket_img'] as $val){ ?>
-                <img src="<?=$val?>" />
-                <?php } ?>
+                <img src="<?=$trace['finish_ticket_img']?>" />
             </div>
             <?php } ?>
 

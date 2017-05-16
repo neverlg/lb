@@ -309,9 +309,10 @@ class Ewallet_model extends MY_Model {
 		$order_list = $trade_arr['order_number_list'];
 		$final_result = false;
 
-		$sql1 = "UPDATE merchant_trade_log SET status=1, info='{$info}', alipay_no='{$alipay_no}', update_time=$time WHERE id=$trade_id";
-
 		$this->db->trans_begin();
+		//获取用户当前余额
+		$ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id")->row_array();
+		$cur_balance = $ret1['me_money'];
 		//是否有余额支付参与
 		$this->load->library('lb_redis');
 		$merchant_set = '';
@@ -320,9 +321,6 @@ class Ewallet_model extends MY_Model {
 		if(!empty($balance_pay_id)){
 			$ret = $this->db->query("SELECT amount FROM merchant_trade_log WHERE id=$balance_pay_id AND merchant_id=$me_id")->row_array();
 			$balance_pay = $ret['amount'];
-			//获取用户当前余额
-			$ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id")->row_array();
-			$cur_balance = $ret1['me_money'];
 			if($cur_balance < $balance_pay){
 				log_message('error', '【混合支付失败】trade_id='.$trade_id."\r\n用户当前余额".$cur_balance."不足以支付订单余额部分".$balance_pay."\r\n但是异步支付成功");
 				//$this->db->trans_rollback();
@@ -335,7 +333,7 @@ class Ewallet_model extends MY_Model {
 		}
 		$change_pay = $balance_pay+$trade_arr['amount'];
 		$this->db->query("UPDATE merchant SET {$merchant_set} me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$change_pay WHERE me_id=$me_id");
-		$this->db->query($sql1);
+		$this->db->query("UPDATE merchant_trade_log SET status=1, info='{$info}', alipay_no='{$alipay_no}', balance=$cur_balance, update_time=$time WHERE id=$trade_id");
 		$this->db->query("UPDATE orders SET pay_type=4, pay_time=$time WHERE id IN ($order_list)");
 		$this->db->query("UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id in ($order_list)");
 		$this->db->query("UPDATE merchant_order_num SET wait_pay=wait_pay-1, wait_cargo_arrive=wait_cargo_arrive+1 WHERE me_id=$me_id AND order_type=1");
