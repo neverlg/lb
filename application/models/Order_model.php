@@ -319,7 +319,9 @@ class Order_model extends MY_Model {
 		$qiniu = config_item('qiniu');
 		foreach ($base as $key => $val) {
 			//判断，如果是全路径，不加前缀
-			if(stripos($val['head_img'], 'http') === FALSE){
+			if(empty($val['head_img'])){
+				$base[$key]['head_img'] = asset("images/default_head.png");
+			}else if(stripos($val['head_img'], 'http') === FALSE){
 				$base[$key]['head_img'] = $qiniu['source_url'].$val['head_img'];
 			}
 			//商家展示价格是师傅的1.1倍

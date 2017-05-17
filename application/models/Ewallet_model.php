@@ -34,18 +34,18 @@ class Ewallet_model extends MY_Model {
 
 	public function get_trade_list($me_id, $page, $num_per_page, $start_time, $end_time){
 		//与钱包有关或者充值的
-		$where = ' AND (a.source=1 OR a.type=1)';
+		$where = ' AND (source=1 OR type=1)';
 		$start_time = strtotime($start_time);
 		$end_time = strtotime($end_time);
 		if($start_time){
-			$where .= ' AND a.add_time>' . $start_time;
+			$where .= ' AND add_time>' . $start_time;
 		}
 		if($end_time){
-			$where .= ' AND a.add_time<' . $end_time;
+			$where .= ' AND add_time<' . $end_time;
 		}
 		$start = ($page-1)*$num_per_page;
 	
-		$sql = "SELECT add_time, trade_number, type, alipay_no, direction, amount, balance, remark, (SELECT group_concat(order_number separator ',') FROM orders b WHERE find_in_set(b.id, a.order_number_list)) as order_sn FROM merchant_trade_log a WHERE a.merchant_id=$me_id AND a.status=1 $where ORDER BY a.id DESC LIMIT $start, $num_per_page";
+		$sql = "SELECT add_time, trade_number, type, alipay_no, direction, amount, balance, remark, order_serial_number_list as order_sn FROM merchant_trade_log WHERE a.merchant_id=$me_id AND status=1 $where ORDER BY id DESC LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		//此处需要变换数组，使之适应合并支付
@@ -230,7 +230,7 @@ class Ewallet_model extends MY_Model {
 		$this->load->library('util');
 		$trade_number = Util::genTradeNumber();
 		$cur_balance = $me_balance-$use_balance;
-		$sql1 = "INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$use_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=1, add_time=$time, source=1, balance=$cur_balance, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'";
+		$sql1 = "INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$use_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=1, add_time=$time, source=1, balance=$cur_balance, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'";
 		//更新商家总下单数目，总积分，总金额
 		$sql2 = "UPDATE merchant SET me_money=$cur_balance, me_update_time=$time, me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$use_balance WHERE me_id=$me_id";
 		$sql3 = "UPDATE orders_status SET merchant_status=4, upd_time=$time WHERE order_id=$order_id";
@@ -269,12 +269,12 @@ class Ewallet_model extends MY_Model {
 		$trade_number = Util::genTradeNumber();
 
 		$this->db->trans_begin();
-		$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+		$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
 		$online_payid = $this->db->insert_id();
 		if(!empty($me_balance)){
 			$trade_number = Util::genTradeNumber();
 			//现有余额为0.00，异步通知成功，再设置
-			$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$me_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', ip='{$ip}', status=0, add_time=$time, source=1, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+			$this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$me_balance, type=2, trade_number='{$trade_number}', order_number_list='{$order_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=0, add_time=$time, source=1, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
 			$balance_payid = $this->db->insert_id();
 			//此时将两种混合id存起来，方便异步通知时修改
 			$this->load->library('lb_redis');
