@@ -83,12 +83,14 @@ class Payment_notify extends CI_Controller {
 						if($ret){
 							//通知后台
 							$this->load->library('admin_server');
-							$ret_arr = $this->admin_server->order_employed_call($ret);
-							//如果失败，记录日志
-							if(empty($ret_arr) || $ret_arr['code']!=200){
-								$str = var_export($ret_arr, true);
-								log_message('error', '【预付款通知api失败】trade_id='.$ret."\r\n返回值为：".$str);
-							}
+                            foreach (array_filter(explode(',',$trade_log['order_number_list'])) as $order_id){
+                                $ret_arr = $this->admin_server->order_employed_call($order_id);
+                                //如果失败，记录日志
+                                if(empty($ret_arr) || $ret_arr['code']!=200){
+                                    $str = var_export($ret_arr, true);
+                                    log_message('error', '【预付款通知api失败】trade_id='.$ret.", order_id='.$order_id.\"\r\n返回值为：".$str);
+                                }
+                            }
 
 							exit('success');
 						}else{
