@@ -43,8 +43,7 @@ class Task extends CI_Controller {
 			          "toparty"=>"",
 			          "totag"=>"",
 			          "msgtype"=>"text",
-			          // 12 还是 60 ？
-			          "agentid"=>12,
+			          "agentid"=>config_item('agentid'),
 			          "text"=>array("content"=>'【乐帮到家】您所在区域有新订单，请尽快去报价！'),
 			          "safe"=>0
 			          );      
@@ -79,12 +78,11 @@ class Task extends CI_Controller {
 		}
 
 		//组装消息，是否图文，然后发送   $user['weixin_userid']
-		$data = array("touser"=>'luogan',
+		$data = array("touser"=>'WuXiao',
 		          "toparty"=>"",
 		          "totag"=>"",
 		          "msgtype"=>"text",
-		          // 12 还是 60 ？
-		          "agentid"=>12,
+		          "agentid"=>config_item('agentid'),
 		          "text"=>array("content"=>'【乐帮到家】您所在区域有新订单，请尽快去报价！'),
 		          "safe"=>0
 		          );      

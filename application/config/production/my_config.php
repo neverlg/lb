@@ -215,9 +215,16 @@ $config['lb_redis'] = array(
 );
 
 //weixin
+/*
+//正式
 $config['corpid'] = 'wx4151e8d2b426ba03';
 $config['corpsecret'] = 'andeuuNoFXXcnCZiICoPnb3zvyhXUHn67nd_hl7mBxoLIN0lBE8ADM3RCnxsiOYd';
 $config['agentid'] = 12;
+*/
+//测试
+$config['corpid'] = 'wxab236952362b38c4';
+$config['corpsecret'] = '512eegJTe44BnQdRIHXg3qHPCff3z_PsqqlO76SE4HUKn9vbgCTqut5N-euAz_Ug';
+$config['agentid'] = 3;
 
 //七牛
 $config['qiniu'] = array(
