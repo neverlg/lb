@@ -45,7 +45,7 @@ class Ewallet_model extends MY_Model {
 		}
 		$start = ($page-1)*$num_per_page;
 	
-		$sql = "SELECT add_time, trade_number, type, alipay_no, direction, amount, balance, remark, order_serial_number_list as order_sn FROM merchant_trade_log WHERE a.merchant_id=$me_id AND status=1 $where ORDER BY id DESC LIMIT $start, $num_per_page";
+		$sql = "SELECT add_time, trade_number, type, alipay_no, direction, amount, balance, remark, order_serial_number_list as order_sn FROM merchant_trade_log WHERE merchant_id=$me_id AND status=1 $where ORDER BY id DESC LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		//此处需要变换数组，使之适应合并支付
