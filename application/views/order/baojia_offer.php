@@ -109,7 +109,8 @@
             <?php }else if($val['status']==1){ $hired_flag=$val['id']; ?>
             <div class="ybj-55 col-md-4">
                 报价：<font color="#f00"><?=$val['price']?>元</font><br/>
-                <a >已雇佣</a>
+                <a>已雇佣</a> <br/>
+                <a style="width:108px;padding-left:10px;padding-right:10px;" href="<?=site_url('order/order_pay/'.$order_id)?>">托管费用</a>
             </div>
             <?php }else if($val['status']==2){ ?>
             <div class="ybj-55 col-md-4">
