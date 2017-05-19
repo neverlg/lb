@@ -37,6 +37,18 @@ class Task extends CI_Controller {
 		}
 
 		$result = $this->master_model->get_suitable_userid($area_id, $service_type);
+
+		//检测是够开启了调试
+		$debug = config_item('push_debug');
+		if($debug){
+			$debug_userid = config_item('push_debug_userid');
+			foreach ($result as $k => $v) {
+				if(!in_array($v['weixin_userid'], $debug_userid)){
+					unset($result[$k]);
+				}
+			}
+		}
+
 		foreach ($result as $key => $user) {
 			//组装消息，是否图文，然后发送   $user['weixin_userid']
 			$data = array("touser"=>$user['weixin_userid'],
@@ -60,41 +72,4 @@ class Task extends CI_Controller {
 		exit;
 	}
 
-
-	public function push_master_test($data=''){
-		//获取access_token
-		$this->load->library('lb_redis');
-		$access_token = Lb_redis::get('qiye_token');
-		if(!$access_token){
-			$accesstoken_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=".config_item('corpid')."&corpsecret=".config_item('corpsecret');
-			$result = http_get_request($accesstoken_url);
-			$token_arr = json_decode($result,true);
-			if(isset($token_arr['errcode'])){
-				return false;
-			}
-			//accesstoken 7200s
-			$access_token = $token_arr['access_token'];
-			Lb_redis::set('qiye_token', $access_token, 5000);
-		}
-
-		//组装消息，是否图文，然后发送   $user['weixin_userid']
-		$data = array("touser"=>'WuXiao',
-		          "toparty"=>"",
-		          "totag"=>"",
-		          "msgtype"=>"text",
-		          "agentid"=>config_item('agentid'),
-		          "text"=>array("content"=>'【乐帮到家】您所在区域有新订单，请尽快去报价！'),
-		          "safe"=>0
-		          );      
-		$data = json_encode($data, JSON_UNESCAPED_UNICODE);      
-		$post_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=".$access_token;
-		$result = http_post_request($post_url, $data);
-		$ret = json_decode($result,true);
-		//日志 ？
-		if(empty($ret) || $ret['errcode']!=0){
-			$str = var_export($ret, true);
-			log_message('error', '【推送师傅消息】order_id='.'123456'.", username=".'WuXiao'."\r\n返回值为：".$str);
-		}
-		exit;
-	}
 }

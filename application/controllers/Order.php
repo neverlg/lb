@@ -473,7 +473,7 @@ class Order extends MY_Controller {
 		}
 	}
 
-
+	/*
 	//test send
 	public function test_push(){
 		$arr = array(
@@ -487,7 +487,7 @@ class Order extends MY_Controller {
 		echo '<pre>';
 		var_dump($cmd,$a,$output,$return_var);
 	}
-/*
+
 	public function test_notify(){
 		$this->load->library('lb_redis');
 		Lb_redis::set('mixed_pay_6126', 6127, 3600);
