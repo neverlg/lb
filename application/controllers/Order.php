@@ -473,21 +473,21 @@ class Order extends MY_Controller {
 		}
 	}
 
-	/*
+
 	//test send
 	public function test_push(){
 		$arr = array(
-					'order_id' => 1,
-					'area_id' => 1,
+					'order_id' => 21284,
+					'area_id' => 3016,
 					'service_type' => 1
 					);
 		//$cmd = '/data/service/php53/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'" > /dev/null &';
-		$cmd = '/usr/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'"';
+		$cmd = '/usr/bin/php index.php task push_master "'. urlencode(serialize($arr)) .'"';
 		$a = exec($cmd,$output,$return_var);
 		echo '<pre>';
 		var_dump($cmd,$a,$output,$return_var);
 	}
-
+/*
 	public function test_notify(){
 		$this->load->library('lb_redis');
 		Lb_redis::set('mixed_pay_6126', 6127, 3600);

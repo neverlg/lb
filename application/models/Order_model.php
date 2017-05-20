@@ -121,8 +121,6 @@ class Order_model extends MY_Model {
 
 		if(empty($kehu) && empty($logistics_no)){
 			$sql = "SELECT COUNT(*) as num FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id {$where}";
-		}else if(empty($ptype)){
-			$sql = "SELECT COUNT(*) as num FROM orders a LEFT JOIN orders_detail c ON a.id=c.order_id {$where}";
 		}else{
 			$sql = "SELECT COUNT(*) as num FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where}";
 		}
