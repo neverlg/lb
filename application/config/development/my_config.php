@@ -220,7 +220,7 @@ $config['corpsecret'] = 'andeuuNoFXXcnCZiICoPnb3zvyhXUHn67nd_hl7mBxoLIN0lBE8ADM3
 $config['agentid'] = 12;
 //是否开启消息推送调试，开启后，仅在push_debug_userid里的师傅可以收到推送
 $config['push_debug'] = true;
-$config['push_debug_userid'] = array('wedohuang', 'WuXiao', 'luogan');
+$config['push_debug_userid'] = array('huangweidong', 'WuXiao', 'luogan');
 
 //七牛
 $config['qiniu'] = array(
