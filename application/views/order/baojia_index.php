@@ -63,6 +63,7 @@
         			<div class="htnr-5-1">
         				订单编号:<font color=" #00a2ea"><?=$val['order_number']?></font>&nbsp;&nbsp;&nbsp;&nbsp;下单时间:<?=$val['add_time']?>&nbsp;&nbsp;&nbsp;&nbsp;
         				报价人数：<font color=" #00a2ea"><?=$val['master_num']?>人</font>
+
         				<a href="#" rel="<?=$val['id']?>" mark-data="<?=$val['merchant_remark']?>" class="remark">
                             <?php if(empty($val['merchant_remark'])){ ?>
                             <img src="<?=asset("images/xg3.png")?>" />
@@ -70,6 +71,10 @@
                             <img src="<?=asset("images/xg5.png")?>" />
                             <?php } ?>
                         </a>
+
+                        <?php if($val['merchant_status'] > 3){ ?>
+                        <a class="confirm-code" rel="<?=$val['confirm_code']?>" >获取确认码</a>
+                        <?php } ?>
         			</div>
             		<div class="htnr-b-6">
             			<table width="845" border="1">
@@ -208,8 +213,26 @@
     </div>
 </div>
 
+<!--confirm code-->
+<div class="confirmcode-pop" style="display:none;">
+    <div class="lb_mask"></div>
+    <div class="tt-2-confirmcode">
+        <input type="hidden" name="order_id" />
+        <div class="tt-2-1">服务确认码 <img class="close-confirmcode" src="<?=asset("images/02418.png")?>" /></div>
+        <div class="cc-2-2y"></div>
+        <div class="cc-2-2">
+            <p>1.如果由于特殊原因，师傅无法找客户索取到服务确认码，你可以把该服务码告知师傅，以让师傅确认服务完成。</p>
+            <p>2.如果师傅没有为客户完成服务，请勿随意提供！</p>
+        </div>
+        <div class="cc-2-3">
+            <a class="close-confirmcode">我知道了</a>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var $cancelUrl;
+    var $confirmCode;
     var $cancelOrderBox = $(".cancel-order-pop");
     var $merchant_mark = $(".remark-pop");
     //cancel order
@@ -234,6 +257,18 @@
 
     $(".cancel-order-cancel, .close-pop").click(function(){
         $cancelOrderBox.hide();
+    });
+
+    //confirm code
+    $(".confirm-code").click(function(){
+        $confirmCode = $(this).attr('rel');
+        $(".cc-2-2y").html($confirmCode);
+        $(".confirmcode-pop").show();
+    });
+
+    $(".close-confirmcode").click(function(){
+        $confirmCode = '';
+        $(".confirmcode-pop").hide();
     });
 
     //merchant mark

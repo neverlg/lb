@@ -142,6 +142,7 @@ img{ max-height:100%; max-width:100%; }
 .htnr-b-4{ text-align:right; color:#000; font-size:13px; font-weight:bold; padding-right:25px; }
 .htnr-5-1{ background:#d3edfa; padding:5px; color:#000; border:1px solid #000; border-bottom:0px;width:845px; }
 .htnr-5-1 a img{ float:right;}
+.confirm-code {cursor:pointer; margin-right:40px; float:right;}
 .htnr-b-6{ text-align:center;}
 .htnr-b-6 tr td{ padding-left:10px; padding-right:10px; }
 .htnr-b-6 tr { height:110px; color:#000; --font-weight:bold;}
@@ -676,3 +677,9 @@ th{ text-align:center;}
 .xdfw p span{display:inline-block;}
 .xdfw p em{font-style:normal;width:15px;display:inline-block;color:red;}
 .xdfw button{color:#fff; background-color:blue; width:180px; border:none; margin-top:20px; padding:4px;}
+
+.tt-2-confirmcode{ background:#f7f7f7; width:390px; border:1px solid #999; position:fixed; left:0; top:0; z-index:2000; margin:auto; right:0; bottom:0; height:240px;}
+.cc-2-2y{ font-size:30px; text-align:center; color:#FC3; font-weight:bold; padding-top:10px; padding-bottom:10px;}
+.cc-2-2{line-height:24px; padding:2px 12px; color:gray;}
+.cc-2-3{width:100%; text-align:center; margin-top:10px;}
+.cc-2-3 a{cursor:pointer; width:300px; background-color:#06F; color:#fff; padding:8px 20px; display:inline-block;}

@@ -167,7 +167,7 @@ class Order_model extends MY_Model {
 			$where .= " AND b.except_status!=1 "; 
 		}
 
-		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} LIMIT $start, $num_per_page";
+		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		$service_type = config_item('service_type');
