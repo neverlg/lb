@@ -288,8 +288,8 @@ class Order_model extends MY_Model {
 		$result['finish_time_txt'] = empty($result['finish_time']) ? 0 : date('Y-m-d H:i', $result['finish_time']);
 		$result['appoint_time'] = empty($result['appoint_time']) ? 0 : date('Y-m-d H:i', $result['appoint_time']);
 		$result['deliver_time'] = empty($result['deliver_time']) ? 0 : date('Y-m-d H:i', $result['deliver_time']);
-		$result['deliver_imgs'] = json_decode($result['deliver_imgs'], true);
-		$result['finish_imgs'] = json_decode($result['finish_imgs'], true);
+		$result['deliver_imgs'] = empty($result['deliver_imgs']) ? array() : json_decode($result['deliver_imgs'], true);
+		$result['finish_imgs'] = empty($result['finish_imgs']) ? array() : json_decode($result['finish_imgs'], true);
 		$qiniu = config_item('qiniu');
 		$result['finish_ticket_img'] = $qiniu['source_url'].$result['finish_ticket_img'];
 		$result['tmall_check_img'] = empty($result['tmall_check_img']) ? '' : $qiniu['source_url'].$result['tmall_check_img'];
