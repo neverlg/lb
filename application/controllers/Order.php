@@ -482,6 +482,11 @@ class Order extends MY_Controller {
 					'service_type' => 1
 					);
 		//$cmd = '/data/service/php53/bin/php index.php task push_master_test "'. urlencode(serialize($arr)) .'" > /dev/null &';
+		$this->load->library('lb_redis');
+		$access_token = Lb_redis::get('qiye_token');
+		if($access_token){
+			Lb_redis::delete('qiye_token');
+		}
 		$cmd = '/usr/bin/php index.php task push_master "'. urlencode(serialize($arr)) .'"';
 		$a = exec($cmd,$output,$return_var);
 		echo '<pre>';

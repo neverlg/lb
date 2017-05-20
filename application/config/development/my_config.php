@@ -216,7 +216,7 @@ $config['lb_redis'] = array(
 
 //weixin 
 $config['corpid'] = 'wx4151e8d2b426ba03';
-$config['corpsecret'] = 'andeuuNoFXXcnCZiICoPnb3zvyhXUHn67nd_hl7mBxoLIN0lBE8ADM3RCnxsiOYd';
+$config['corpsecret'] = 'biIWkTykh5LK0jch6mNlBCU-af0YG9ecGqED46ri316tFjjyAvoVjbq4uNyW75Uo';
 $config['agentid'] = 12;
 //是否开启消息推送调试，开启后，仅在push_debug_userid里的师傅可以收到推送
 $config['push_debug'] = true;
