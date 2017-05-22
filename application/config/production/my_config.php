@@ -221,7 +221,7 @@ $config['corpsecret'] = 'biIWkTykh5LK0jch6mNlBCU-af0YG9ecGqED46ri316tFjjyAvoVjbq
 $config['agentid'] = 80;
 //是否开启消息推送调试，开启后，仅在push_debug_userid里的师傅可以收到推送
 $config['push_debug'] = true;
-$config['push_debug_userid'] = array('huangweidong', 'WuXiao', 'luogan');
+$config['push_debug_userid'] = array('huangweidong', 'WuXiao', 'luogan', 'ZhangZhuoWen', 'penghuqing', '15807799416');
 
 //测试
 /*
