@@ -185,7 +185,7 @@ class Refund_model extends MY_Model {
 
 		$final_result = false;
 		$time = time();
-		$sql1 = "UPDATE orders_refund SET arbitrate_time=$time, arbitrate_name='{$name}', arbitrate_phone='{$phone}', arbitrate_reason='{$explain}', arbitrate_img='{$img}', upd_time=$time WHERE order_id=$order_id";
+		$sql1 = "UPDATE orders_refund SET arbitrate_time=$time, arbitrate_name='{$name}', arbitrate_phone='{$phone}', arbitrate_reason='{$explain}', arbitrate_imgs='{$img}', upd_time=$time WHERE order_id=$order_id";
 		$sql2 = "UPDATE orders_status SET arbitrate_status=1,upd_time=$time WHERE order_id=$order_id";
 		$sql3 = "UPDATE merchant_order_num SET under_refund=under_refund-1, under_arbitrate=under_arbitrate+1 WHERE me_id=$me_id AND order_type=1";
 
