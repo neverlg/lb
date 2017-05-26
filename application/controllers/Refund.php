@@ -65,13 +65,15 @@ class Refund extends MY_Controller {
 			$tag = 5;
 		}
 
+		if($data['refund']['arbitrate_result_type']==3){
+			//退款关闭
+			$tag = '6';
+		}
+
 		//退款成功
 		if($data['refund']['refund_success_time'] > 0){
 			if(in_array($data['refund']['arbitrate_result_type'], array(1, 2))){
 				$tag = '3_1';
-			}else if($data['refund']['arbitrate_result_type']==3){
-				//退款关闭
-				$tag = '6';
 			}else{
 				$tag = '3_0';
 			}
