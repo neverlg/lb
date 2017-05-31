@@ -468,9 +468,11 @@ class Order_model extends MY_Model {
 			$insert_value = rtrim($insert_value, ',');
 		}
 		$this->db->query("INSERT INTO orders_goods VALUES {$insert_value}");
-
+		//组合省市区文案
+		$global_area = json_decode(get_province(), true);
+		$area_txt = $global_area[0]['province'] . '-' . $global_area['province']['city'] . '-' . $global_area['city']['district'];
 		//更新orders_detail
-		$this->db->query("INSERT INTO orders_detail SET order_id={$order_id},customer_name='{$customer_name}',customer_phone='{$customer_phone}',customer_area_id={$district},customer_address='{$address}',customer_elevator={$elevater},customer_floor={$floor},customer_tmall_number='{$tmall_number}',customer_memark='{$customer_remark}',logistics_packages={$goodnum},logistics_ticketnumber='{$logistics_no}',logistics_name='{$logistics_name}',logistics_phone='{$logistics_phone}',logistics_address='{$logistics_address}',logistics_mark='{$logistics_remark}',merchant_name='{$me_name}',merchant_phone='{$me_phone}',merchant_finish_time='{$hope_finish_time}',add_time={$time}");
+		$this->db->query("INSERT INTO orders_detail SET order_id={$order_id},customer_name='{$customer_name}',customer_phone='{$customer_phone}',customer_area_id={$district},customer_address='{$address}',customer_elevator={$elevater},customer_floor={$floor},customer_tmall_number='{$tmall_number}',customer_memark='{$customer_remark}',logistics_packages={$goodnum},logistics_ticketnumber='{$logistics_no}',logistics_name='{$logistics_name}',logistics_phone='{$logistics_phone}',logistics_address='{$logistics_address}',logistics_mark='{$logistics_remark}',merchant_name='{$me_name}',merchant_phone='{$me_phone}',merchant_finish_time='{$hope_finish_time}',add_time={$time},customer_area='{$area_txt}'");
 		//更新orders_status
 		$this->db->query("INSERT INTO orders_status SET order_id={$order_id},merchant_status=1,logistics_status={$cargo_arrive},add_time={$time}");
 
