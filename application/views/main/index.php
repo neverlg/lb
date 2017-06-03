@@ -18,19 +18,19 @@
 	<div class="col-md-4 sy-t-1">
         <img src="<?=asset("images/syt2.png")?>" /><br/>
         <span class="sy-jd">在线接单师傅</span><br/>
-        <span class="sy-jd-1">1000个</span>
+        <span class="sy-jd-1"><?=$total['master']?>个</span>
         
     </div>
     <div class="col-md-4 sy-t-1">
         <img src="<?=asset("images/syt1.png")?>" /><br/>
         <span class="sy-jd">在线下单用户</span><br/>
-        <span class="sy-jd-1">1000个</span>
+        <span class="sy-jd-1"><?=$total['merchant']?>个</span>
         
     </div>
     <div class="col-md-4 sy-t-1">
         <img src="<?=asset("images/syt3.png")?>" /><br/>
         <span class="sy-jd">服务全国市/区/县</span><br/>
-        <span class="sy-jd-1">1000个</span>
+        <span class="sy-jd-1"><?=$total['city']?>个</span>
         
     </div>
 

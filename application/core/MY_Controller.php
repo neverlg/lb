@@ -27,7 +27,8 @@ class MY_Controller extends CI_Controller {
                 'about_us',            #关于我们 
                 'master_settle',       #师傅入驻
                 'guarantee',           #服务保障
-                'service',             #服务方式   
+                'service',             #服务方式
+                'shortcut',            #快捷方式 
                 ),
             'auth' => array(
                 'user_captcha',        #ajax create captcha

@@ -15,6 +15,17 @@ class Main extends MY_Controller {
 		if($this->session->userdata('me_id')){
 			$data['show_login'] = false;
 		}
+		//首页统计数据，走缓存
+		$this->load->library('lb_redis');
+		$homepage_counts = Lb_redis::get('homepage_counts');
+		if($homepage_counts){
+			$data['total'] = unserialize($homepage_counts);
+		}else{
+			$this->load->model('main_model');
+			$data['total'] = $this->main_model->get_index_num();
+			Lb_redis::set('homepage_counts', serialize($data['total']), 600);
+		}
+
 		//图形验证码
 		if($data['show_login']){
 			$this->load->helper('captcha');
@@ -56,5 +67,24 @@ class Main extends MY_Controller {
 	//服务保障
 	public function service(){
 		$this->load->view('main/service_type');
+	}
+
+	//快捷方式
+	public function shortcut(){
+		$content='
+[DEFAULT]
+BASEURL=http://shangjia.lebangdaojia.com
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[InternetShortcut]
+URL=http://shangjia.lebangdaojia.com
+IDList=[{000214A0-0000-0000-C000-000000000046}]
+IconFile=http://shangjia.lebangdaojia.com/assets/images/51.png
+IconIndex=1
+HotKey=0
+Prop3=19,2';
+	header("Content-type:application/octet-stream");
+	header("Content-Disposition:attachment; filename=乐帮到家.url;");
+	echo $content;
 	}
 }

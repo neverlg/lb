@@ -352,24 +352,32 @@ class Order extends MY_Controller {
 	}
 
 	//报价订单下单页面
-	public function baojia($type=4){
+	public function baojia($type=0){
 		$data['type'] = $type = intval($type);
-		$data['__provinces'] = get_province();
-
-		$this->load->library('util');
-		$qiniu_conf = config_item('qiniu');
-		$data['upload_url'] = $qiniu_conf['upload_url'];
-		$data['source_url'] = $qiniu_conf['source_url'];
-		$bucket = 'lebang';
-		$data['up_token'] = Util::get_qiniu_token($qiniu_conf['access_key'], $qiniu_conf['secret_key'], $bucket);
-
-		//1 2 4用同一个模板
-		if(in_array($type, array(1, 2, 4))){
-			$this->load->view('order/common_order', $data);
-		}else if($type==3){
-			$this->load->view('order/fix_order', $data);
+		//如果没有type，就到引导页
+		if($type == 0){
+			$this->load->view('order/guide_order');
 		}else{
-			exit('功能暂未开放');
+
+			$data['__provinces'] = get_province();
+
+			$this->load->library('util');
+			$qiniu_conf = config_item('qiniu');
+			$data['upload_url'] = $qiniu_conf['upload_url'];
+			$data['source_url'] = $qiniu_conf['source_url'];
+			$bucket = 'lebang';
+			$data['up_token'] = Util::get_qiniu_token($qiniu_conf['access_key'], $qiniu_conf['secret_key'], $bucket);
+
+			//1 2 4用同一个模板
+			if($type == 0){
+				$this->load->view('order/guide_order');
+			}else if(in_array($type, array(1, 2, 4))){
+				$this->load->view('order/common_order', $data);
+			}else if($type==3){
+				$this->load->view('order/fix_order', $data);
+			}else{
+				exit('功能暂未开放');
+			}
 		}
 	}
 

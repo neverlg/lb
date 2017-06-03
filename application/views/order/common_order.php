@@ -48,9 +48,9 @@
         <div class="smza-2">
             <img src="<?=asset("images/244.png")?>" />
             <b>货品图片:</b>
-            <a class="on select-goods" href="#">从货品仓库选择</a>
+            <a class="on select-goods" href="#">+ 从货品仓库选择</a>
             <a class="on" style="position:relative;display:inline-block;">
-                从电脑本地上传
+                + 从电脑本地上传
                 <input type="file" id="fileupload1" style="position:absolute;opacity:0;left:0;top:0;width:130px;cursor:pointer;"/>
             </a>
         </div>
@@ -252,8 +252,9 @@ var $chooseNum = 0;
 var $imgCount = 0;
 
 $("input[name='hope_finish_time']").datetimepicker({
-    format:'yyyy-mm-dd hh:ii',
+    format:'yyyy-mm-dd',
     language: 'zh-CN',
+    minView:2,
     todayBtn:true,
     autoclose:true,
     todayHighlight:true,

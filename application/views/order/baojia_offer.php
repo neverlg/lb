@@ -87,7 +87,12 @@
                 </div>
                 <div class="col-md-8 ybj-3 ">
                     <?=$val['real_name']?> <?=$val['phone']?><img width="25px" src="<?=asset("images/bj3.png")?>" /><br/>
-                    保证金:<?=(empty($master['fund'][$i]['assure_fund'])) ? '<font color="#999">暂未缴纳</font>' : $master['fund'][$i]['assure_fund'] ?><br/>
+                    保证金:
+                    <?php if(empty($master['fund'][$i]['assure_fund'])){ ?>
+                    <font color="#999">暂未缴纳</font></br>
+                    <?php }else{ ?>
+                    <img class="fund-img fund-top-1" src="<?=asset("images/fund_img.jpg")?>"><span class="fund-txt"><?=$master['fund'][$i]['assure_fund']?>元</span></br>
+                    <?php } ?>
                     信誉:<?=$master['statistic'][$i]['__score_icon']?><br/>
                     <a>承诺6项服务</a>
                 </div>
@@ -98,7 +103,7 @@
                 总评分：<span class="ybj-4-1"><?=$master['statistic'][$i]['score_sum']?>分</span><br/>
                 好评率：<span class="ybj-4-1"><?=$master['statistic'][$i]['good_rat']?></span><br/>
                 投诉记录：<span class="ybj-4-2"><?=$master['statistic'][$i]['complain_count']?>次</span><br/>
-                <a>累计评价(<?=$master['statistic'][$i]['evaluate_count']?>)</a>
+                <a href="<?=site_url('order/master/introduce/'.$val['id'])?>">累计评价(<?=$master['statistic'][$i]['evaluate_count']?>)</a>
             </div>
 
             <?php if($val['status']==0){ ?>
@@ -115,13 +120,15 @@
             <?php }else if($val['status']==2){ ?>
             <div class="ybj-55 col-md-4">
                 报价：<font color="#f00"><?=$val['price']?>元</font><br/>
-                <a>成功雇佣</a><br/>
-                <a href="<?=site_url('complain/add/'.$order_id)?>">投诉师傅</a>
+                <a>成功雇佣</a>
+                <?php if($trace['merchant_status']>3 && $trace['merchant_status']<7){ ?>
+                <br/><a href="<?=site_url('complain/add/'.$order_id)?>">投诉师傅</a>
+                <?php } ?>
             </div>
             <?php }else if($val['status']==3){ ?>
             <div class="ybj-55 col-md-4">
                 报价：<font color="#f00"><?=$val['price']?>元</font><br/>
-                <a>未被雇佣</a>
+                <a style="background-color:gray;">未被雇佣</a>
             </div>
             <?php } ?>
         </div>

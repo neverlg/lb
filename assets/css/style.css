@@ -103,7 +103,7 @@ img{ max-height:100%; max-width:100%; }
 .htnr-h1{ border-bottom:1px solid #ccc; clear:both; overflow:hidden; padding:5px;}
 .htnr-h2{ text-align:center; padding-top:4%; padding-bottom:4%;width: 500px;    margin: 0 auto;    height: auto;overflow: hidden;}
 .htnr-h2 .sel{ height:40px; line-height:40px; color:#006db8; font-weight:bold; font-size:15px; padding-left:8px; padding-right:8px;float:left;border:1px solid #ccc}
-.htnr-h2  .in-1{height:40px; line-height:40px; width:300px; padding-left:10px; font-size:13px; color:#999;float:left;border:1px solid #ccc;border-left:0;}
+.htnr-h2  .in-1{height:40px; line-height:40px; width:300px; padding-left:10px; font-size:13px; color:#999;float:left;border:1px solid #ccc;}
 .htnr-h2 .in-2{ color:#fff; padding:7px 25px; font-size:18px;  background:#006db8; margin-left:10px;border:0;float:left;}
 .htnr-h3-2-1 a{ color:#000;}
 .htnr-h3-2-1 span{ color:#f00; font-size:16px;font-weight:bold;}
@@ -683,3 +683,7 @@ th{ text-align:center;}
 .cc-2-2{line-height:24px; padding:2px 12px; color:gray;}
 .cc-2-3{width:100%; text-align:center; margin-top:10px;}
 .cc-2-3 a{cursor:pointer; width:300px; background-color:#06F; color:#fff; padding:8px 20px; display:inline-block;}
+
+.fund-img {width:20px;height:20px;}
+.fund-txt {font-size:10px; border:1px solid #00c63f; color:#00c63f; padding:1px 6px;}
+.fund-top-1 {position:relative;top:-1px;}

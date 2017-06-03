@@ -61,9 +61,13 @@
         		<?php foreach ($local_list as $val) { ?>
         		<div class="htnr-b-5">
         			<div class="htnr-5-1">
-        				订单编号:<font color=" #00a2ea"><?=$val['order_number']?></font>&nbsp;&nbsp;&nbsp;&nbsp;下单时间:<?=$val['add_time']?>&nbsp;&nbsp;&nbsp;&nbsp;
-        				报价人数：<font color=" #00a2ea"><?=$val['master_num']?>人</font>
-
+        				订单编号:<a href="<?=site_url('order/baojia_detail/'.$val['id'])?>"><?=$val['order_number']?></a>&nbsp;&nbsp;&nbsp;&nbsp;下单时间:<?=$val['add_time']?>&nbsp;&nbsp;&nbsp;&nbsp;
+        				报价人数：
+                        <?php if($val['master_num']>0){ ?>
+                        <a href="<?=site_url('order/baojia_offer/'.$val['id'])?>"><?=$val['master_num']?>人</a>
+                        <?php }else{ ?>
+                        <font color=" #00a2ea"><?=$val['master_num']?>人</font>
+                        <?php } ?>
         				<a href="#" rel="<?=$val['id']?>" mark-data="<?=$val['merchant_remark']?>" class="remark">
                             <?php if(empty($val['merchant_remark'])){ ?>
                             <img src="<?=asset("images/xg3.png")?>" />

@@ -165,7 +165,7 @@ class Order_model extends MY_Model {
 			$where .= " AND b.except_status!=1 "; 
 		}
 
-		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
+		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		$service_type = config_item('service_type');
@@ -173,6 +173,7 @@ class Order_model extends MY_Model {
 			$result[$key]['add_time'] = date('Y-m-d H:i', $val['add_time']);
 			$result[$key]['service_type'] = isset($service_type[$val['service_type']]) ? $service_type[$val['service_type']] : '';
 			$result[$key]['master_num'] = $this->get_master_num($val['id']);
+			$result[$key]['customer_address'] = str_replace('-', '', $val['customer_area']).$val['customer_address'];
 		}
 		return $result;
 	}
@@ -204,7 +205,8 @@ class Order_model extends MY_Model {
 		$result1['logistics_phone'] = empty($result1['logistics_phone']) ? '- -' : $result1['logistics_phone'];
 		$result1['logistics_address'] = empty($result1['logistics_address']) ? '- -' : $result1['logistics_address'];
 		$result1['logistics_mark'] = empty($result1['logistics_mark']) ? '- -' : $result1['logistics_mark'];
-		$result1['merchant_finish_time'] = empty($result1['merchant_finish_time']) ? '' : '希望师傅在'.date('Y-m-d H:i', $result1['merchant_finish_time']).'前完成任务。';
+		$result1['merchant_finish_time'] = empty($result1['merchant_finish_time']) ? '' : '希望师傅在'.date('Y-m-d', $result1['merchant_finish_time']).'完成任务。';
+		$result1['customer_address'] = str_replace('-', '', $result1['customer_area']).$result1['customer_address'];
 		if(empty($result1['customer_memark'])){
 			if(empty($result1['merchant_finish_time'])){
 				$result1['customer_memark'] = '- -';
@@ -337,6 +339,11 @@ class Order_model extends MY_Model {
 				$statistic[$key]['good_rat'] = round($val['evaluate_praise_count']/$val['evaluate_count'] ,2).'%';
 			}else{
 				$statistic[$key]['good_rat'] = '- -';
+			}
+			if(!empty($val['score_count'])){
+				$statistic[$key]['score_sum'] = round($val['score_sum']/$val['score_count'], 2);
+			}else{
+				$statistic[$key]['score_sum'] = '- -';
 			}
 			$statistic[$key]['__score_icon'] = create_master_level_icon($val['points']);
 		}

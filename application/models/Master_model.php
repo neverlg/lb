@@ -76,6 +76,11 @@ class Master_model extends MY_Model {
 		}else{
 			$result['good_rat'] = '- -';
 		}
+		if(!empty($result['score_count'])){
+			$result['score_sum'] = round($result['score_sum']/$result['score_count'] ,2);
+		}else{
+			$result['score_sum'] = '- -';
+		}
 		return $result;
 	}
 

@@ -48,14 +48,14 @@
                 	</div>
         		</div>
         		<div class="htnr-h2">
+                    <!--
         			<select class="sel">
         				<option>报价订单</option>
-                        <!--
         				<option>订单查询</option>
-                        -->
         			</select>
+                    -->
         			<input class="in-1" type="text" placeholder="请输入客户姓名/手机号码"></input>
-        			<input class="in-2 search-jump" type="submit" value="搜索"></input>
+        			<input class="in-2 search-jump" type="submit" value="搜索订单"></input>
         		</div>
         		<div class="htnr-h3">
         			<div class="htnr-h3-1">

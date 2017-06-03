@@ -17,7 +17,15 @@
     </div>
     
     <div class="sfzs-2">
-        <li><img src="<?=asset("images/138.png")?>" /><br/>保证金<br/><?=$statistic['assure_fund']?></li>
+        <li>
+          <img src="<?=asset("images/138.png")?>" /><br/>
+          保证金<br/>
+          <?php if($statistic['assure_fund']==0){ ?>
+          <font color="#999">暂未缴纳</font>
+          <?php }else{ ?>
+          <img class="fund-img" src="<?=asset("images/fund_img.jpg")?>"><span class="fund-txt"><?=$statistic['assure_fund']?>元</span></br>
+          <?php } ?>
+        </li>
         <li><img src="<?=asset("images/139.png")?>" /><br/>信誉<br/><?=$statistic['__score_icon']?></li>
         <li><img src="<?=asset("images/140.png")?>" /><br/>总接单<br/><font color="#FF9933"><?=$statistic['order_count']?>单</font></li>
         <li><img src="<?=asset("images/141.png")?>" /><br/>总评分<br/><font color="#FF9933"><?=$statistic['score_sum']?>分</font></li>

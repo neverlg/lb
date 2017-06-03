@@ -177,8 +177,9 @@ var $tipBox = $("#tips-box");
 var $imgCount = 0;
 
 $("input[name='hope_finish_time']").datetimepicker({
-    format:'yyyy-mm-dd hh:ii',
+    format:'yyyy-mm-dd',
     language: 'zh-CN',
+    minView:2,
     todayBtn:true,
     autoclose:true,
     todayHighlight:true,
