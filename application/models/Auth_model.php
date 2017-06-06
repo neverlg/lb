@@ -22,7 +22,7 @@ class Auth_model extends MY_Model {
 		//$where = array('m_name'=>$username, 'm_state'=>0);
 		$where = "me_username='$username' OR me_phone='$username' AND me_status=1";
 		$result = array();
-		$this->db->select('me_id,me_username,me_pass,me_phone')->from('merchant')->where($where);
+		$this->db->select('me_id,me_username,me_pass,me_phone,me_status')->from('merchant')->where($where);
 		$result = $this->db->get()->result_array();
 		if(count($result)==1 && $result[0]['me_pass']==md5($password)){
 			//$capture_s = strtolower($this->session->flashdata('auth_capture'));
