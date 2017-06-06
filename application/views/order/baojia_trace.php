@@ -92,8 +92,8 @@
             <div class="ckjd-2-1">
                 <font size="4">物流提货:</font><br/>
                 <?=$trace['deliver_time']?>&nbsp;&nbsp;师傅已到达物流点提货&nbsp;&nbsp;物流签收状态：<?php if($trace['master_status']==3){echo '正常签收';}else if($trace['master_status']==4){echo '提货异常';} ?><br/>
-                <?php foreach($trace['deliver_imgs'] as $key){ ?>
-                <img src="<?=$key?>" />  
+                <?php foreach($trace['deliver_imgs'] as $val){ ?>
+                    <a onclick="showImage('<?=$val?>')" href="javascript:void(0)"><img src="<?=$val?>" height="250px" /></a>
                 <?php } ?>
             </div>
             <?php } ?>
@@ -106,16 +106,16 @@
 
                 完成的家具照片:<br/>
                 <?php foreach($trace['finish_imgs'] as $val){ ?>
-                <img src="<?=$val?>" />  
+                    <a onclick="showImage('<?=$val?>')" href="javascript:void(0)"><img src="<?=$val?>" height="250px" /></a>
                 <?php } ?>
 
                 <?php if(!empty($trace['tmall_check_img'])){ ?>
                 <br/>喵师傅成功核销截图:<br/>
-                <img src="<?=$trace['tmall_check_img']?>" />
+                    <a onclick="showImage('<?=$trace['tmall_check_img']?>')" href="javascript:void(0)"><img src="<?=$trace['tmall_check_img']?>" height="250px" /></a>
                 <?php } ?>
 
                 <br/>客户签收单照片:<br/>
-                <img src="<?=$trace['finish_ticket_img']?>" />
+                <a onclick="showImage('<?=$trace['finish_ticket_img']?>')" href="javascript:void(0)"><img src="<?=$trace['finish_ticket_img']?>" height="250px" /></a>
             </div>
             <?php } ?>
 
@@ -123,6 +123,13 @@
                 温馨提示:如果师傅提供了虚假的服务完成照片，你可以对师傅进行投诉！
             </div>
             <?php } ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="image" tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
         </div>
     </div>
 </div>
@@ -148,5 +155,19 @@
           }
         }, 1000);
     }
+
+    $(function(){
+        window.showImage = function(source)
+        {
+            $("#image").find(".modal-content").html("<image src='"+source+"' width='100%' />");
+            $("#image").modal('show');
+        }
+
+        $("#image").on("hidden.bs.modal", function() {
+            $(this).removeData("bs.modal");
+            $(this).find('.modal-content').empty();
+        });
+    });
+
 </script>
 

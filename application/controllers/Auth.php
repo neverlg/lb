@@ -61,7 +61,7 @@ class Auth extends MY_Controller {
 		}
 
         if($result['me_status'] == 0){
-            ajax_response(1,'抱歉，您的账号已被封禁。');
+            ajax_response(1,'抱歉，您的账号已被禁用。');
         }
 
 		ajax_response(0, 'success');

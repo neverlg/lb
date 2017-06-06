@@ -341,7 +341,7 @@ class Order_model extends MY_Model {
 				$statistic[$key]['good_rat'] = '- -';
 			}
 			if(!empty($val['score_count'])){
-				$statistic[$key]['score_sum'] = round($val['score_sum']/$val['score_count'], 2);
+				$statistic[$key]['score_sum'] = sprintf('%.2f',$val['score_count'] ? $val['score_sum']/$val['score_count'] : 0);
 			}else{
 				$statistic[$key]['score_sum'] = '- -';
 			}
