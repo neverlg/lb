@@ -336,7 +336,7 @@ class Order_model extends MY_Model {
 		$statistic = array_column($statistic, null, 'master_id');
 		foreach ($statistic as $key => $val) {
 			if(!empty($val['evaluate_count'])){
-				$statistic[$key]['good_rat'] = round($val['evaluate_praise_count']/$val['evaluate_count'] ,2).'%';
+				$statistic[$key]['good_rat'] = sprintf('%.2f',$val['evaluate_count'] ? $val['evaluate_praise_count']/$val['evaluate_count']*100 : 0).'%';
 			}else{
 				$statistic[$key]['good_rat'] = '- -';
 			}
