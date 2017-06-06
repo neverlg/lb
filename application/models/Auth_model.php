@@ -38,7 +38,7 @@ class Auth_model extends MY_Model {
 					'mll_login_ip' => $this->input->ip_address()
 					);
 				$this->db->insert('merchant_login_log', $data);
-				return true;
+				return $result[0];
 			//}
 		}
 		return false;

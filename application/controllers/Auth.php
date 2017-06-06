@@ -56,9 +56,13 @@ class Auth extends MY_Controller {
 			ajax_response(1,'图形验证码错误！');
 		}
 
-		if(!$this->auth_model->login($user)){
+		if(!$result = $this->auth_model->login($user)){
 			ajax_response(1,'账号或密码有误');
 		}
+
+        if($result['me_status'] == 0){
+            ajax_response(1,'抱歉，您的账号已被封禁。');
+        }
 
 		ajax_response(0, 'success');
 	}
