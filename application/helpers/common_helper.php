@@ -464,6 +464,25 @@ if(!function_exists('get_province')){
 	}
 }
 
+if(!function_exists('getAreas'))
+{
+    /**
+     * 获取省市数据
+     * @param string $key areas/provinceIds
+     * @return array
+     */
+    function getAreas($key = 'areas'){
+        static $areas;
+        static $provinceIds;
+        if ($areas === null){
+            $source = @include_once(FCPATH.('static/areas.php'));
+            $areas = @json_decode($source['areas'],true);
+            $provinceIds = @json_decode($source['provinceIds'],true);
+        }
+        return !empty($$key) ? $$key : [];
+    }
+}
+
 
 if(!function_exists('create_master_level_icon')){
 	//师傅积分对应的图标

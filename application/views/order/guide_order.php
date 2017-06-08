@@ -36,7 +36,7 @@
             <a href="<?=site_url('order/baojia/1')?>">提货配送上门+安装</a>
             <a href="<?=site_url('order/baojia/2')?>">上门安装</a>
             <a href="<?=site_url('order/baojia/3')?>">上门维修</a>
-            <a href="<?=site_url('order/baojia/5')?>">打包返货</a>
+            <a href="<?=site_url('order/baojia/5')?>" onclick="alert('该服务类型暂未开通');return false;">打包返货</a>
         </div>
     </div>
 </div> 

@@ -59,6 +59,7 @@ $config['num_per_page'] = array(
 	'message_index' => 10,    #个人消息列表
 	'refund_index' => 10,     #退款管理首页
 	'order_index' => 12,      #报价/定价订单首页
+    'master_evaluate' => 20,      #师傅评价
 	);
 
 //充值送余额
@@ -209,9 +210,9 @@ $config['pay_type'] = array(
 
 //redis配置
 $config['lb_redis'] = array(
-	'ip' => '127.0.0.1',
+	'ip' => '119.23.147.164',
 	'port' => '6379',
-	'password' => ''
+	'password' => 'lrTWm82u'
 	);
 
 //weixin 
@@ -235,3 +236,4 @@ $config['ajax_response_field']['status'] = 'status';  // 状态字段
 $config['ajax_response_field']['error']  = 'error';   // 错误消息字段
 $config['ajax_response_field']['data']   = 'data';    // 返回数据体字段
 
+$config['base_url'] = 'http://shangjia.lebangdaojia.local/';

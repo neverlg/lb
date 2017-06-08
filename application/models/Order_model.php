@@ -165,7 +165,7 @@ class Order_model extends MY_Model {
 			$where .= " AND b.except_status!=1 "; 
 		}
 
-		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
+		$sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
 		$result = $this->db->query($sql)->result_array();
 
 		$service_type = config_item('service_type');
@@ -173,7 +173,7 @@ class Order_model extends MY_Model {
 			$result[$key]['add_time'] = date('Y-m-d H:i', $val['add_time']);
 			$result[$key]['service_type'] = isset($service_type[$val['service_type']]) ? $service_type[$val['service_type']] : '';
 			$result[$key]['master_num'] = $this->get_master_num($val['id']);
-			$result[$key]['customer_address'] = str_replace('-', '', $val['customer_area']).$val['customer_address'];
+//			$result[$key]['customer_address'] = str_replace('-', '', $val['customer_area']).$val['customer_address'];
 		}
 		return $result;
 	}
@@ -206,7 +206,7 @@ class Order_model extends MY_Model {
 		$result1['logistics_address'] = empty($result1['logistics_address']) ? '- -' : $result1['logistics_address'];
 		$result1['logistics_mark'] = empty($result1['logistics_mark']) ? '- -' : $result1['logistics_mark'];
 		$result1['merchant_finish_time'] = empty($result1['merchant_finish_time']) ? '' : '希望师傅在'.date('Y-m-d', $result1['merchant_finish_time']).'完成任务。';
-		$result1['customer_address'] = str_replace('-', '', $result1['customer_area']).$result1['customer_address'];
+//		$result1['customer_address'] = str_replace('-', '', $result1['customer_area']).$result1['customer_address'];
 		if(empty($result1['customer_memark'])){
 			if(empty($result1['merchant_finish_time'])){
 				$result1['customer_memark'] = '- -';
@@ -312,7 +312,7 @@ class Order_model extends MY_Model {
 
 	//查看师傅报价
 	public function get_master_offer($order_id){
-		$sql = "SELECT a.price, a.status, b.phone, b.real_name, b.head_img, b.id FROM orders_offer a LEFT JOIN master b ON a.master_id=b.id WHERE a.order_id=$order_id";
+		$sql = "SELECT a.price, a.status, a.message,b.phone, b.real_name, b.head_img, b.id FROM orders_offer a LEFT JOIN master b ON a.master_id=b.id WHERE a.order_id=$order_id";
 		$base = $this->db->query($sql)->result_array();
 		//基本信息，key为master_id
 		$base = array_column($base, null, 'id');
@@ -477,7 +477,12 @@ class Order_model extends MY_Model {
 		$this->db->query("INSERT INTO orders_goods VALUES {$insert_value}");
 		//组合省市区文案
 		$global_area = json_decode(get_province(), true);
-		$area_txt = $global_area[0]['province'] . '-' . $global_area['province']['city'] . '-' . $global_area['city']['district'];
+//		$area_txt = $global_area[0]['province'] . '-' . $global_area['province']['city'] . '-' . $global_area['city']['district'];
+        $areas = getAreas();
+        $district = @$areas[$district];
+        $city = @$areas[$district['p']];
+        $province = @$areas[$city['p']];
+        $area_txt = @implode('-',[$province['n'],$city['n'],$district['n']]);
 		//更新orders_detail
 		$this->db->query("INSERT INTO orders_detail SET order_id={$order_id},customer_name='{$customer_name}',customer_phone='{$customer_phone}',customer_area_id={$district},customer_address='{$address}',customer_elevator={$elevater},customer_floor={$floor},customer_tmall_number='{$tmall_number}',customer_memark='{$customer_remark}',logistics_packages={$goodnum},logistics_ticketnumber='{$logistics_no}',logistics_name='{$logistics_name}',logistics_phone='{$logistics_phone}',logistics_address='{$logistics_address}',logistics_mark='{$logistics_remark}',merchant_name='{$me_name}',merchant_phone='{$me_phone}',merchant_finish_time='{$hope_finish_time}',add_time={$time},customer_area='{$area_txt}'");
 		//更新orders_status

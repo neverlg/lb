@@ -7,7 +7,7 @@
 	<div class="container">
     	<div class="yhzc-1">
     		<img src="<?=asset("images/51334.png")?>" />下单用户注册中心
-    		<span class="yhzc-1-1"><a href="#">我是师傅，点击这里注册 ></a></span>
+    		<span class="yhzc-1-1"><a href="<?=site_url('main/master_settle')?>">我是师傅，点击这里注册 ></a></span>
     	</div>
         
         <div class="yhzc-2">

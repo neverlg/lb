@@ -87,6 +87,7 @@
     							<td width="320">
     								<?=$val['customer_name']?>&nbsp;&nbsp;
     								<?=$val['customer_phone']?><br/>
+                                    <?=$val['customer_area']?><br/>
     								<?=$val['customer_address']?>
     							</td>
 

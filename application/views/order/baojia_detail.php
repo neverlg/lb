@@ -196,6 +196,7 @@
                 <b><font size="4">客户信息</font></b><br/>
                 客户姓名：<?=$detail['order']['customer_name']?><br/>
                 客户手机：<?=$detail['order']['customer_phone']?><br/>
+                客户省市区：<?=$detail['order']['customer_area']?><br/>
                 客户地址：<?=$detail['order']['customer_address']?><br/>
                 电梯步梯：<?=$detail['order']['customer_elevator']?>&nbsp;&nbsp;<?=$detail['order']['customer_floor']?>楼<br/>
                 是否核销：<?=$detail['order']['customer_tmall_number']?><br/>

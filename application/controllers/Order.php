@@ -462,7 +462,7 @@ class Order extends MY_Controller {
 	}
 
 	//师傅信息展示
-	public function master($type='introduce', $master_id){
+	public function master($type='introduce', $master_id,$page=1){
 		$data['master_id'] = $master_id = intval($master_id);
 		//获取头部统计信息
 		$this->load->model('master_model');
@@ -472,6 +472,21 @@ class Order extends MY_Controller {
 		if(empty($data['statistic'])){
 			exit;
 		}
+        $post = $this->input->get(array('ptype'), true);
+        //获取当前搜索的记录数
+        $data['local_num'] = $this->master_model->get_pingjia_search_num($master_id, $post);
+        //获取搜索列表
+        $num_per_page = config_item('num_per_page');
+        $data['local_list'] = $this->master_model->get_pingjia_search_item($master_id, $post, $page, $num_per_page['master_evaluate']);
+        //分页
+//        $this->load->library('pagination');
+//        $config['base_url'] = site_url("order/master/introduce/$master_id/$page");
+//        $config['total_rows'] = $data['local_num'];
+//        $config['per_page'] = $num_per_page['master_evaluate'];
+//        $config['use_page_numbers'] = TRUE;
+//        $this->pagination->initialize($config);
+//        $data['__pagination_url'] = $this->pagination->create_links();
+
 		if($type == 'introduce'){
 			$data['base'] = $this->master_model->get_master_info($master_id);
 			$this->load->view('order/master_introduce', $data);

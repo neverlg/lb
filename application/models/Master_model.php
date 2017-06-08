@@ -101,4 +101,38 @@ class Master_model extends MY_Model {
 		return $city_name.'('.$district.')';
 	}
 
+    //师傅收到的评价总数
+    public function get_pingjia_search_num($master_id, $post){
+        @extract($post);
+        $ptype = intval($ptype);
+
+        $where = " WHERE a.master_id=$master_id ";
+        $sql = '';
+        if(!empty($ptype) && $ptype > 0){
+            $where .= " AND b.oe_score=$ptype";
+        }
+
+        $sql = "SELECT COUNT(*) as num FROM order_evaluate b LEFT JOIN orders a ON a.id=b.oe_orderid {$where}";
+        $result = $this->db->query($sql)->row_array();
+        return $result['num'];
+    }
+
+    //师傅收到的评价
+    public function get_pingjia_search_item($master_id, $post, $page, $num_per_page){
+        @extract($post);
+        $ptype = intval($ptype);
+        $start = ($page-1)*$num_per_page;
+
+        $where = " WHERE a.master_id=$master_id ";
+        $sql = '';
+        if(!empty($ptype) && $ptype > 0){
+            $where .= " AND b.oe_score=$ptype";
+        }
+
+        $sql = "SELECT b.*,c.me_username FROM order_evaluate b LEFT JOIN orders a ON a.id=b.oe_orderid LEFT JOIN merchant c ON c.me_id=b.oe_meid {$where} ORDER BY b.oe_add_time DESC LIMIT $start, $num_per_page";
+        $result = $this->db->query($sql)->result_array();
+
+        return $result;
+    }
+
 }

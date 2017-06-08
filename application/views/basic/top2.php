@@ -3,7 +3,7 @@
 <div class="container">  
     <div class="top-2">
         <div class="col-md-4 top-2-1">
-            <img src="<?=asset("images/logo.png")?>" />
+            <a href="<?=site_url()?>"><img src="<?=asset("images/logo.png")?>" /></a>
             <span></span>
             <p style="font-size:20px; color:#000;  line-height:80px;">后台管理中心</p>
         </div>

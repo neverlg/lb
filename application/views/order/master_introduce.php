@@ -55,9 +55,45 @@
       职业类型：<?=$base['job_type']?><br/>
       服务时间：<?=$base['service_time_txt']?>
     </div>
-    
+
+      <div class="sfzs-3"><a class="on" href="#">用户评价(<?=$local_num?>)</a></div>
+      <div class="pjgl-1">
+          <form method="get" action="" id="form">
+          <input name="ptype" type="radio" value="-1" checked="checked" onclick="$('#form').submit()">全部
+          <input name="ptype" type="radio" value="1" <?=@$_GET['ptype'] == 1 ? 'checked="checked"' : ''?> onclick="$('#form').submit()"><img src="<?=asset('images/4159.png')?>" width='25'/>好评
+          <input name="ptype" type="radio" value="2" <?=@$_GET['ptype'] == 2 ? 'checked="checked"' : ''?> onclick="$('#form').submit()"><img src="<?=asset('images/33.png')?>" width='25'/>中评
+          <input name="ptype" type="radio" value="3" <?=@$_GET['ptype'] == 3 ? 'checked="checked"' : ''?> onclick="$('#form').submit()"><img src="<?=asset('images/250.png')?>" width='25'/>差评
+          </form>
+      </div>
+      <?php foreach ($local_list as $val): ?>
+          <div class="sjzs-1">
+              <div class="pjgl-2-2"><?=$val['me_username']?>(下单用户)&nbsp;&nbsp;&nbsp;
+              <?php if ($val['oe_score']==1):?>
+                      <img src="<?=asset('images/4159.png')?>" width='20'/>好评
+              <?php elseif ($val['oe_score']==2):?>
+                  <img src="<?=asset('images/33.png')?>" width='20'/>中评
+              <?php elseif ($val['oe_score']==3):?>
+                      <img src="<?=asset('images/250.png')?>" width='20'/>差评
+              <?php endif;?>
+                  | 服务质量<font color="#f00"> <?=$val['oe_quality']?>分</font>  服务态度 <font color="#f00"> <?=$val['oe_attitude']?>分</font>  服务时效 <font color="#f00"> <?=$val['oe_ontime']?>分</font><span class="sfsj" style=" padding-left:20px;"><?=date('Y-m-d H:i:s',$val['oe_add_time'])?></span> </div>
+              <?php if ($val['oe_type']==1):?>
+                  <div class="pjgl-2-2" style="color:#999;">系统自动默认好评！(超过15天)
+<!--                      <br/><img src="images/10650.png" width="140" style="padding:10px;" />-->
+                  </div>
+              <?php else:?>
+                  <div class="pjgl-2-2">我的评价：<?=$val['oe_content']?>
+<!--                      <br/><img src="images/10650.png" width="140" style="padding:10px;" />-->
+                  </div>
+              <?php endif;?>
+            <?php if (!empty($val['oe_response'])):?>
+                <div class="pjgl-2-3">师傅解释：<?=$val['oe_response']?> </div>
+            <?php endif;?>
+          </div>
+      <?php endforeach;?>
+<!--      <div class="htfy" style="margin-top:25px;">-->
+<!--          --><?//=$__pagination_url?>
+<!--      </div>-->
   </div>
-</div>
 
 
 <?php require 'application/views/basic/bottom.php'; ?>

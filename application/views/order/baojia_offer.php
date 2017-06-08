@@ -131,6 +131,12 @@
                 <a style="background-color:gray;">未被雇佣</a>
             </div>
             <?php } ?>
+
+            <?php if (!empty($val['message'])):?>
+            <div class="ybj-55 col-md-4">
+                留言：<font color="#f00"><?=$val['message']?></font><br/>
+            </div>
+            <?php endif;?>
         </div>
         <?php } ?>
 

@@ -59,6 +59,7 @@ $config['num_per_page'] = array(
     'message_index' => 10,    #个人消息列表
     'refund_index' => 10,     #退款管理首页
     'order_index' => 12,      #报价/定价订单首页
+    'master_evaluate' => 20,      #师傅评价
 );
 
 //充值送余额

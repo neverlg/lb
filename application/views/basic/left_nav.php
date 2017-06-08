@@ -2,7 +2,7 @@
 
 <div class="col-md-3">
     <div class="htnr-1-1">
-        <img src="<?=asset("images/fz.png")?>" />管理中心首页
+        <a href="<?=site_url('order')?>" style="color:#fff"><img src="<?=asset("images/fz.png")?>" />管理中心首页</a>
     </div>
     <div class="htnr-t">
      	<div class="htnr-1-2">
