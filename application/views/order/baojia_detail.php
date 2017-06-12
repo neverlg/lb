@@ -210,6 +210,7 @@
                 <b><font size="4">物流信息</font></b><br/>
                 是否到货：<?=$detail['order']['logistics_status_txt']?><br/>
                 物流单号：<?=$detail['order']['logistics_ticketnumber']?><br/>
+                收货名字：<?=$detail['order']['logistics_consignee']?><br/>
                 包装件数：<?=$detail['order']['logistics_packages']?>件<br/>
                 物流公司：<?=$detail['order']['logistics_name']?><br/>
                 物流电话：<?=$detail['order']['logistics_phone']?><br/>
@@ -335,8 +336,8 @@
             <font color="#f00">*</font>是否到货：
             <select name="cargo_arrive" value="$detail['order']['logistics_status']">
                 <option value="">请选择</option>
-                <option value="0" <?=($detail['order']['logistics_status']==0 ? "selected='selected'" : '')?>>未发出</option>
-                <option value="1" <?=($detail['order']['logistics_status']==1 ? "selected='selected'" : '')?>>已发出</option>
+<!--                <option value="0" --><?//=($detail['order']['logistics_status']==0 ? "selected='selected'" : '')?><!-->未发出</option>-->
+                <option value="1" <?=($detail['order']['logistics_status']==1 ? "selected='selected'" : '')?>>未到货</option>
                 <option value="2" <?=($detail['order']['logistics_status']==2 ? "selected='selected'" : '')?>>已到货</option>
             </select>
         </div>
@@ -350,8 +351,8 @@
             <font color="#f00">*</font>是否到货：
             <select name="cargo_arrive" value="$detail['order']['logistics_status']">
                 <option value="">请选择</option>
-                <option value="0" <?=($detail['order']['logistics_status']==0 ? "selected='selected'" : '')?>>未发出</option>
-                <option value="1" <?=($detail['order']['logistics_status']==1 ? "selected='selected'" : '')?>>已发出</option>
+<!--                <option value="0" --><?//=($detail['order']['logistics_status']==0 ? "selected='selected'" : '')?><!-->未发出</option>-->
+                <option value="1" <?=($detail['order']['logistics_status']==1 ? "selected='selected'" : '')?>>未到货</option>
                 <option value="2" <?=($detail['order']['logistics_status']==2 ? "selected='selected'" : '')?>>已到货</option>
             </select>
         </div>
@@ -363,6 +364,10 @@
         <div class="smza-3-1">
             &nbsp;物流单号：
             <input name="logistics_no" value="<?=$detail['order']['logistics_ticketnumber']?>" type="text">
+        </div>
+        <div class="smza-3-1">
+            &nbsp;收货名字：
+            <input name="logistics_consignee" value="<?=$detail['order']['logistics_consignee']?>" type="text">
         </div>
         <div class="smza-3-1">
             &nbsp;物流公司：

@@ -384,7 +384,7 @@ class Order extends MY_Controller {
 	//下单提交
 	public function baojia_submit($type=4){
 		$type = intval($type);
-		$post = $this->input->post(array('goods_id', 'goods_img', 'goods_type', 'goods_num', 'goods_name', 'goods_remark', 'customer_name', 'customer_phone', 'province', 'city', 'district', 'address', 'elevater', 'floor', 'cargo_arrive', 'has_tmall', 'tmall_number', 'customer_remark', 'goodnum', 'logistics_no', 'logistics_name', 'logistics_phone', 'logistics_address', 'logistics_remark', 'me_name', 'me_phone', 'hope_finish_time'), true);
+		$post = $this->input->post(array('goods_id', 'goods_img', 'goods_type', 'goods_num', 'goods_name', 'goods_remark', 'customer_name', 'customer_phone', 'province', 'city', 'district', 'address', 'elevater', 'floor', 'cargo_arrive', 'has_tmall', 'tmall_number', 'customer_remark', 'goodnum', 'logistics_no', 'logistics_name', 'logistics_phone', 'logistics_address', 'logistics_consignee','logistics_remark', 'me_name', 'me_phone', 'hope_finish_time'), true);
 		
 		$this->form_validation->set_rules('goods_img[]','goods_img','required');
 		$this->form_validation->set_rules('goods_type[]','goods_type','required');
@@ -432,6 +432,7 @@ class Order extends MY_Controller {
 		$post['logistics_name'] = empty($post['logistics_name']) ? '' : $post['logistics_name'];
 		$post['logistics_phone'] = empty($post['logistics_phone']) ? '' : $post['logistics_phone'];
 		$post['logistics_address'] = empty($post['logistics_address']) ? '' : $post['logistics_address'];
+        $post['logistics_consignee'] = empty($post['logistics_consignee']) ? '' : $post['logistics_consignee'];
 		$post['logistics_remark'] = empty($post['logistics_remark']) ? '' : $post['logistics_remark'];
 		$post['hope_finish_time'] = empty($post['hope_finish_time']) ? 0 : strtotime($post['hope_finish_time']);
 
@@ -528,4 +529,30 @@ class Order extends MY_Controller {
 		var_dump($ret);
 	}
 	*/
+
+    //搜索订单
+    public function search($page=1){
+
+        //这里搜索提交用post, 如果post里的type与get里的同时存在，取post
+        $key = $this->input->get('search');
+        if (empty($key)){
+            redirect(site_url('order/baojia_index'));
+        }
+        //获取当前搜索的记录数
+        $data['local_num'] = $this->order_model->get_search_num($key);
+        //获取搜索列表
+        $num_per_page = config_item('num_per_page');
+        $data['local_list'] = $this->order_model->get_search_item($key, $page, $num_per_page['order_index']);
+        //分页
+        $this->load->library('pagination');
+        $config['base_url'] = site_url("order/search");
+        $config['total_rows'] = $data['local_num'];
+        $config['per_page'] = $num_per_page['order_index'];
+        $config['use_page_numbers'] = TRUE;
+        $config['reuse_query_string'] = TRUE;
+        $this->pagination->initialize($config);
+        $data['__pagination_url'] = $this->pagination->create_links();
+
+        $this->load->view('order/search', $data);
+    }
 }

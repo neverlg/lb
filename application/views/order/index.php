@@ -54,8 +54,10 @@
         				<option>订单查询</option>
         			</select>
                     -->
-        			<input class="in-1" type="text" placeholder="请输入客户姓名/手机号码"></input>
+                    <form action="<?=site_url('order/search')?>" method="get">
+        			<input class="in-1" type="text" name="search" placeholder="请输入客户姓名/手机号码"></input>
         			<input class="in-2 search-jump" type="submit" value="搜索订单"></input>
+                    </form>
         		</div>
         		<div class="htnr-h3">
         			<div class="htnr-h3-1">

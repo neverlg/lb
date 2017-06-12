@@ -43,14 +43,14 @@
         				<option value="1" <?=($type==1)?"selected='selected'":""?>>待报价</option>
         				<option value="2" <?=($type==2)?"selected='selected'":""?>>待雇佣</option>
         				<option value="3" <?=($type==3)?"selected='selected'":""?>>待托管费用</option>
-        				<option value="4" <?=($type==4)?"selected='selected'":""?>>已支付预付款</option>
+<!--        				<option value="4" --><?//=($type==4)?"selected='selected'":""?><!-->已支付预付款</option>-->
         				<option value="5" <?=($type==5)?"selected='selected'":""?>>师傅服务中</option>
-        				<option value="6" <?=($type==6)?"selected='selected'":""?>>师傅完成服务</option>
-        				<option value="7" <?=($type==7)?"selected='selected'":""?>>验收交易成功</option>
+        				<option value="6" <?=($type==6)?"selected='selected'":""?>>待确认验收</option>
+<!--        				<option value="7" --><?//=($type==7)?"selected='selected'":""?><!-->验收交易成功</option>-->
                         <option value="11" <?=($type==11)?"selected='selected'":""?>>待评价</option>
         				<option value="8" <?=($type==8)?"selected='selected'":""?>>退款中</option>
         				<option value="9" <?=($type==9)?"selected='selected'":""?>>仲裁中</option>
-                        <option value="12" <?=($type==12)?"selected='selected'":""?>>投诉处理中</option>
+<!--                        <option value="12" --><?//=($type==12)?"selected='selected'":""?><!-->投诉处理中</option>-->
         				<option value="10" <?=($type==10)?"selected='selected'":""?>>订单关闭</option>
         			</select>
         			<button type="submit">搜索</button>

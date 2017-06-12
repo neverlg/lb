@@ -96,8 +96,8 @@
             <font color="#f00">*</font>是否到货：
             <select name="cargo_arrive">
                 <option value="">请选择</option>
-                <option value="0">未发出</option>
-                <option value="1">已发出</option>
+<!--                <option value="0">未发出</option>-->
+                <option value="1">未到货</option>
                 <option value="2">已到货</option>
             </select>
         </div>
@@ -124,8 +124,8 @@
             <font color="#f00">*</font>是否到货：
             <select name="cargo_arrive" required>
                 <option value="">请选择</option>
-                <option value="0">未发出</option>
-                <option value="1">已发出</option>
+<!--                <option value="0">未发出</option>-->
+                <option value="1">未到货</option>
                 <option value="2">已到货</option>
             </select>
         </div>
@@ -139,6 +139,10 @@
         <div class="smza-3-1">
             &nbsp;物流单号：
             <input name="logistics_no" placeholder="请输入物流单号" type="text">
+        </div>
+        <div class="smza-3-1">
+            &nbsp;收货名字：
+            <input name="logistics_consignee" placeholder="请输入收货名字" type="text">
         </div>
         <div class="smza-3-1">
             &nbsp;物流公司：
@@ -461,21 +465,32 @@ $(".smaz").on('click', '.goods-cancel', function(){
 $("#addorder-fm").submit(function(){
     if($imgCount<=0){
         showTip('请选择或上传货品信息');
-    }else{
-        $.ajax({
-            type:'post',
-            url:$("#addorder-fm").attr('action'),
-            data:$("#addorder-fm").serialize(),
-            success:function(msg){
-                if(msg.status == 0){
-                    var url="<?=site_url('order/index')?>";
-                    showTip("<h4>下单成功！</h4>", url);
-                }else{
-                    showTip('<h4>'+msg.error+'</h4>');
-                }
-            }
-        });
+        return false;
     }
+
+    if ($('[name=cargo_arrive]').val() == 2){
+        if ($('[name=goodnum]').val() == ''){
+            showTip('请填写包装件数');
+            return false;
+        }else if ($('[name=logistics_phone]').val() == ''){
+            showTip('请填写物流电话');
+            return false;
+        }
+    }
+
+    $.ajax({
+        type:'post',
+        url:$("#addorder-fm").attr('action'),
+        data:$("#addorder-fm").serialize(),
+        success:function(msg){
+            if(msg.status == 0){
+                var url="<?=site_url('order/index')?>";
+                showTip("<h4>下单成功！</h4>", url);
+            }else{
+                showTip('<h4>'+msg.error+'</h4>');
+            }
+        }
+    });
     return false;
 });
 

@@ -46,6 +46,10 @@ class Main extends MY_Controller {
 			$this->session->set_flashdata('auth_capture', $cap['word']);
 			$data['__captcha'] = $cap['image'];
 		}
+
+        $this->load->model('order_model');
+        $data['newest'] = $this->order_model->get_newest_item(2);
+
 		$this->load->view('main/index', $data);
 	}
 

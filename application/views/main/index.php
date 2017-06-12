@@ -7,8 +7,9 @@
 	<div class="index_baojia">
         <p class="p_1"><img src="<?=asset("images/banner_logo.png")?>"></p>
 		<a href="<?=site_url('order/baojia')?>">发布订单获取多个师傅报价<img src="<?=asset("images/banner_jt.png")?>"></a>
-		<div class="gundong">乐*发布订单(配送+安装)<em>北海海城区</em>1分钟前</div>
-		<div class="gundong">乐*发布订单(配送+安装)<em>北海海城区</em>2分钟前</div>
+        <?php foreach ($newest as $row):?>
+            <div class="gundong"><?=$row['me_username']?>发布订单(<?=$row['service_type']?>)<em><?=$row['customer_area']?></em><?=$row['before_time']?></div>
+        <?php endforeach;?>
 	</div>
 
 </div>

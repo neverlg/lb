@@ -485,7 +485,7 @@ class Order_model extends MY_Model {
         $province = @$areas[$city['p']];
         $area_txt = @implode('-',[$province['n'],$city['n'],$district['n']]);
 		//更新orders_detail
-		$this->db->query("INSERT INTO orders_detail SET order_id={$order_id},customer_name='{$customer_name}',customer_phone='{$customer_phone}',customer_area_id={$district_id},customer_address='{$address}',customer_elevator={$elevater},customer_floor={$floor},customer_tmall_number='{$tmall_number}',customer_memark='{$customer_remark}',logistics_packages={$goodnum},logistics_ticketnumber='{$logistics_no}',logistics_name='{$logistics_name}',logistics_phone='{$logistics_phone}',logistics_address='{$logistics_address}',logistics_mark='{$logistics_remark}',merchant_name='{$me_name}',merchant_phone='{$me_phone}',merchant_finish_time='{$hope_finish_time}',add_time={$time},customer_area='{$area_txt}'");
+		$this->db->query("INSERT INTO orders_detail SET order_id={$order_id},customer_name='{$customer_name}',customer_phone='{$customer_phone}',customer_area_id={$district_id},customer_address='{$address}',customer_elevator={$elevater},customer_floor={$floor},customer_tmall_number='{$tmall_number}',customer_memark='{$customer_remark}',logistics_packages={$goodnum},logistics_ticketnumber='{$logistics_no}',logistics_name='{$logistics_name}',logistics_phone='{$logistics_phone}',logistics_address='{$logistics_address}',logistics_consignee='{$logistics_consignee}',logistics_mark='{$logistics_remark}',merchant_name='{$me_name}',merchant_phone='{$me_phone}',merchant_finish_time='{$hope_finish_time}',add_time={$time},customer_area='{$area_txt}'");
 		//更新orders_status
 		$this->db->query("INSERT INTO orders_status SET order_id={$order_id},merchant_status=1,logistics_status={$cargo_arrive},add_time={$time}");
 
@@ -552,4 +552,74 @@ class Order_model extends MY_Model {
 		return $this->db->affected_rows();
 	}
 
+    //用于报价订单的首页搜索记录数目
+    public function get_search_num($key){
+
+        if($key){
+            $where = " WHERE c.customer_name like '%$key%' OR c.customer_phone like '%$key%'";
+        }else{
+            $where = " WHERE 1=1";
+        }
+        $sql = "SELECT COUNT(*) as num FROM orders a LEFT JOIN orders_detail c ON a.id=c.order_id {$where}";
+        $result = $this->db->query($sql)->row_array();
+        return $result['num'];
+    }
+
+    //用于报价订单的首页搜索记录详情
+    public function get_search_item($key,$page, $num_per_page){
+        $start = ($page-1)*$num_per_page;
+
+        if($key){
+            $where = " WHERE c.customer_name like '%$key%' OR c.customer_phone like '%$key%'";
+        }else{
+            $where = " WHERE 1=1";
+        }
+
+        $sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, a.merchant_price, a.confirm_code, b.merchant_status, b.except_status, b.refund_status, b.arbitrate_status, b.evaluate_status, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id FROM orders a LEFT JOIN orders_status b ON a.id=b.order_id LEFT JOIN orders_detail c ON a.id=c.order_id {$where} ORDER BY a.id DESC LIMIT $start, $num_per_page";
+        $result = $this->db->query($sql)->result_array();
+
+        $service_type = config_item('service_type');
+        foreach ($result as $key => $val){
+            $result[$key]['add_time'] = date('Y-m-d H:i', $val['add_time']);
+            $result[$key]['service_type'] = isset($service_type[$val['service_type']]) ? $service_type[$val['service_type']] : '';
+            $result[$key]['master_num'] = $this->get_master_num($val['id']);
+//			$result[$key]['customer_address'] = str_replace('-', '', $val['customer_area']).$val['customer_address'];
+        }
+        return $result;
+    }
+
+    //最近的10条订单
+    public function get_newest_item($number = 10){
+
+        $sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id,m.me_username FROM orders a LEFT JOIN merchant m ON a.merchant_id=m.me_id LEFT JOIN orders_detail c ON a.id=c.order_id ORDER BY a.id DESC LIMIT $number";
+        $result = $this->db->query($sql)->result_array();
+
+        $service_type = config_item('service_type');
+        foreach ($result as $key => $val){
+            $result[$key]['add_time'] = date('Y-m-d H:i', $val['add_time']);
+            $result[$key]['service_type'] = isset($service_type[$val['service_type']]) ? $service_type[$val['service_type']] : '';
+            $result[$key]['master_num'] = $this->get_master_num($val['id']);
+			$result[$key]['customer_area'] = str_replace('-', '', $val['customer_area']);
+            $result[$key]['before_time'] = timeTran($val['add_time']);
+        }
+        return $result;
+    }
+}
+
+function timeTran($time) {
+    $t = time() - $time;
+    $f = array(
+        '31536000' => '年',
+        '2592000' => '个月',
+        '604800' => '星期',
+        '86400' => '天',
+        '3600' => '小时',
+        '60' => '分钟',
+        '1' => '秒'
+    );
+    foreach ($f as $k => $v) {
+        if (0 != $c = floor($t / (int) $k)) {
+            return $c . $v . '前';
+        }
+    }
 }
