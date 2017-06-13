@@ -11,7 +11,7 @@
         	<div class="top-2-2">
             	<a <?php if(empty($this->_current_method) || ($this->_current_controller=='main' && $this->_current_method=='index')){echo "class='on'";} ?> href="<?=site_url('main/index')?>">首页</a>
                 <a <?php if($this->_current_method=='service'){echo "class='on'";} ?> href="<?=site_url('main/service')?>">服务方式</a>
-                <a href="#">发现师傅</a>
+                <a href="<?=site_url('master/discover')?>">发现师傅</a>
                 <a <?php if($this->_current_method=='guarantee'){echo "class='on'";} ?> href="<?=site_url('main/guarantee')?>">服务保障</a>
                 <a <?php if($this->_current_method=='about_us'){echo "class='on'";} ?> href="<?=site_url('main/about_us')?>">关于我们</a>
             </div>

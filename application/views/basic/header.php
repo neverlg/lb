@@ -55,7 +55,7 @@
             <div class="col-md-6">
                 <span class="top-1-3"><a href="<?=site_url('article/index')?>">帮助中心</a></span>
                 <span class="top-1-3"><a href="<?=site_url('main/shortcut')?>">生成桌面图标</a></span> 
-                <span class="top-1-3"><a href="#">优惠活动</a></span>  
+                <span class="top-1-3"><a href="<?=site_url('activity/index')?>">优惠活动</a></span>
                 <span class="top-1-3"><a href="<?=site_url('main/master_settle')?>">师傅入驻</a></span>      
                 <span class="top-1-3"><a href="<?=site_url('order/index')?>">我的订单</a></span>  	
             </div>

@@ -8,7 +8,7 @@
         <p class="p_1"><img src="<?=asset("images/banner_logo.png")?>"></p>
 		<a href="<?=site_url('order/baojia')?>">发布订单获取多个师傅报价<img src="<?=asset("images/banner_jt.png")?>"></a>
         <?php foreach ($newest as $row):?>
-            <div class="gundong"><?=$row['me_username']?>发布订单(<?=$row['service_type']?>)<em><?=$row['customer_area']?></em><?=$row['before_time']?></div>
+            <div class="gundong"><?=mb_substr($row['me_username'],0,1)?>*发布订单(<?=$row['service_type']?>)<em><?=$row['customer_area']?></em><?=$row['before_time']?></div>
         <?php endforeach;?>
 	</div>
 
