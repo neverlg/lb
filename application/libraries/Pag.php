@@ -11,7 +11,7 @@
  * mysql_query("select * from user limit {$pag->offset},{$pag->limit}");
  */
 
-class pagination {
+class Pag {
 
     private static $count = 0;//分页单元框数量
     
@@ -43,29 +43,24 @@ class pagination {
       example：   当前第1/453页 [首页] [上页] 1 2 3 4 5 6 7 8 9 10 [下页] [尾页]
      */
 
-    function __construct($nums, $each_disNums = 10, $subPage_type = 3, $current_page = null, $sub_pages = null, $subPage_link = null) {
+    function config($nums, $each_disNums = 10, $subPage_type = 3, $current_page = null, $sub_pages = null, $subPage_link = null) {
         if (!$current_page)
             $current_page = (isset($_GET['p']) && (int)$_GET['p'])?$_GET['p']:1;
         if (!$sub_pages)
             $sub_pages = 10;
         if (!$subPage_link){
-            if (isset($_SERVER['PHP_SELF']))
-                $subPage_link = $_SERVER['PHP_SELF'];
-            elseif (isset($_SERVER['SCRIPT_NAME']))
-                $subPage_link = $_SERVER['SCRIPT_NAME'];
-            else
-                $subPage_link = '';
+            $subPage_link = parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
             $this->query = $_GET;
             //$subPage_link .= '?'.http_build_query($_GET+array('p'=>''));
         }
-        
+
         $this->each_disNums = intval($each_disNums);
         $limit = isset($_COOKIE['paginationLength'])?$_COOKIE['paginationLength']:$each_disNums;
         if ($_POST && isset($_POST['paginationLength'])){
             setcookie('paginationLength',$_POST['paginationLength']);
             $limit = $_POST['paginationLength'];
         }
-        
+
         $this->nums = intval($nums);
         if (!$current_page) {
             $this->current_page = 1;
@@ -76,12 +71,12 @@ class pagination {
         //$this->pageNums = ceil($nums / $each_disNums);
         $this->pageNums = ceil($nums / $limit);
         $this->subPage_link = $subPage_link;
-        
+
         $this->limit = $limit;//$this->each_disNums;
         $this->offset = ($this->current_page-1) * $this->limit;
-        
+
         $this->subPage_type = $subPage_type;
-        //echo $this->pageNums."--".$this->sub_pages; 
+        //echo $this->pageNums."--".$this->sub_pages;
     }
     
     public function __toString() {

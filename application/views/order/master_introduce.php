@@ -90,9 +90,9 @@
             <?php endif;?>
           </div>
       <?php endforeach;?>
-<!--      <div class="htfy" style="margin-top:25px;">-->
-<!--          --><?//=$__pagination_url?>
-<!--      </div>-->
+      <div class="htfy" style="margin-top:25px;">
+          <?=$__pagination_url?>
+      </div>
   </div>
 
 

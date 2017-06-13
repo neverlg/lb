@@ -46,7 +46,8 @@ class Order extends MY_Controller {
 	//报价订单首页
 	//merchant_type 1待报价 2报价中 3已挑选师傅 4已支付预付款 5师傅服务中 6师傅完成服务 7验收交易成功
 	//other_type 8退款中  9仲裁中  10交易关闭 11待评价 12投诉处理中
-	public function baojia_index($type=0, $page=1){
+	public function baojia_index($type=0){
+        $page = $this->input->get('p') ? : 1;
 		$count = $this->order_model->get_distinct_order_num($this->me_id, 1);
 		$count['all'] = $this->order_model->get_order_num($this->me_id, 1);
 		$data['top_num'] = $count;
@@ -64,13 +65,17 @@ class Order extends MY_Controller {
 		$num_per_page = config_item('num_per_page');
 		$data['local_list'] = $this->order_model->get_baojia_search_item($this->me_id, $post, $page, $num_per_page['order_index']);
 		//分页
-		$this->load->library('pagination');
-		$config['base_url'] = site_url("order/baojia_index/$type/");
-		$config['total_rows'] = $data['local_num'];
-		$config['per_page'] = $num_per_page['order_index'];
-		$config['use_page_numbers'] = TRUE;
-		$this->pagination->initialize($config);
-		$data['__pagination_url'] = $this->pagination->create_links();
+		//$this->load->library('pagination');
+		//$config['base_url'] = site_url("order/baojia_index/$type/");
+		//$config['total_rows'] = $data['local_num'];
+		//$config['per_page'] = $num_per_page['order_index'];
+		//$config['use_page_numbers'] = TRUE;
+		//$this->pagination->initialize($config);
+		//$data['__pagination_url'] = $this->pagination->create_links();
+        
+        $this->load->library('pag');
+        $this->pag->config($data['local_num'],$num_per_page['order_index'],3);
+        $data['__pagination_url'] = $this->pag;
 
 		$this->load->view('order/baojia_index', $data);
 	}
@@ -463,7 +468,8 @@ class Order extends MY_Controller {
 	}
 
 	//师傅信息展示
-	public function master($type='introduce', $master_id,$page=1){
+	public function master($type='introduce', $master_id){
+        $page = $this->input->get('p') ? : 1;
 		$data['master_id'] = $master_id = intval($master_id);
 		//获取头部统计信息
 		$this->load->model('master_model');
@@ -487,6 +493,10 @@ class Order extends MY_Controller {
 //        $config['use_page_numbers'] = TRUE;
 //        $this->pagination->initialize($config);
 //        $data['__pagination_url'] = $this->pagination->create_links();
+
+        $this->load->library('pag');
+        $this->pag->config($data['local_num'],$num_per_page['master_evaluate'],3);
+        $data['__pagination_url'] = $this->pag;
 
 		if($type == 'introduce'){
 			$data['base'] = $this->master_model->get_master_info($master_id);
