@@ -55,15 +55,56 @@ class Order_model extends MY_Model {
 
 	//获取不同种类订单的各种状态的数目（后台首页）
 	public function get_distinct_order_num($me_id, $priced_type=0){
-		$where = array('me_id' => $me_id);
-		if(!empty($priced_type)){
-			$where['order_type'] = $priced_type;
-			return $this->db->where($where)->get('merchant_order_num')->row_array();
+//		$where = array('me_id' => $me_id);
+//		if(!empty($priced_type)){
+//			$where['order_type'] = $priced_type;
+//			return $this->db->where($where)->get('merchant_order_num')->row_array();
+//
+//		}else{
+//			$result = $this->db->where($where)->get('merchant_order_num')->result_array();
+//			return array_column($result, null, 'order_type');
+//		}
+        if(!empty($priced_type)){
+            $sql = "select s.merchant_status,s.refund_status,s.arbitrate_status,s.evaluate_status,s.complain_status from `orders` o LEFT JOIN orders_status s on o.id=s.order_id where o.merchant_id=$me_id and o.order_type=$priced_type";
+        }else{
+            $sql = "select s.merchant_status,s.refund_status,s.arbitrate_status,s.evaluate_status,s.complain_status from `orders` o LEFT JOIN orders_status s on o.id=s.order_id where o.merchant_id=$me_id";
+        }
 
-		}else{
-			$result = $this->db->where($where)->get('merchant_order_num')->result_array();
-			return array_column($result, null, 'order_type');
-		}	
+        $result = $this->db->query($sql)->result_array();
+        $data = [
+            'wait_priced'=>0,
+            'wait_hired'=>0,
+            'wait_pay'=>0,
+            'under_service'=>0,
+            'wait_accept'=>0,
+            'wait_evaluate'=>0,
+            'under_refund'=>0,
+            'under_arbitrate'=>0,
+            'under_complain'=>0,
+        ];
+        foreach ($result as $row){
+            if ($row['complain_status'] == 1){//投诉处理中
+                $data['under_complain']++;
+            }else if ($row['arbitrate_status'] == 1){//介入仲裁中
+                $data['under_arbitrate']++;
+            }else if ($row['refund_status'] == 1){//申请退款中
+                $data['under_refund']++;
+            }else if ($row['merchant_status'] == 1){//待报价
+                $data['wait_priced']++;
+            }else if ($row['merchant_status'] == 2){//待雇佣
+                $data['wait_hired']++;
+            }else if ($row['merchant_status'] == 3){//待托管费用
+                $data['wait_pay']++;
+            }else if ($row['merchant_status'] == 5){//师傅服务中
+                $data['under_service']++;
+            }else if ($row['merchant_status'] == 6){//待确认验收
+                $data['wait_accept']++;
+            }else if (($row['merchant_status'] == 7) && ($row['evaluate_status'] == 0)){//待评价
+                $data['wait_evaluate']++;
+            }
+
+        }
+        return $data;
 	}
 
 	//获取用户的订单总数
