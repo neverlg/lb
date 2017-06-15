@@ -80,35 +80,35 @@ function getStars($points)
         case $points == 0:
             return 0;
         case $points <= 5:
-            return 1;
+            return str_repeat('<img src="'.asset('images/bj2.png').'">',1);
         case $points <= 20:
-            return 2;
+            return str_repeat('<img src="'.asset('images/bj2.png').'">',2);
         case $points <= 45:
-            return 3;
+            return str_repeat('<img src="'.asset('images/bj2.png').'">',3);
         case $points <= 75:
-            return 4;
+            return str_repeat('<img src="'.asset('images/bj2.png').'">',4);
         case $points <= 125:
-            return 5;
+            return str_repeat('<img src="'.asset('images/bj2.png').'">',5);
         case $points <= 250:
-            return 6;
+            return str_repeat('<img src="'.asset('images/bj4.png').'">',1);
         case $points <= 500:
-            return 7;
+            return str_repeat('<img src="'.asset('images/bj4.png').'">',2);
         case $points <= 1000:
-            return 8;
+            return str_repeat('<img src="'.asset('images/bj4.png').'">',3);
         case $points <= 2500:
-            return 9;
+            return str_repeat('<img src="'.asset('images/bj4.png').'">',4);
         case $points <= 5000:
-            return 10;
+            return str_repeat('<img src="'.asset('images/bj4.png').'">',5);
         case $points <= 10000:
-            return 11;
+            return str_repeat('<img src="'.asset('images/bj5.png').'">',1);
         case $points <= 25000:
-            return 12;
+            return str_repeat('<img src="'.asset('images/bj5.png').'">',2);
         case $points <= 50000:
-            return 13;
+            return str_repeat('<img src="'.asset('images/bj5.png').'">',3);
         case $points <= 100000:
-            return 14;
+            return str_repeat('<img src="'.asset('images/bj5.png').'">',4);
         case $points > 100000:
-            return 15;
+            return str_repeat('<img src="'.asset('images/bj5.png').'">',5);
         default:
             return 0;
     }
