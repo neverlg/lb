@@ -39,7 +39,7 @@
                     <div class="col-md-2 fx-1"><img src="<?=$row['head_img']?>" /></div>
                     <div class="col-md-3 fx-2"><span class="fx-2-1"><?=$row['real_name']?></span>
                         <span class="fx-2-1">保证金：<img src="<?=asset('images/fund_img.jpg')?>"  /><?=$row['assure_fund']?>元</span>
-                        <span class="fx-2-1">信誉：<?=$row['stars']?></span>
+                        <span class="fx-2-1">信誉：<?=htmlspecialchars_decode($row['stars'])?></span>
                         <span class="fx-2-1" style="color:#0fb7db">承诺6项服务</span></div>
                     <div class="col-md-2 fx-3">
                         <span class="fx-3-1">总接单： <span class="fx-3-11"><?=$row['order_count']?>单</span></span>
