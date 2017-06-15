@@ -17,7 +17,7 @@ class MY_Controller extends CI_Controller {
         $this->_current_method = strtolower($this->uri->rsegment(2));
         $this->_authorization();
 
-        $this->output->enable_profiler(TRUE);
+//        $this->output->enable_profiler(TRUE);
     }
 
     // auth check
