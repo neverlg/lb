@@ -632,7 +632,8 @@ class Order_model extends MY_Model {
     //最近的10条订单
     public function get_newest_item($number = 10){
 
-        $sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id,m.me_username FROM orders a LEFT JOIN merchant m ON a.merchant_id=m.me_id LEFT JOIN orders_detail c ON a.id=c.order_id ORDER BY a.id DESC LIMIT $number";
+//        $sql = "SELECT a.id, a.order_number, a.service_type, a.add_time, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id,m.me_username FROM orders a LEFT JOIN merchant m ON a.merchant_id=m.me_id LEFT JOIN orders_detail c ON a.id=c.order_id ORDER BY a.id DESC LIMIT $number";
+        $sql = "select a.*, c.customer_area, c.customer_address, c.customer_name, c.customer_phone, c.merchant_remark,c.customer_area_id,m.me_username from (SELECT id, order_number, merchant_id,service_type, add_time FROM orders  ORDER BY id DESC LIMIT 2) a LEFT JOIN merchant m ON a.merchant_id=m.me_id LEFT JOIN orders_detail c ON a.id=c.order_id";
         $result = $this->db->query($sql)->result_array();
 
         $service_type = config_item('service_type');

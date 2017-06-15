@@ -6,7 +6,6 @@ class Main extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-        $this->output->enable_profiler(TRUE);
 	}
 
 	//首页

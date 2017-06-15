@@ -46,7 +46,7 @@
                         <span class="fx-3-1">总评分： <span class="fx-3-11"><?=$row['avg_score']?>分</span></span>
                         <span class="fx-3-1">好评率： <span class="fx-3-11"><?=$row['praise_rate']?>%</span></span>
                         <span class="fx-3-1">投诉记录： <span class="fx-3-12"><?=$row['complain_count']?>次</span></span>
-                        <span class="fx-3-1"><A href="#"><u>累计评价(<?=$row['evaluate_count']?>)</u></A></span>
+                        <span class="fx-3-1"><a href="<?=site_url('order/master/introduce/'.$row['id'])?>"><u>累计评价(<?=$row['evaluate_count']?>)</u></a></span>
                     </div>
                     <div class="col-md-5 fx-4">
                         <span class="fx-4-1">所在位置：<?=$row['area_text']?></span>
