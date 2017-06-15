@@ -26,4 +26,21 @@ class Province_model extends MY_Model {
 		}
 		return $tmp_arr;
 	}
+
+	public function getParentsCouple($area_id){
+	    $areas = getAreas();
+        $crumbs = [];
+	    do{
+	        if (empty($areas[$area_id])){
+	            break;
+            }
+            $area = $areas[$area_id];
+            $crumbs[$area_id] = $area['n'];
+            if (empty($area['p'])){
+                break;
+            }
+            $area_id = $area['p'];
+        }while(true);
+        return array_reverse($crumbs,true);
+    }
 }

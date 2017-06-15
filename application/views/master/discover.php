@@ -3,47 +3,65 @@
 <?php require 'application/views/basic/header.php'; ?>
 <?php require 'application/views/basic/top1.php'; ?>
 
+    <script src="<?=asset("js/vue.js")?>"></script>
+    <script src="<?=asset("dist/common.js")?>"></script>
+    <script src="<?=asset("dist/master/discover.js")?>"></script>
+
     <div class="container">
         <div class="fxsf-1">
             <a href="#">乐帮到家</a>> <a href="#">发现师傅</a>
         </div>
 
-        <div class="fxsf-2">
+        <div class="fxsf-2" id="div">
             <div class="fxsf-3 col-md-9">
 
-                <div class="fxsf-3-1">服务区域：<select><option>选择省份</option><option>北京</option><option>上海</option></select>
-                    <select><option>选择城市</option><option>北京市</option><option>上海市</option></select>
-                    <select><option>选择地区</option><option>北京区</option><option>上海区</option></select><a href="#">搜索</a> <span>该地区有<font color="#f00">100</font>个师傅为你提供服务</span></div>
-                <div class="fxsf-3-2">服务类型： <a class="on" href="#">不限</a><a href="#">配送</a><a href="#">配送+安装</a><a href="#">安装</a><a href="#">维修</a></div>
+                <form action="" method="get">
+                <div class="fxsf-3-1">服务区域：
+                    <area-selector name="areaId" selectd-province="<?=@$provinceId?>" selectd-city="<?=@$cityId?>" selectd-district="<?=@$districtId?>"></area-selector>
+                    <button type="submit" style="background: none;border:none;"><a>搜索</a></button>
+                    <?php if (!empty($count)):?>
+                    <span>该地区有<font color="#f00"><?=$count?></font>个师傅为你提供服务</span>
+                    <?php endif;?>
+                </div>
+                </form>
+                <div class="fxsf-3-2">服务类型：
+                    <a <?=empty($service_type)?'class="on"':''?> href="?areaId=<?=$area_id?>">不限</a>
+                    <a <?=$service_type==1?'class="on"':''?> href="?areaId=<?=$area_id?>&service_type=1">配送</a>
+                    <a <?=$service_type=='1,2'?'class="on"':''?> href="?areaId=<?=$area_id?>&service_type=1,2">配送+安装</a>
+                    <a <?=$service_type==2?'class="on"':''?> href="?areaId=<?=$area_id?>&service_type=2">安装</a>
+                    <a <?=$service_type==3?'class="on"':''?> href="?areaId=<?=$area_id?>&service_type=3">维修</a></div>
 
+                <?php if (empty($list)):?>
+                    <div style="text-align:center;font-size:20px;padding-top:50px;">请选择服务区域搜索发现师傅......</div>
+                <?php else:?>
+                    <?php foreach ($list as $row):?>
                 <div class="fxsf-4">
-                    <div class="col-md-2 fx-1"><img src="<?=asset('images/bj6.png')?>" /></div>
-                    <div class="col-md-3 fx-2"><span class="fx-2-1">高阳</span>
-                        <span class="fx-2-1">保证金：<img src="<?=asset('images/146.png')?>" /></span>
-                        <span class="fx-2-1">信誉：<img src="<?=asset('images/bj2.png')?>"  /><img src="<?=asset('images/bj2.png')?>"  /><img src="<?=asset('images/bj2.png')?>"  /></span>
-                        <span class="fx-2-1"><img src="<?=asset('images/43.png')?>"  /></span></div>
+                    <div class="col-md-2 fx-1"><img src="<?=$row['head_img']?>" /></div>
+                    <div class="col-md-3 fx-2"><span class="fx-2-1"><?=$row['real_name']?></span>
+                        <span class="fx-2-1">保证金：<img src="<?=asset('images/fund_img.png')?>"  /><?=$row['assure_fund']?>元</span>
+                        <span class="fx-2-1">信誉：<?=$row['stars']?></span>
+                        <span class="fx-2-1" style="color:#0fb7db">承诺6项服务</span></div>
                     <div class="col-md-2 fx-3">
-                        <span class="fx-3-1">总接单： <span class="fx-3-11">100单</span></span>
-                        <span class="fx-3-1">总评分： <span class="fx-3-11">5.00分</span></span>
-                        <span class="fx-3-1">好评率： <span class="fx-3-11">99.88%</span></span>
-                        <span class="fx-3-1">投诉记录： <span class="fx-3-12">0次</span></span>
-                        <span class="fx-3-1"><A href="#"><u>累计评价(88)</u></A></span>
+                        <span class="fx-3-1">总接单： <span class="fx-3-11"><?=$row['order_count']?>单</span></span>
+                        <span class="fx-3-1">总评分： <span class="fx-3-11"><?=$row['avg_score']?>分</span></span>
+                        <span class="fx-3-1">好评率： <span class="fx-3-11"><?=$row['praise_rate']?>%</span></span>
+                        <span class="fx-3-1">投诉记录： <span class="fx-3-12"><?=$row['complain_count']?>次</span></span>
+                        <span class="fx-3-1"><A href="#"><u>累计评价(<?=$row['evaluate_count']?>)</u></A></span>
                     </div>
                     <div class="col-md-5 fx-4">
-                        <span class="fx-4-1">所在位置：九江-修水县-宁传镇</span>
-                        <span class="fx-4-1">服务类型：家具类(配送，搬运，安装，维修)</span>
-                        <span class="fx-4-1">服务区域：修水县,武宁县</span>
+                        <span class="fx-4-1">所在位置：<?=$row['area_text']?></span>
+                        <span class="fx-4-1">服务类型：家具类(<?=$row['service_type_text']?>)</span>
+                        <span class="fx-4-1">服务区域：<?=$row['service_area_text']?></span>
                     </div>
 
                 </div>
+                        <?php endforeach ?>
+                <?php endif;?>
 
 
 
-                <div class="htfy" style="padding-top:10%; padding-bottom:3%;">
-                    <a href="#">上一页</a> <a class="on" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#">7</a>
-
-
-                    <a href="#">下一页</a>
+                <div class="htfy" style="margin-top:25px;">
+                    <?=@$__pagination_url?>
                 </div>
 
 
@@ -70,3 +88,4 @@
 
 
 <?php require 'application/views/basic/bottom.php'; ?>
+

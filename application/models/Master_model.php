@@ -16,6 +16,27 @@ class Master_model extends MY_Model {
 		return $this->db->query($sql)->result_array();
 	}
 
+    //选取已审核的，在服务区域内的师傅数量
+    public function get_suitable_user_num($area_id,$service_type){
+        $sql = "SELECT count(*) as num FROM master m WHERE FIND_IN_SET($area_id, service_area_ids) AND status=1";
+        if ($service_type){
+            $sql .= " AND m.service_type in ($service_type)";
+        }
+        $result = $this->db->query($sql)->row_array();
+        return $result['num'];
+    }
+
+    //选取已审核的，在服务区域内的师傅信息
+    public function get_suitable_user($area_id,$service_type,$page,$num_per_page){
+        $start = ($page-1)*$num_per_page;
+        $sql = "SELECT m.*,w.assure_fund,s.order_count,s.evaluate_count,s.complain_count,s.score_count,s.evaluate_count,s.evaluate_praise_count,s.points,s.score_sum FROM master m left join master_wallet w on m.id=w.master_id left join master_statistic s on m.id=s.master_id WHERE FIND_IN_SET($area_id, m.service_area_ids) AND status=1";
+        if ($service_type){
+            $sql .= " AND m.service_type in ($service_type)";
+        }
+        $sql .= " ORDER BY w.assure_fund DESC,m.id DESC  LIMIT $start, $num_per_page";
+        return $this->db->query($sql)->result_array();
+    }
+
 	//获取师傅头像及姓名
 	public function get_master_service_info($master_id){
 		$sql = "SELECT a.real_name, a.head_img, b.extra_tmall_examine, b.extra_storage, b.extra_move_free, b.extra_finish_in, b.extra_nothing_fee, b.extra_repair_free, b.extra_floor_free, b.extra_carry_fee, b.extra_far_fee FROM master a LEFT JOIN master_detail b ON a.id=b.master_id WHERE a.id=$master_id";

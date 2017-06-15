@@ -49,6 +49,12 @@ class MY_Controller extends CI_Controller {
                 'feedback',            #用户反馈
                 'feedback_submit',     #反馈提交
                 ),
+            'master' => array(
+                'discover',            #发现师傅
+            ),
+            'activity' => array(
+                'index',     #优惠活动
+            ),
             );
         // need no login
         if(isset($_allow_visit[$this->_current_controller]) && in_array($this->_current_method, $_allow_visit[$this->_current_controller])){
