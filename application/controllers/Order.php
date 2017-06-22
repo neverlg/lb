@@ -658,14 +658,14 @@ class Order extends MY_Controller {
             $real_price = $total_price-$me_balance-$me_coupon_fee;
             $result = $this->ewallet_model->payreplenish_online($this->me_id, $this->me_name, $replenish_id, $order_number, $me_balance, $real_price, $coupon_id, $me_coupon_fee);
             if($result){
-//                $data = array(
-//                    'trade_id' => $result,
-//                    'order_id' => $order_id,
-//                    'real_price' => $real_price,
-//                    'order_number' => $order_number,
-//                );
-//                return $this->load->view('order/online_pay', $data);
-                redirect(site_url('order/do_replenish/'.$result.'/'.$order_id));
+                $data = array(
+                    'trade_id' => $result,
+                    'order_id' => $order_id,
+                    'real_price' => $real_price,
+                    'order_number' => $order_number,
+                );
+                return $this->load->view('order/replenish_online_pay', $data);
+//                redirect(site_url('order/do_replenish/'.$result.'/'.$order_id));
             }
         }
         exit('系统异常');

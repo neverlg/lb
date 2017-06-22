@@ -51,7 +51,9 @@
             			<b style="float:left;"><font color="#f00">*</font>退款方式：</b>
             			<input name="method" type="radio" value="1" required>&nbsp;
             			我的钱包&nbsp;&nbsp;&nbsp;&nbsp;
+                        <?php if (empty($replenish)):?>
             			<input name="method" type="radio" value="2" required>&nbsp;原路返回
+                        <?php endif;?>
             		</div>
              		<div class="tjpj-1">
             			<b style="float:left;"><font color="#f00">*</font>退款原因：</b>

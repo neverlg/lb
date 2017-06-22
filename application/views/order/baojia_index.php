@@ -242,14 +242,14 @@
 <!--merchant remark-->
 <div class="replenish-pop" style="display:none;">
     <div class="lb_mask"></div>
-    <div class="tt-2-mark" style="height:300px;">
-        <form id="mark-fm" action="<?=site_url('order/order_replenish')?>" method="post">
+    <div class="tt-2-mark" style="height:320px;">
+        <form id="replenish-fm" action="<?=site_url('order/order_replenish')?>" method="post">
             <input type="hidden" name="order_id" />
             <div class="tt-2-1">增加费用 <img class="close-replenish" src="<?=asset("images/02418.png")?>" /></div>
-            <div class="tt-2-22">增加费用：<input tpye="text" name="replenish_amount"></div>
-            <div class="tt-2-22"><textarea id="mark-content" name="replenish_reason" cols="30" rows="4"></textarea></div>
+            <div class="tt-2-22">增加费用：<input type="text" name="replenish_amount"></div>
+            <div class="tt-2-22"><textarea name="replenish_reason" cols="30" rows="4" placeholder="订单备注"></textarea></div>
             <div class="tt-2-3">
-                <button class="submit-mark" type="submit">确定</button>
+                <button class="submit-replenish" type="submit">确定</button>
                 <a class="on close-replenish" href="#">取消</a>
             </div>
         </form>
@@ -345,6 +345,13 @@
 
     $(".close-replenish").click(function(){
         $(".replenish-pop").hide();
+    });
+
+    $(".submit-replenish").click(function(){
+        if (!/^\d+(\.\d+)?$/.test($('[name=replenish_amount]').val())){
+            alert('费用请填写数字');
+            return false;
+        }
     });
 
 </script>

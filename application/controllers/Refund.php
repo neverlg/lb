@@ -86,6 +86,8 @@ class Refund extends MY_Controller {
 		$data['order_id'] = $order_id = intval($order_id);
 		$data['order'] = $this->order_model->get_refund_order($this->me_id, $order_id);
 
+        $data['replenish'] = $this->order_model->get_replenish_by_orderid($this->me_id, $order_id);
+
 		$this->load->view('refund/add', $data);
 	}
 

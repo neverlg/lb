@@ -661,6 +661,11 @@ class Order_model extends MY_Model {
         $this->db->insert('orders_replenish', $data);
         return $this->db->insert_id();
     }
+
+    public function get_replenish_by_orderid($me_id, $order_id){
+        $sql = "select replenish_amount,replenish_reason,pay_time from orders_replenish where order_id=$order_id and !ISNULL(pay_time)";
+        return $this->db->query($sql)->result_array();
+    }
 }
 
 function timeTran($time) {

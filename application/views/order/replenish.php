@@ -5,13 +5,15 @@
 
 <div class="ckfwjd" style="padding-top:2%;">
     <div class="container ckfwjd-1">
-        <div class="zjtz-1">
-            订单金额：<?=$order['merchant_price']?>元
-        </div>
 
         <div class="zjtz-1">
             补款金额：<?=$replenish['replenish_amount']?>元<br/>
-            补款原因：<?=$replenish['replenish_reason']?><br/>
+        </div>
+
+        <div class="bjxq1-1">
+            <b><font size="4">付款信息</font></b><br/>
+            付款类型：多付上门费<br/>
+            补款备注：<?=$replenish['replenish_reason']?><br/>
         </div>
 
         <div class="bjxq1-1">
