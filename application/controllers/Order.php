@@ -658,16 +658,60 @@ class Order extends MY_Controller {
             $real_price = $total_price-$me_balance-$me_coupon_fee;
             $result = $this->ewallet_model->payreplenish_online($this->me_id, $this->me_name, $replenish_id, $order_number, $me_balance, $real_price, $coupon_id, $me_coupon_fee);
             if($result){
-                $data = array(
-                    'trade_id' => $result,
-                    'order_id' => $order_id,
-                    'real_price' => $real_price,
-                    'order_number' => $order_number,
-                );
+//                $data = array(
+//                    'trade_id' => $result,
+//                    'order_id' => $order_id,
+//                    'real_price' => $real_price,
+//                    'order_number' => $order_number,
+//                );
 //                return $this->load->view('order/online_pay', $data);
-                redirect(site_url('order/do_pay/'.$result.'/'.$order_id));
+                redirect(site_url('order/do_replenish/'.$result.'/'.$order_id));
             }
         }
         exit('系统异常');
+    }
+
+    //发起补款支付
+    public function do_replenish($trade_id, $order_id){
+        $trade_id = intval($trade_id);
+        $order_id = intval($order_id);
+        $ret = $this->ewallet_model->get_online_real_price($this->me_id, $trade_id);
+        if(empty($ret)){
+            exit('系统异常');
+        }
+        $tid = $ret['trade_number'];
+        $fee = $ret['amount'];
+
+        //存储订单id，用于同步显示数据
+        $arr = array(
+            'bukuan_orderid_pay' => $order_id,
+            'bukuan_real_pay' => $fee
+        );
+        $this->session->set_userdata($arr);
+        $this->load->helper('payment');
+        header("Content-type:text/html;charset=utf-8");
+        header("Cache-control: private");
+        //设置异步配置的key
+        $prefix = 'order_replenish';
+        echo alipay_build($tid, '乐帮到家-支付', $fee, '乐帮到家-支付', $prefix);
+    }
+
+    //支付成功，同步页面
+    public function replenish_success(){
+        $order_id = $this->session->userdata('bukuan_orderid_pay');
+        $fee = $this->session->userdata('bukuan_real_pay');
+        if(!empty($order_id)){
+            $ret = $this->order_model->get_order_by_oid($this->me_id, $order_id);
+            $service_conf = config_item('service_type');
+            $data = array(
+                'order_id' => $order_id,
+                'order_number' => $ret['order_number'],
+                'service_type' => isset($service_conf[$ret['service_type']]) ? $service_conf[$ret['service_type']] : '- -',
+                'fee' => $fee,
+                'master_name' => $ret['real_name'],
+                'master_phone' => $ret['phone']
+            );
+            $this->load->view('order/replenish_success', $data);
+        }
     }
 }

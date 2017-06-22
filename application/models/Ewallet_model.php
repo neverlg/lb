@@ -417,4 +417,53 @@ class Ewallet_model extends MY_Model {
         return $final_result ? $online_payid : false;
     }
 
+    //支付成功，更新
+    public function update_replenish_log($post, $trade_arr){
+        $time = time();
+        $info = json_encode($post);
+        $alipay_no = $post['trade_no'];
+        $trade_id = $trade_arr['id'];
+        $me_id = $trade_arr['merchant_id'];
+        $coupon_id = $trade_arr['coupon_id'];
+        $order_list = $trade_arr['order_number_list'];
+        $final_result = false;
+
+        $this->db->trans_begin();
+        //获取用户当前余额
+        $ret1 = $this->db->query("SELECT me_money FROM merchant WHERE me_id=$me_id")->row_array();
+        $cur_balance = $ret1['me_money'];
+        //是否有余额支付参与
+        $this->load->library('lb_redis');
+        $merchant_set = '';
+        $balance_pay = 0.00;
+        $balance_pay_id = Lb_redis::get('mixed_replenish_'.$trade_id);
+        if(!empty($balance_pay_id)){
+            $ret = $this->db->query("SELECT amount FROM merchant_trade_log WHERE id=$balance_pay_id AND merchant_id=$me_id")->row_array();
+            $balance_pay = $ret['amount'];
+            if($cur_balance < $balance_pay){
+                log_message('error', '【混合支付失败】trade_id='.$trade_id."\r\n用户当前余额".$cur_balance."不足以支付订单余额部分".$balance_pay."\r\n但是异步支付成功");
+                //$this->db->trans_rollback();
+                return false;
+            }else{
+                $final_balance = $cur_balance - $balance_pay;
+                $this->db->query("UPDATE merchant_trade_log SET status=1, update_time=$time, balance=$final_balance WHERE id=$balance_pay_id");
+                $merchant_set =" me_money=$final_balance, ";
+            }
+        }
+        $change_pay = $balance_pay+$trade_arr['amount'];
+        $this->db->query("UPDATE merchant_trade_log SET status=1, info='{$info}', alipay_no='{$alipay_no}', balance=$cur_balance, update_time=$time WHERE id=$trade_id");
+        $this->db->query("UPDATE orders_replenish SET pay_time=$time WHERE id IN ($order_list)");
+        if(!empty($coupon_id)){
+            $this->db->query("UPDATE coupon_grantlist SET cg_status=1 WHERE cg_id=$coupon_id");
+        }
+
+        if ($this->db->trans_status() === FALSE){
+            $this->db->trans_rollback();
+        }else{
+            $this->db->trans_commit();
+            $final_result = true;
+        }
+        //如果事务执行成功，有余额，就返回余额id，否则，trade_id
+        return $final_result ? (!empty($balance_pay_id) ? $balance_pay_id : $trade_id) : false;
+    }
 }

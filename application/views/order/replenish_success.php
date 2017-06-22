@@ -12,7 +12,7 @@
         <div class="zftz-d-1">
             订单编号：<?=$order_number?><br/>
             服务类型：<?=$service_type?><br/>
-            付款金额：<font color="#f00"><?=$fee?>元</font><br/>
+            补款金额：<font color="#f00"><?=$fee?>元</font><br/>
             师傅姓名：<?=$master_name?>
             <?php if(!empty($master_phone)){ ?>
             （<?=$master_phone?>）
