@@ -646,6 +646,21 @@ class Order_model extends MY_Model {
         }
         return $result;
     }
+
+    public function add_replenish($me_id, $order_id, $order_number,$replenish_amount,$replenish_reason){
+        $time = time();
+
+        $data = [
+            'order_number'=>$order_number,
+            'order_id'=>$order_id,
+            'replenish_amount'=>$replenish_amount,
+            'replenish_reason'=>$replenish_reason,
+            'add_time'=>$time,
+            'upd_time'=>$time,
+        ];
+        $this->db->insert('orders_replenish', $data);
+        return $this->db->insert_id();
+    }
 }
 
 function timeTran($time) {

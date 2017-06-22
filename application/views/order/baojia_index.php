@@ -30,7 +30,7 @@
         			<a <?=($type==7)?"class='on'":""?> href="<?=site_url('order/baojia_index/11')?>"> 待评价<span class=" htnr-b-2-1 <?php if($type==7){echo 'on';} ?>" >(<?=$top_num['wait_evaluate']?>)</span></a>
         		</div>
         		<div class="htnr-b-3">
-        			<form class="form-search" action="<?=site_url('order/baojia_index/'.$type)?>" method="post">
+        			<form class="form-search" action="<?=site_url('order/baojia_index/')?>" method="post">
         			客户信息:
         			<input type="text" placeholder="客户姓名/手机号码" name="kehu" value="<?=$kehu?>" />&nbsp;&nbsp;
         			订单编号:
@@ -97,6 +97,10 @@
     							<td width="100">
     								雇佣价格<br/>
     								<font color="#f00">￥<?=$val['merchant_price']?></font>
+                                    <?php if (in_array($val['merchant_status'],[5,6])):?>
+                                    <br/>
+                                    <a class="replenish" rel="<?=$val['id']?>" href="javascript:void(0)">增加费用 &gt;</a>
+                                    <?php endif;?>
     							</td>
     							<?php } ?>
 
@@ -235,6 +239,23 @@
     </div>
 </div>
 
+<!--merchant remark-->
+<div class="replenish-pop" style="display:none;">
+    <div class="lb_mask"></div>
+    <div class="tt-2-mark" style="height:300px;">
+        <form id="mark-fm" action="<?=site_url('order/order_replenish')?>" method="post">
+            <input type="hidden" name="order_id" />
+            <div class="tt-2-1">增加费用 <img class="close-replenish" src="<?=asset("images/02418.png")?>" /></div>
+            <div class="tt-2-22">增加费用：<input tpye="text" name="replenish_amount"></div>
+            <div class="tt-2-22"><textarea id="mark-content" name="replenish_reason" cols="30" rows="4"></textarea></div>
+            <div class="tt-2-3">
+                <button class="submit-mark" type="submit">确定</button>
+                <a class="on close-replenish" href="#">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript">
     var $cancelUrl;
     var $confirmCode;
@@ -315,5 +336,15 @@
 	$(".form-search").attr("action",url).removeAttr("onsubmit").submit();
 	return false;
 	}
+
+    $(".replenish").click(function(){
+        var oid = $(this).attr('rel');
+        $("input[name='order_id']").val(oid);
+        $(".replenish-pop").show();
+    });
+
+    $(".close-replenish").click(function(){
+        $(".replenish-pop").hide();
+    });
 
 </script>

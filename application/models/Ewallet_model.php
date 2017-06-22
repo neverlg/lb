@@ -354,6 +354,67 @@ class Ewallet_model extends MY_Model {
 		return $final_result ? (!empty($balance_pay_id) ? $balance_pay_id : $trade_id) : false;
 	}
 
+    //只用余额补款
+    public function payreplenish_by_balance($me_id, $me_name, $replenish_id, $order_number, $me_balance, $use_balance, $coupon_id, $me_coupon_fee){
+        $time = time();
+        $ip = $this->input->ip_address();
+        $final_result = false;
+        $this->load->library('util');
+        $trade_number = Util::genTradeNumber();
+        $cur_balance = $me_balance-$use_balance;
+        $sql1 = "INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$use_balance, type=4, trade_number='{$trade_number}', order_number_list='{$replenish_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=1, add_time=$time, source=1, balance=$cur_balance, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'";
+        //更新商家总下单数目，总积分，总金额
+        $sql2 = "UPDATE merchant SET me_money=$cur_balance, me_update_time=$time, me_points=me_points+1, me_total_orders=me_total_orders+1, me_total_fee=me_total_fee+$use_balance WHERE me_id=$me_id";
 
+        $this->db->trans_begin();
+        $this->db->query($sql1);
+
+        if(!empty($me_balance)){
+            $this->db->query($sql2);
+        }
+        $this->db->query("UPDATE orders_replenish SET pay_time=$time WHERE id=$replenish_id");
+        if(!empty($coupon_id)){
+            $this->db->query("UPDATE coupon_grantlist SET cg_status=1, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
+        }
+        if ($this->db->trans_status() === FALSE){
+            $this->db->trans_rollback();
+        }else{
+            $this->db->trans_commit();
+            $final_result = true;
+        }
+        return $final_result;
+    }
+
+    //需要在线支付
+    public function payreplenish_online($me_id, $me_name, $replenish_id, $order_number, $me_balance, $real_price, $coupon_id, $me_coupon_fee){
+        $time = time();
+        $ip = $this->input->ip_address();
+        $final_result = false;
+        $this->load->library('util');
+        $trade_number = Util::genTradeNumber();
+
+        $this->db->trans_begin();
+        $this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$real_price, type=4, trade_number='{$trade_number}', order_number_list='{$replenish_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=0, add_time=$time, source=4, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+        $online_payid = $this->db->insert_id();
+        if(!empty($me_balance)){
+            $trade_number = Util::genTradeNumber();
+            //现有余额为0.00，异步通知成功，再设置
+            $this->db->query("INSERT INTO merchant_trade_log SET merchant_id=$me_id, direction='out', amount=$me_balance, type=4, trade_number='{$trade_number}', order_number_list='{$replenish_id}', order_serial_number_list='{$order_number}', ip='{$ip}', status=0, add_time=$time, source=1, coupon_id=$coupon_id, coupon_discount=$me_coupon_fee, merchant_name='$me_name'");
+            $balance_payid = $this->db->insert_id();
+            //此时将两种混合id存起来，方便异步通知时修改
+            $this->load->library('lb_redis');
+            Lb_redis::set('mixed_replenish_'.$online_payid, $balance_payid, 3600);
+        }
+        if(!empty($coupon_id)){
+            $this->db->query("UPDATE coupon_grantlist SET cg_status=0, cg_use_time=$time, cg_user_order_number='{$order_number}' WHERE cg_id=$coupon_id");
+        }
+        if ($this->db->trans_status() === FALSE){
+            $this->db->trans_rollback();
+        }else{
+            $this->db->trans_commit();
+            $final_result = true;
+        }
+        return $final_result ? $online_payid : false;
+    }
 
 }

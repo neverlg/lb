@@ -59,6 +59,10 @@ class Util {
         return 'TS'.date('ymdHis').self::random(3,'UCNUMBER');
     }
 
+    public static function getReplenishNumber(){
+        return 'BK'.date('ymdHis').self::random(3,'UCNUMBER');
+    }
+
     public static function get_qiniu_token($access_key, $secret_key, $bucket){
         $auth = new Auth($access_key, $secret_key);
         $token = $auth->uploadToken($bucket);

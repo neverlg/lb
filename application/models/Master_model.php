@@ -29,7 +29,8 @@ class Master_model extends MY_Model {
     //选取已审核的，在服务区域内的师傅信息
     public function get_suitable_user($area_id,$service_type,$page,$num_per_page){
         $start = ($page-1)*$num_per_page;
-        $sql = "SELECT m.*,w.assure_fund,s.order_count,s.evaluate_count,s.complain_count,s.score_count,s.evaluate_count,s.evaluate_praise_count,s.points,s.score_sum FROM master m left join master_wallet w on m.id=w.master_id left join master_statistic s on m.id=s.master_id WHERE FIND_IN_SET($area_id, m.service_area_ids) AND status=1";
+        $sql = "SELECT m.*,w.assure_fund,s.order_count,s.evaluate_count,s.complain_count,
+s.score_count,s.evaluate_count,s.evaluate_praise_count,s.points,s.score_sum FROM master m left join master_wallet w on m.id=w.master_id left join master_statistic s on m.id=s.master_id WHERE FIND_IN_SET($area_id, m.service_area_ids) AND status=1";
         if ($service_type){
             $sql .= " AND m.service_type in ($service_type)";
         }

@@ -244,6 +244,31 @@ class Order extends MY_Controller {
 		}
 	}
 
+    //补款
+    public function order_replenish(){
+        $order_id = $this->input->post('order_id');
+        $replenish_amount = $this->input->post('replenish_amount');
+        $replenish_reason = $this->input->post('replenish_reason');
+        if($this->order_model->check_power($this->me_id, $order_id)){
+            $order_msg = $this->order_model->get_order_for_pay($order_id);
+            $master_id = $order_msg['master_id'];
+            $merchant_price = $order_msg['merchant_price'];
+            $master_msg = $this->order_model->get_master_for_pay($master_id);
+
+            $data = array(
+                'order_id' => $order_id,
+                'me_balance' => $this->ewallet_model->get_balance($this->me_id),
+                'order' => $order_msg,
+                'master' => $master_msg,
+                'replenish'=>[
+                    'replenish_amount'=>$replenish_amount,
+                    'replenish_reason'=>$replenish_reason,
+                ]
+            );
+            $this->load->view('order/replenish', $data);
+        }
+    }
+
 	//创建交易记录
 	public function create_trade(){
 		$post = $this->input->post(array('balance', 'order_id', 'coupon_id'), true);
@@ -564,5 +589,85 @@ class Order extends MY_Controller {
         $data['__pagination_url'] = $this->pagination->create_links();
 
         $this->load->view('order/search', $data);
+    }
+
+    //创建补款交易记录
+    public function create_replenish(){
+        $this->form_validation->set_rules('order_id','订单ID','required');
+        $this->form_validation->set_rules('replenish_amount','补款金额','required');
+        $this->form_validation->set_rules('replenish_reason','补款理由','required');
+        if($this->form_validation->run() == false){
+            exit('非法提交');
+        }
+        $order_id = $this->input->post('order_id', true);
+        $balance = $this->input->post('balance', true);
+        $replenish_amount = $this->input->post('replenish_amount', true);
+        $replenish_reason = $this->input->post('replenish_reason', true);
+
+        $order_id = intval($order_id);
+        $coupon_id = empty($coupon_id) ? 0 : intval($coupon_id);
+        $balance = intval($balance);
+        $fee = number_format($replenish_amount, 2, '.', '');
+
+        $this->load->library('util');
+        $order_number = Util::getReplenishNumber();
+        $replenish_id = $this->order_model->add_replenish($this->me_id, $order_id, $order_number,$fee,$replenish_reason);
+
+        $me_balance = 0.00;
+        $me_coupon_fee = 0.00;
+        //查询总价
+        $ret_order = $this->order_model->get_total_fee($this->me_id, $order_id);
+        if(empty($ret_order)){
+            exit('服务异常');
+        }
+        $total_price = $fee;
+        $service_type = $ret_order['service_type'];
+        $master_name = $ret_order['master_name'];
+        $create_order_time = $ret_order['add_time'];
+        //使用了余额
+        if(!empty($balance)){
+            $me_balance = $this->ewallet_model->get_balance($this->me_id);
+        }
+        //使用了优惠券
+        if(!empty($coupon_id)){
+            $ret = $this->ewallet_model->get_coupon_fee($coupon_id);
+            if(!empty($ret) && $ret['c_fullmoney']>=$total_price){
+                $me_coupon_fee = $ret['c_money'];
+            }
+        }
+
+        //如果余额和优惠券的和大于订单金额，则直接操作支付
+        if(($me_balance+$me_coupon_fee)>=$total_price){
+            $use_balance = $total_price-$me_coupon_fee;
+            $use_balance = ($use_balance > 0) ? $use_balance : 0.00;
+            $result = $this->ewallet_model->payreplenish_by_balance($this->me_id, $this->me_name, $replenish_id, $order_number, $me_balance, $use_balance, $coupon_id, $me_coupon_fee);
+            if($result){
+                //组织数据
+                $service_conf = config_item('service_type');
+                $data = array(
+                    'order_id' => $order_id,
+                    'order_number' => $order_number,
+                    'service_type' => isset($service_conf[$service_type]) ? $service_conf[$service_type] : '- -',
+                    'fee' => $use_balance,
+                    'master_name' => $master_name
+                );
+                return $this->load->view('order/replenish_success', $data);
+            }
+        }else{
+            //需要在线支付
+            $real_price = $total_price-$me_balance-$me_coupon_fee;
+            $result = $this->ewallet_model->payreplenish_online($this->me_id, $this->me_name, $replenish_id, $order_number, $me_balance, $real_price, $coupon_id, $me_coupon_fee);
+            if($result){
+                $data = array(
+                    'trade_id' => $result,
+                    'order_id' => $order_id,
+                    'real_price' => $real_price,
+                    'order_number' => $order_number,
+                );
+//                return $this->load->view('order/online_pay', $data);
+                redirect(site_url('order/do_pay/'.$result.'/'.$order_id));
+            }
+        }
+        exit('系统异常');
     }
 }

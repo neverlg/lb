@@ -25,7 +25,8 @@ $config['recharge_return_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/index.php/ewa
 $config['order_pay_notify_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/index.php/payment_notify/alipay_order';
 $config['order_pay_return_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/index.php/order/pay_success';
 
-
+$config['order_replenish_notify_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/index.php/payment_notify/alipay_replenish';
+$config['order_replenish_return_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/index.php/order/replenish_success';
 
 
 // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问 支付通知地址
